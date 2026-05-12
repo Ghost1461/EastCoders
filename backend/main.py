@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.routes import router
+from app.routers import router
 
 app = FastAPI(
     title="EastCoders API",
