@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:16
+    container_name: seller_db
+    environment:
+      POSTGRES_DB: seller_dashboard
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: seller_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./data:/app/data
+    environment:
+      DATABASE_URL: postgresql://admin:123456@db:5432/seller_dashboard
+
+
+
+volumes:
+  postgres_data:
