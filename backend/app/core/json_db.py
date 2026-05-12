@@ -1,0 +1,1 @@
+#JSON “database” işlemleriniz burada olacak, her yerde read_json, write_json, open olmayacak

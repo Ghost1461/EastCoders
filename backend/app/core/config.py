@@ -1,0 +1,1 @@
+#Uygulama ayarları ve sabitler burada bulunur
