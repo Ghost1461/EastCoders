@@ -1,0 +1,184 @@
+[
+    {
+        "order_id": "O-94550",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-8870",
+        "customer_id": "C-811",
+        "items": [
+            {
+                "listing_id": "L-641",
+                "internal_product_id": "INT-P-22203",
+                "quantity": 1,
+                "unit_price": 1138
+            }
+        ],
+        "status": "delivered",
+        "order_date": "2026-04-18"
+    },
+    {
+        "order_id": "O-62322",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-2966",
+        "customer_id": "C-686",
+        "items": [
+            {
+                "listing_id": "L-534",
+                "internal_product_id": "INT-P-60628",
+                "quantity": 1,
+                "unit_price": 1499
+            }
+        ],
+        "status": "returned",
+        "order_date": "2026-04-26"
+    },
+    {
+        "order_id": "O-29801",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-9651",
+        "customer_id": "C-601",
+        "items": [
+            {
+                "listing_id": "L-233",
+                "internal_product_id": "INT-P-60628",
+                "quantity": 2,
+                "unit_price": 1499
+            },
+            {
+                "listing_id": "L-257",
+                "internal_product_id": "INT-P-88103",
+                "quantity": 1,
+                "unit_price": 1213
+            }
+        ],
+        "status": "delivered",
+        "order_date": "2026-04-14"
+    },
+    {
+        "order_id": "O-94106",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-6932",
+        "customer_id": "C-360",
+        "items": [
+            {
+                "listing_id": "L-285",
+                "internal_product_id": "INT-P-45586",
+                "quantity": 1,
+                "unit_price": 1027
+            }
+        ],
+        "status": "cancelled",
+        "order_date": "2026-04-21"
+    },
+    {
+        "order_id": "O-74286",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-7812",
+        "customer_id": "C-262",
+        "items": [
+            {
+                "listing_id": "L-424",
+                "internal_product_id": "INT-P-67973",
+                "quantity": 1,
+                "unit_price": 971
+            }
+        ],
+        "status": "cancelled",
+        "order_date": "2026-05-12"
+    },
+    {
+        "order_id": "O-43598",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-5949",
+        "customer_id": "C-846",
+        "items": [
+            {
+                "listing_id": "L-252",
+                "internal_product_id": "INT-P-22203",
+                "quantity": 1,
+                "unit_price": 1138
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-04-23"
+    },
+    {
+        "order_id": "O-84483",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-4859",
+        "customer_id": "C-174",
+        "items": [
+            {
+                "listing_id": "L-164",
+                "internal_product_id": "INT-P-83243",
+                "quantity": 1,
+                "unit_price": 1078
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-05-10"
+    },
+    {
+        "order_id": "O-59451",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-9581",
+        "customer_id": "C-537",
+        "items": [
+            {
+                "listing_id": "L-811",
+                "internal_product_id": "INT-P-22203",
+                "quantity": 2,
+                "unit_price": 1138
+            }
+        ],
+        "status": "returned",
+        "order_date": "2026-04-23"
+    },
+    {
+        "order_id": "O-70455",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-6186",
+        "customer_id": "C-610",
+        "items": [
+            {
+                "listing_id": "L-864",
+                "internal_product_id": "INT-P-45586",
+                "quantity": 1,
+                "unit_price": 1027
+            },
+            {
+                "listing_id": "L-111",
+                "internal_product_id": "INT-P-88103",
+                "quantity": 1,
+                "unit_price": 1213
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-05-03"
+    },
+    {
+        "order_id": "O-20412",
+        "user_id": "u_001",
+        "platform": "Amazon",
+        "external_order_id": "AM-ORD-2478",
+        "customer_id": "C-147",
+        "items": [
+            {
+                "listing_id": "L-141",
+                "internal_product_id": "INT-P-60628",
+                "quantity": 2,
+                "unit_price": 1499
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-05-06"
+    }
+]
