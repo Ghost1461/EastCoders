@@ -95,7 +95,7 @@ def import_hepsiburada_products(db: Session):
     db.commit()
 
     return {
-        "message": "Hepsiburada products imported successfully",
+        "message": "Hepsiburadadaki ürünlerininiz başarıyla aktarılmıştır",
         "new_products": imported_products,
         "created_listings": created_listings,
         "updated_listings": updated_listings
