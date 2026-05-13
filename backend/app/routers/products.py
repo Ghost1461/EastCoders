@@ -1,6 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
+from app.core.database import get_db
+from app.models import Product, ProductListing
 from app.core.database import get_db
 from app.models import Product, ProductListing
 router = APIRouter(prefix="/products", tags=["Products"])
@@ -9,8 +13,15 @@ router = APIRouter(prefix="/products", tags=["Products"])
 def is_ok():
     return {"message": "Products route çalışıyor"}
 
+@router.get("/return_pro")
+def get_products():
+    return [
+        {"id": 1, "name": "Sweatshirt"},
+        {"id": 2, "name": "Skirt"}
+    ]
 
-@router.get("display_products")
+
+@router.get("/display_products")
 def get_products(db: Session = Depends(get_db)):
     products = db.query(Product).all()
 
