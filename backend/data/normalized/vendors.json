@@ -1,0 +1,24 @@
+[
+  {
+    "user_id": "u_001",
+    "email": "can@deu.edu.tr",
+    "password": "hashed_password",
+    "full_name": "Can Yıldız",
+    "store_name": "Yıldız Fashion Store",
+    "subscription_plan": "premium",
+    "preferred_currency": "TRY",
+    "connected_platforms": ["trendyol", "amazon"],
+    "last_sync": "2026-05-13T14:30:00Z"
+  },
+  {
+    "user_id": "u_002",
+    "email": "test@deu.edu.tr",
+    "password": "hashed_password",
+    "full_name": "Test Kullanıcı",
+    "store_name": "Demo Mağaza",
+    "subscription_plan": "free",
+    "preferred_currency": "TRY",
+    "connected_platforms": ["hepsiburada"],
+    "last_sync": "2026-05-12T09:00:00Z"
+  }
+]
