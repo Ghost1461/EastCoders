@@ -8,11 +8,12 @@ from app.services.product_normalizer_service import normalize_product
 
 
 BASE_DIR = Path(__file__).resolve().parents[2]
+DATA_DIR = BASE_DIR / "data"
 
 PRODUCT_FILES = {
-    "hepsiburada": BASE_DIR / "data" / "mock_sources" / "hepsiburada_product.json",
-    "trendyol": BASE_DIR / "data" / "mock_sources" / "trendyol_product.json",
-    "amazon": BASE_DIR / "data" / "mock_sources" / "amazon_product.json",
+    "hepsiburada": DATA_DIR / "mock_sources" / "hepsiburada_products.json",
+    "trendyol": DATA_DIR / "mock_sources" / "trendyol_products.json",
+    "amazon": DATA_DIR / "mock_sources" / "amazon_products.json",
 }
 
 
@@ -51,36 +52,48 @@ def import_products_by_platform(db: Session, platform_key: str):
     for raw_item in raw_products:
         item = normalize_product(platform_key, raw_item)
 
-        sku = item["seller_sku"]
+        internal_product_id = item.get("internal_product_id") or generate_product_id()
+        seller_sku = item.get("seller_sku")
 
         product = db.query(Product).filter(
-            Product.seller_sku == sku
+            Product.internal_product_id == internal_product_id
         ).first()
 
         if not product:
             product = Product(
-                internal_product_id=generate_product_id(),
-                seller_sku=sku,
-                name=item["name"],
+                internal_product_id=internal_product_id,
+                name=item.get("name"),
                 brand=item.get("brand"),
                 category=item.get("category"),
                 color=item.get("color"),
                 size=item.get("size"),
-                tags=build_tags(item)
+                tags=item.get("tags") or build_tags(item),
+                image_url=item.get("image_url"),
+                last_updated=item.get("last_updated"),
             )
 
             db.add(product)
             db.flush()
             imported_products += 1
+        else:
+            product.name = item.get("name", product.name)
+            product.brand = item.get("brand")
+            product.category = item.get("category")
+            product.color = item.get("color")
+            product.size = item.get("size")
+            product.tags = item.get("tags") or build_tags(item)
+            product.image_url = item.get("image_url")
+            product.last_updated = item.get("last_updated")
 
         listing = db.query(ProductListing).filter(
-            ProductListing.platform == item["platform"],
-            ProductListing.external_product_id == item["external_product_id"]
+            ProductListing.platform == item.get("platform"),
+            ProductListing.external_product_id == item.get("external_product_id"),
         ).first()
 
         if listing:
-            listing.price = item["price"]
-            listing.stock = item["stock"]
+            listing.seller_sku = seller_sku
+            listing.price = item.get("price", 0)
+            listing.stock = item.get("stock", 0)
             listing.commission_rate = item.get("commission_rate")
             listing.rating = item.get("rating")
             listing.review_count = item.get("review_count", 0)
@@ -91,15 +104,15 @@ def import_products_by_platform(db: Session, platform_key: str):
             listing = ProductListing(
                 listing_id=generate_listing_id(),
                 internal_product_id=product.internal_product_id,
-                platform=item["platform"],
-                external_product_id=item["external_product_id"],
-                seller_sku=sku,
-                price=item["price"],
-                stock=item["stock"],
+                platform=item.get("platform"),
+                external_product_id=item.get("external_product_id"),
+                seller_sku=seller_sku,
+                price=item.get("price", 0),
+                stock=item.get("stock", 0),
                 commission_rate=item.get("commission_rate"),
                 rating=item.get("rating"),
                 review_count=item.get("review_count", 0),
-                status=item.get("status", "active")
+                status=item.get("status", "active"),
             )
 
             db.add(listing)
@@ -112,7 +125,7 @@ def import_products_by_platform(db: Session, platform_key: str):
         "message": f"{platform_key} ürünleri başarıyla aktarıldı",
         "new_products": imported_products,
         "created_listings": created_listings,
-        "updated_listings": updated_listings
+        "updated_listings": updated_listings,
     }
 
 
@@ -125,5 +138,5 @@ def import_all_products(db: Session):
 
     return {
         "message": "Tüm platform ürünleri başarıyla aktarıldı",
-        "results": results
+        "results": results,
     }

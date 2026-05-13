@@ -1,57 +1,93 @@
-def normalize_hepsiburada_product(item: dict) -> dict:
+def normalize_trendyol_product(item: dict) -> dict:
     return {
-        "platform": "Hepsiburada",
-        "external_product_id": item["hb_product_id"],
-        "seller_sku": item["merchant_sku"],
-        "name": item["product_name"],
+        "internal_product_id": item.get("internal_product_id"),
+        "product_id": item.get("product_id"),
+        "user_id": item.get("user_id"),
+
+        "platform": item.get("platform", "trendyol"),
+
+        "external_product_id": item.get("external_product_id"),
+        "seller_sku": item.get("seller_sku"),
+
+        "name": item.get("name"),
         "brand": item.get("brand"),
-        "category": item.get("category_name"),
+        "category": item.get("category"),
         "color": item.get("color"),
         "size": item.get("size"),
-        "price": item["sale_price"],
-        "stock": item["available_stock"],
+
+        "price": item.get("price", 0),
+        "stock": item.get("stock", 0),
         "commission_rate": item.get("commission_rate"),
+
         "rating": item.get("rating"),
         "review_count": item.get("review_count", 0),
-        "status": item.get("status", "active")
+        "status": item.get("status", "active"),
+
+        "tags": item.get("tags", []),
+        "image_url": item.get("image_url"),
+        "last_updated": item.get("last_updated"),
     }
 
 
-def normalize_trendyol_product(item: dict) -> dict:
+def normalize_hepsiburada_product(item: dict) -> dict:
     return {
-        "platform": "Trendyol",
-        "external_product_id": item["id"],
-        "seller_sku": item["stockCode"],
-        "name": item["title"],
+        "internal_product_id": item.get("internal_product_id"),
+        "product_id": item.get("product_id"),
+        "user_id": item.get("user_id"),
+
+        "platform": item.get("platform", "hepsiburada"),
+
+        "external_product_id": item.get("external_product_id"),
+        "seller_sku": item.get("seller_sku"),
+
+        "name": item.get("name"),
         "brand": item.get("brand"),
-        "category": item.get("categoryName"),
+        "category": item.get("category"),
         "color": item.get("color"),
         "size": item.get("size"),
-        "price": item["salePrice"],
-        "stock": item["quantity"],
-        "commission_rate": item.get("commissionRate"),
-        "rating": item.get("ratingScore"),
-        "review_count": item.get("reviewCount", 0),
-        "status": "active" if item.get("approved", True) else "passive"
+
+        "price": item.get("price", 0),
+        "stock": item.get("stock", 0),
+        "commission_rate": item.get("commission_rate"),
+
+        "rating": item.get("rating"),
+        "review_count": item.get("review_count", 0),
+        "status": item.get("status", "active"),
+
+        "tags": item.get("tags", []),
+        "image_url": item.get("image_url"),
+        "last_updated": item.get("last_updated"),
     }
 
 
 def normalize_amazon_product(item: dict) -> dict:
     return {
-        "platform": "Amazon",
-        "external_product_id": item["asin"],
-        "seller_sku": item["seller_sku"],
-        "name": item["item_name"],
+        "internal_product_id": item.get("internal_product_id"),
+        "product_id": item.get("product_id"),
+        "user_id": item.get("user_id"),
+
+        "platform": item.get("platform", "amazon"),
+
+        "external_product_id": item.get("external_product_id"),
+        "seller_sku": item.get("seller_sku"),
+
+        "name": item.get("name"),
         "brand": item.get("brand"),
         "category": item.get("category"),
         "color": item.get("color"),
         "size": item.get("size"),
-        "price": item["price"],
-        "stock": item["quantity"],
+
+        "price": item.get("price", 0),
+        "stock": item.get("stock", 0),
         "commission_rate": item.get("commission_rate"),
+
         "rating": item.get("rating"),
         "review_count": item.get("review_count", 0),
-        "status": item.get("status", "active")
+        "status": item.get("status", "active"),
+
+        "tags": item.get("tags", []),
+        "image_url": item.get("image_url"),
+        "last_updated": item.get("last_updated"),
     }
 
 
