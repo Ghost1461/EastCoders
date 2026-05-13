@@ -7,7 +7,6 @@ class Product(Base):
     __tablename__ = "products"
 
     internal_product_id = Column(String, primary_key=True, index=True)
-    seller_sku = Column(String, unique=True, index=True, nullable=False)
 
     name = Column(String, nullable=False)
     brand = Column(String, nullable=True)
