@@ -1,0 +1,236 @@
+[
+    {
+        "order_id": "O-47045",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-4501",
+        "customer_id": "C-827",
+        "items": [
+            {
+                "listing_id": "L-298",
+                "internal_product_id": "INT-P-92435",
+                "quantity": 1,
+                "unit_price": 1089
+            }
+        ],
+        "status": "cancelled",
+        "order_date": "2026-04-30"
+    },
+    {
+        "order_id": "O-96588",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-6244",
+        "customer_id": "C-998",
+        "items": [
+            {
+                "listing_id": "L-118",
+                "internal_product_id": "INT-P-80397",
+                "quantity": 2,
+                "unit_price": 885
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-04-30"
+    },
+    {
+        "order_id": "O-87834",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-2304",
+        "customer_id": "C-808",
+        "items": [
+            {
+                "listing_id": "L-831",
+                "internal_product_id": "INT-P-64481",
+                "quantity": 1,
+                "unit_price": 1152
+            },
+            {
+                "listing_id": "L-425",
+                "internal_product_id": "INT-P-56350",
+                "quantity": 2,
+                "unit_price": 969
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-04-30"
+    },
+    {
+        "order_id": "O-27426",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-7248",
+        "customer_id": "C-496",
+        "items": [
+            {
+                "listing_id": "L-598",
+                "internal_product_id": "INT-P-92435",
+                "quantity": 1,
+                "unit_price": 1089
+            },
+            {
+                "listing_id": "L-189",
+                "internal_product_id": "INT-P-73031",
+                "quantity": 1,
+                "unit_price": 1339
+            }
+        ],
+        "status": "returned",
+        "order_date": "2026-05-02"
+    },
+    {
+        "order_id": "O-55991",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-1149",
+        "customer_id": "C-883",
+        "items": [
+            {
+                "listing_id": "L-665",
+                "internal_product_id": "INT-P-73031",
+                "quantity": 1,
+                "unit_price": 1339
+            }
+        ],
+        "status": "delivered",
+        "order_date": "2026-04-18"
+    },
+    {
+        "order_id": "O-15887",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-6344",
+        "customer_id": "C-784",
+        "items": [
+            {
+                "listing_id": "L-908",
+                "internal_product_id": "INT-P-80397",
+                "quantity": 1,
+                "unit_price": 885
+            }
+        ],
+        "status": "cancelled",
+        "order_date": "2026-04-25"
+    },
+    {
+        "order_id": "O-50893",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-3665",
+        "customer_id": "C-964",
+        "items": [
+            {
+                "listing_id": "L-428",
+                "internal_product_id": "INT-P-49769",
+                "quantity": 2,
+                "unit_price": 1136
+            }
+        ],
+        "status": "returned",
+        "order_date": "2026-04-30"
+    },
+    {
+        "order_id": "O-70448",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-4562",
+        "customer_id": "C-801",
+        "items": [
+            {
+                "listing_id": "L-493",
+                "internal_product_id": "INT-P-64481",
+                "quantity": 2,
+                "unit_price": 1152
+            },
+            {
+                "listing_id": "L-217",
+                "internal_product_id": "INT-P-64748",
+                "quantity": 1,
+                "unit_price": 1280
+            }
+        ],
+        "status": "delivered",
+        "order_date": "2026-04-23"
+    },
+    {
+        "order_id": "O-82594",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-9188",
+        "customer_id": "C-864",
+        "items": [
+            {
+                "listing_id": "L-587",
+                "internal_product_id": "INT-P-49769",
+                "quantity": 1,
+                "unit_price": 1136
+            },
+            {
+                "listing_id": "L-844",
+                "internal_product_id": "INT-P-73031",
+                "quantity": 2,
+                "unit_price": 1339
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-05-10"
+    },
+    {
+        "order_id": "O-34486",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-4242",
+        "customer_id": "C-428",
+        "items": [
+            {
+                "listing_id": "L-631",
+                "internal_product_id": "INT-P-80397",
+                "quantity": 1,
+                "unit_price": 885
+            }
+        ],
+        "status": "delivered",
+        "order_date": "2026-04-15"
+    },
+    {
+        "order_id": "O-14263",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-1652",
+        "customer_id": "C-149",
+        "items": [
+            {
+                "listing_id": "L-193",
+                "internal_product_id": "INT-P-80397",
+                "quantity": 1,
+                "unit_price": 885
+            }
+        ],
+        "status": "cancelled",
+        "order_date": "2026-04-27"
+    },
+    {
+        "order_id": "O-23433",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-8880",
+        "customer_id": "C-954",
+        "items": [
+            {
+                "listing_id": "L-244",
+                "internal_product_id": "INT-P-56350",
+                "quantity": 2,
+                "unit_price": 969
+            },
+            {
+                "listing_id": "L-582",
+                "internal_product_id": "INT-P-64481",
+                "quantity": 1,
+                "unit_price": 1152
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-05-11"
+    }
+]
