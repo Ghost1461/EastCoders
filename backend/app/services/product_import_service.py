@@ -2,6 +2,7 @@ import json
 import uuid
 from pathlib import Path
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from app.models import Product, ProductListing
 from app.services.product_normalizer_service import normalize_product
@@ -17,12 +18,18 @@ PRODUCT_FILES = {
 }
 
 
-def generate_product_id() -> str:
-    return f"P-{uuid.uuid4().hex[:8].upper()}"
 
 
-def generate_listing_id() -> str:
-    return f"L-{uuid.uuid4().hex[:8].upper()}"
+def create_unique_listing_id(db: Session) -> str:
+    while True:
+        listing_id = f"L-{uuid.uuid4().hex[:8].upper()}"
+
+        exists = db.query(ProductListing).filter(
+            ProductListing.listing_id == listing_id
+        ).first()
+
+        if not exists:
+            return listing_id
 
 
 def build_tags(item: dict) -> list[str]:
@@ -52,16 +59,18 @@ def import_products_by_platform(db: Session, platform_key: str):
     for raw_item in raw_products:
         item = normalize_product(platform_key, raw_item)
 
-        internal_product_id = item.get("internal_product_id") or generate_product_id()
         seller_sku = item.get("seller_sku")
 
         product = db.query(Product).filter(
-            Product.internal_product_id == internal_product_id
+            Product.name == item.get("name"),
+            Product.brand == item.get("brand"),
+            Product.category == item.get("category"),
+            Product.color == item.get("color"),
+            Product.size == item.get("size"),
         ).first()
 
         if not product:
             product = Product(
-                internal_product_id=internal_product_id,
                 name=item.get("name"),
                 brand=item.get("brand"),
                 category=item.get("category"),
@@ -102,8 +111,8 @@ def import_products_by_platform(db: Session, platform_key: str):
 
         else:
             listing = ProductListing(
-                listing_id=generate_listing_id(),
-                internal_product_id=product.internal_product_id,
+                listing_id=create_unique_listing_id(db),
+                internal_product_id=product.id,
                 platform=item.get("platform"),
                 external_product_id=item.get("external_product_id"),
                 seller_sku=seller_sku,

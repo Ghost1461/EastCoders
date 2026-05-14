@@ -1,8 +1,6 @@
 def normalize_trendyol_product(item: dict) -> dict:
     return {
-        "internal_product_id": item.get("internal_product_id"),
-        "product_id": item.get("product_id"),
-        "user_id": item.get("user_id"),
+        #"user_id": item.get("user_id"),
 
         "platform": item.get("platform", "trendyol"),
 
@@ -31,9 +29,7 @@ def normalize_trendyol_product(item: dict) -> dict:
 
 def normalize_hepsiburada_product(item: dict) -> dict:
     return {
-        "internal_product_id": item.get("internal_product_id"),
-        "product_id": item.get("product_id"),
-        "user_id": item.get("user_id"),
+        #"user_id": item.get("user_id"),
 
         "platform": item.get("platform", "hepsiburada"),
 
@@ -62,9 +58,7 @@ def normalize_hepsiburada_product(item: dict) -> dict:
 
 def normalize_amazon_product(item: dict) -> dict:
     return {
-        "internal_product_id": item.get("internal_product_id"),
-        "product_id": item.get("product_id"),
-        "user_id": item.get("user_id"),
+        #"user_id": item.get("user_id"),
 
         "platform": item.get("platform", "amazon"),
 

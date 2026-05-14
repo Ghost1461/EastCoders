@@ -8,8 +8,8 @@ class ProductListing(Base):
     listing_id = Column(String, primary_key=True, index=True)
 
     internal_product_id = Column(
-        String,
-        ForeignKey("products.internal_product_id"),
+        Integer,
+        ForeignKey("products.id"),
         nullable=False
     )
 
