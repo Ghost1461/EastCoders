@@ -7,3 +7,5 @@ python-jose
 bcrypt
 email-validator
 requests
+rapidfuzz
+python-multipart

@@ -206,5 +206,31 @@
         ],
         "image_url": "https://api.dicebear.com/7.x/identicon/svg?seed=456",
         "last_updated": "2026-05-13T09:33:02"
+    },
+    {
+        "internal_product_id": "INT-P-14329",
+        "product_id": "AZN-7279",
+        "user_id": "u_002",
+        "platform": "amazon",
+        "external_product_id": "AMAZON-31008",
+        "seller_sku": "SKU-AM-4567",
+        "name": "Grey T-Shirt",
+        "brand": "ModaNova",
+        "category": "T-Shirt",
+        "color": "Grey",
+        "size": "L",
+        "price": 839,
+        "stock": 18,
+        "commission_rate": 0.17,
+        "rating": 4.3,
+        "review_count": 100,
+        "status": "active",
+        "tags": [
+            "t-shirt",
+            "grey",
+            "fashion"
+        ],
+        "image_url": "https://api.dicebear.com/7.x/identicon/svg?seed=456",
+        "last_updated": "2026-05-13T09:33:02"
     }
 ]
