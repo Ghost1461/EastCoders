@@ -13,6 +13,10 @@ class ProductListing(Base):
         nullable=False
     )
 
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)#kendi db'mizdeki user id
+    source_user_id = Column(String, nullable=True)#Platformdan gelen, o platformun user id'i
+
+
     platform = Column(String, nullable=False)
     external_product_id = Column(String, nullable=False)
 
@@ -27,3 +31,4 @@ class ProductListing(Base):
     status = Column(String, default="active")
 
     product = relationship("Product", back_populates="listings")
+    user = relationship("User", back_populates="listings")

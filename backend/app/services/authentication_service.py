@@ -87,8 +87,10 @@ class AuthenticationService:
         }
 
     def login(self, request, db: Session):
+        email = getattr(request, "email", None) or getattr(request, "username", None)
+
         user = db.query(User).filter(
-            User.email == request.email
+            User.email == email
         ).first()
 
         if not user:
@@ -117,4 +119,4 @@ class AuthenticationService:
                 "phone_number": user.phone_number,
                 "role": user.role
             }
-        }
+    }
