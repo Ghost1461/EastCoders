@@ -13,59 +13,67 @@ BRANDS = ["ModaNova", "TrendStyle", "UrbanWear", "BasicLine", "EastCoders"]
 SIZES = ["S", "M", "L", "XL", "XXL"]
 
 def generate_platform_pools(num_products_per_platform=50):
-    """Platformların başlangıç ham havuzlarını (Raw Data) oluşturur."""
+    """
+    Platformların başlangıç ham havuzlarını (Raw Data) oluşturur.
+    Her platform için benzersiz (unique) external_id üretilmesini garanti eder.
+    """
     for plat in PLATFORMS:
         products_pool = []
-        for i in range(num_products_per_platform):
-            color = random.choice(COLORS)
-            cat = random.choice(CATEGORIES)
-            
-            products_pool.append({
-                "external_id": f"{plat.upper()}-{random.randint(10000, 99999)}",
-                "name": f"{color} {cat}",
-                "brand": random.choice(BRANDS),
-                "category": cat,
-                "color": color,
-                "size": random.choice(SIZES),
-                "price": random.randint(300, 1500),
-                "stock": random.randint(10, 100),
-                "sku": f"SKU-{plat[:2].upper()}-{random.randint(1000, 9999)}",
-                "image_url": f"https://api.dicebear.com/7.x/identicon/svg?seed={random.randint(1,1000)}"
-            })
+        used_external_ids = set()  # Her platform için ayrı bir küme ile ID takibi yapıyoruz
         
-        file_path = f"../data/mock_sources/{plat}_products.json"
+        while len(products_pool) < num_products_per_platform:
+            # Pazar yeri bazında benzersiz sayı üretimi
+            ext_id_num = random.randint(10000, 99999)
+            # Platform ismini ekleyerek platformlar arası çakışmayı da önlüyoruz
+            ext_id = f"{plat.upper()}-{ext_id_num}"
+            
+            # Eğer bu ID bu platformda daha önce üretilmediyse havuza ekle
+            if ext_id not in used_external_ids:
+                used_external_ids.add(ext_id)
+                color = random.choice(COLORS)
+                cat = random.choice(CATEGORIES)
+                
+                products_pool.append({
+                    "external_id": ext_id,
+                    "name": f"{color} {cat}",
+                    "brand": random.choice(BRANDS),
+                    "category": cat,
+                    "color": color,
+                    "size": random.choice(SIZES),
+                    "price": random.randint(300, 1500),
+                    "stock": random.randint(10, 100),
+                    "sku": f"SKU-{ext_id}",
+                    "image_url": f"https://api.dicebear.com/7.x/identicon/svg?seed={ext_id_num}"
+                })
+        
+        file_path = f"data/mock_sources/{plat}_products.json"
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(products_pool, f, indent=4, ensure_ascii=False)
-    print("✅ Başlangıç platform havuzları (raw) oluşturuldu.")
+    print("✅ Platform havuzları pazar yeri bazında UNIQUE ID'lerle oluşturuldu.")
 
 def simulate_user_import(user_id, platform, num_to_import=5):
     """
-    Platform havuzundan ürünleri seçer ve görsellerdeki modellere 
-    tam uyumlu şekilde özellikler ekleyerek kaydeder.
+    Platform havuzundan ürünleri seçer ve 'product_id = external_product_id' 
+    mantığıyla sisteme aktarır. internal_product_id veritabanı aşamasına bırakılmıştır.
     """
-    source_path = f"../data/mock_sources/{platform}_products.json"
+    source_path = f"data/mock_sources/{platform}_products.json"
     
     with open(source_path, "r", encoding="utf-8") as f:
         raw_products = json.load(f)
     
+    # Havuzdaki ürünlerden istenen sayıda örnek al
     product_samples = random.sample(raw_products, k=min(num_to_import, len(raw_products)))
     user_products = []
 
     for item in product_samples:
-        if platform == "hepsiburada":
-            ext_id = f"HB-{random.randint(1000, 9999)}"
-        elif platform == "trendyol":
-            ext_id = f"TR-{random.randint(1000, 9999)}"
-        else:
-            ext_id = f"AZN-{random.randint(1000, 9999)}"
+        # Ana mantık: product_id ve external_product_id artık aynı (external_id) değerini taşıyor
+        unique_id = item["external_id"]
 
-        # Görsellerdeki (image_2a597b.jpg ve image_2a5997.jpg) sütunları ekliyoruz
         user_products.append({
-            "internal_product_id": f"INT-P-{random.randint(10000, 99999)}", 
-            "product_id": ext_id, 
+            "product_id": unique_id,           # Sistem içi geçici ana kimlik
             "user_id": user_id,
             "platform": platform,
-            "external_product_id": item["external_id"], 
+            "external_product_id": unique_id,  # Pazar yerindeki orijinal kimlik
             "seller_sku": item["sku"], 
             "name": item["name"],
             "brand": item["brand"], 
@@ -83,15 +91,16 @@ def simulate_user_import(user_id, platform, num_to_import=5):
             "last_updated": fake.date_time_between(start_date='-1d', end_date='now').isoformat() 
         })
 
+    # Güncellenen veriyi platformun JSON dosyasına geri yazıyoruz
     with open(source_path, "w", encoding="utf-8") as f:
         json.dump(user_products, f, indent=4, ensure_ascii=False)
     
-    print(f"✅ {platform.upper()} ürünleri zenginleştirilmiş verilerle {user_id} için kaydedildi.")
+    print(f"✅ {platform.upper()} ürünleri ({len(user_products)} adet) başarıyla içe aktarıldı.")
 
 def generate_mock_orders(user_id, platform, num_orders=20):
     """Siparişleri oluşturur ve platformun sipariş dosyasına kaydeder."""
-    products_path = f"../data/mock_sources/{platform}_products.json"
-    output_path = f"../data/mock_sources/{platform}_orders.json"
+    products_path = f"data/mock_sources/{platform}_products.json"
+    output_path = f"data/mock_sources/{platform}_orders.json"
 
     with open(products_path, "r", encoding="utf-8") as f:
         user_prods = json.load(f)
@@ -103,7 +112,7 @@ def generate_mock_orders(user_id, platform, num_orders=20):
         for p in selected_prods:
             order_items.append({
                 "listing_id": f"L-{random.randint(100, 999)}",
-                "internal_product_id": p["internal_product_id"], 
+                "product_id": p["product_id"], 
                 "quantity": random.randint(1, 2),
                 "unit_price": p["price"]
             })
@@ -125,8 +134,8 @@ def generate_mock_orders(user_id, platform, num_orders=20):
 
 def generate_mock_reviews(user_id, platform, num_reviews=15):
     """Yorumları oluşturur ve platformun yorum dosyasına kaydeder."""
-    products_path = f"../data/mock_sources/{platform}_products.json"
-    output_path = f"../data/mock_sources/{platform}_reviews.json"
+    products_path = f"data/mock_sources/{platform}_products.json"
+    output_path = f"data/mock_sources/{platform}_reviews.json"
 
     with open(products_path, "r", encoding="utf-8") as f:
         user_prods = json.load(f)
@@ -146,7 +155,7 @@ def generate_mock_reviews(user_id, platform, num_reviews=15):
         all_reviews.append({
             "review_id": f"REV-{random.randint(10000, 99999)}",
             "customer_id": f"C-{random.randint(100, 999)}",
-            "internal_product_id": target_prod["internal_product_id"], 
+            "product_id": target_prod["product_id"],
             "listing_id": f"L-{random.randint(100, 999)}",
             "platform": platform.capitalize(),
             "rating": template["rating"],
@@ -160,12 +169,36 @@ def generate_mock_reviews(user_id, platform, num_reviews=15):
         json.dump(all_reviews, f, indent=4, ensure_ascii=False)
     print(f"✅ {platform.upper()} yorumları kaydedildi.")
 
+
+
+# generate_mock_data.py içine eklenecek kısım
+def generate_mock_api_keys(user_ids=["u_001", "u_002"], platforms=["trendyol", "amazon", "hepsiburada"]):
+    api_keys = []
+    for uid in user_ids:
+        for plat in platforms:
+            # Her kullanıcı ve platform kombinasyonu için eşsiz bir key
+            key = f"{plat[:2].upper()}-{uid}-{random.randint(100, 999)}"
+            api_keys.append({
+                "user_id": uid,
+                "platform": plat,
+                "api_key": key
+            })
+    
+    file_path = os.path.join(os.getcwd(), "data", "mock_sources", "api_keys.json")
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(api_keys, f, indent=4)
+        f.flush()            # Veriyi hemen diske it
+        os.fsync(f.fileno()) # İşletim sistemini zorla
+    print(f"✅ Mock API Key'ler '{file_path}' dosyasına yazıldı. Toplam: {len(api_keys)}")
+
+
 def reset_normalized_files():
     """Normalized klasöründeki dosyaları temizler."""
     files_to_reset = [
-        "../data/normalized/products.json",
-        "../data/normalized/orders.json",
-        "../data/normalized/reviews.json"
+        "data/normalized/products.json",
+        "data/normalized/orders.json",
+        "data/normalized/reviews.json"
     ]
     for file_path in files_to_reset:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
@@ -180,17 +213,20 @@ if __name__ == "__main__":
     # 2. Platform havuzlarını temizle ve yeniden oluştur
     generate_platform_pools()
     
-    # 3. Ürünleri import et
+    # 3. API Key'leri üret (Ürünlerden önce üretmek daha mantıklı)
+    generate_mock_api_keys(user_ids=["u_001", "u_002"], platforms=PLATFORMS)
+    
+    # 4. Ürünleri import et
     simulate_user_import("u_001", "trendyol", num_to_import=20)
     simulate_user_import("u_001", "amazon", num_to_import=25)
     simulate_user_import("u_001", "hepsiburada", num_to_import=30)
 
-    # 4. Siparişleri oluştur
+    # 5. Siparişleri oluştur
     generate_mock_orders("u_001", "trendyol", num_orders=15)
     generate_mock_orders("u_001", "amazon", num_orders=10)
     generate_mock_orders("u_001", "hepsiburada", num_orders=12)
     
-    # 5. Yorum Üretimi
+    # 6. Yorum Üretimi
     generate_mock_reviews("u_001", "trendyol", num_reviews=10)
     generate_mock_reviews("u_001", "amazon", num_reviews=8)
     generate_mock_reviews("u_001", "hepsiburada", num_reviews=12)
