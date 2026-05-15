@@ -120,3 +120,8 @@ class AuthenticationService:
                 "role": user.role
             }
     }
+
+    def logout(self):
+        return {
+            "message": "Başarıyla çıkış yapıldı."
+        }

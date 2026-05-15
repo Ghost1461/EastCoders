@@ -1,111 +1,107 @@
 import json
-import uuid
 from pathlib import Path
-from sqlalchemy.orm import Session
 
-from app.models import Order, OrderItem
+from app.models.order_model import Order
+from app.models.order_item import OrderItem
 from app.services.order_normalizer import normalize_order
 
-
-BASE_DIR = Path(__file__).resolve().parents[2]
-DATA_DIR = BASE_DIR / "data"
-
-ORDER_FILES = {
-    "hepsiburada": DATA_DIR / "mock_sources" / "hepsiburada_orders.json",
-    "trendyol": DATA_DIR / "mock_sources" / "trendyol_orders.json",
-    "amazon": DATA_DIR / "mock_sources" / "amazon_orders.json",
-}
-
-
-def generate_order_id() -> str:
-    return f"O-{uuid.uuid4().hex[:8].upper()}"
-
-
-def generate_order_item_id() -> str:
-    return f"OI-{uuid.uuid4().hex[:8].upper()}"
-
-
-def import_orders_by_platform(db: Session, platform_key: str):
-    file_path = ORDER_FILES.get(platform_key)
-
-    if not file_path:
-        raise ValueError(f"Unsupported platform: {platform_key}")
-
-    with open(file_path, "r", encoding="utf-8") as file:
-        raw_orders = json.load(file)
-
+def import_orders_service(
+    platform_key: str,
+    source_user_id: str,
+    db,
+    current_user
+):
     created_orders = 0
-    updated_orders = 0
+    skipped_orders = 0
     created_items = 0
 
-    for raw_item in raw_orders:
-        item = normalize_order(platform_key, raw_item)
+    platform_key = platform_key.lower()
 
-        order_id = item.get("order_id") or generate_order_id()
+    try:
+        BASE_DIR = Path(__file__).resolve().parents[2]
+        DATA_DIR = BASE_DIR / "data"
 
-        order = db.query(Order).filter(
-            Order.platform == item.get("platform"),
-            Order.external_order_id == item.get("external_order_id")
-        ).first()
+        ORDER_FILES = {
+            "hepsiburada": DATA_DIR / "mock_sources" / "hepsiburada_orders.json",
+            "trendyol": DATA_DIR / "mock_sources" / "trendyol_orders.json",
+            "amazon": DATA_DIR / "mock_sources" / "amazon_orders.json",
+        }
 
-        if order:
-            order.user_id = item.get("user_id")
-            order.customer_id = item.get("customer_id")
-            order.status = item.get("status", "pending")
-            order.order_date = item.get("order_date")
+        json_path = ORDER_FILES.get(platform_key)
 
-            db.query(OrderItem).filter(
-                OrderItem.order_id == order.order_id
-            ).delete()
+        if json_path is None:
+            return {
+                "error": f"Unsupported platform: {platform_key}"
+            }
 
-            updated_orders += 1
+        if not json_path.exists():
+            return {
+                "error": f"No order file found for platform: {platform_key}",
+                "expected_path": str(json_path)
+            }
 
-        else:
-            order = Order(
-                order_id=order_id,
-                user_id=item.get("user_id"),
-                platform=item.get("platform"),
-                external_order_id=item.get("external_order_id"),
-                customer_id=item.get("customer_id"),
-                status=item.get("status", "pending"),
-                order_date=item.get("order_date"),
+        with open(json_path, "r", encoding="utf-8") as file:
+            orders_data = json.load(file)
+
+        for order_data in orders_data:
+            normalized_order = normalize_order(platform_key, order_data)
+
+            #Sadece o login olan kullanıcının orderlarını import et
+            if normalized_order.get("user_id") != source_user_id:
+                continue
+
+            existing_order = db.query(Order).filter(
+                Order.owner_user_id == current_user.id,
+                Order.platform == platform_key,
+                Order.source_user_id == source_user_id,
+                Order.external_order_id == normalized_order["external_order_id"]
+            ).first()
+
+            if existing_order:
+                skipped_orders += 1
+                continue
+
+            new_order = Order(
+                order_id=normalized_order["order_id"],
+                owner_user_id=current_user.id,
+                source_user_id=source_user_id,
+                platform=platform_key,
+                external_order_id=normalized_order["external_order_id"],
+                customer_id=normalized_order.get("customer_id"),
+                status=normalized_order["status"],
+                order_date=normalized_order["order_date"]
             )
 
-            db.add(order)
+            db.add(new_order)
             db.flush()
+
+            for order_item  in normalized_order.get("items", []):
+                new_item = OrderItem(
+                    order_id=new_order.id,
+                    listing_id=order_item ["listing_id"],
+                    internal_product_id=order_item ["internal_product_id"],
+                    quantity=order_item ["quantity"],
+                    unit_price=order_item ["unit_price"]
+                )
+
+                db.add(new_item)
+                created_items += 1
+
             created_orders += 1
 
-        for order_item in item.get("items", []):
-            db_order_item = OrderItem(
-                order_item_id=generate_order_item_id(),
-                order_id=order.order_id,
-                listing_id=order_item.get("listing_id"),
-                quantity=order_item.get("quantity", 0),
-                unit_price=order_item.get("unit_price", 0),
-            )
+        db.commit()
 
-            db.add(db_order_item)
-            created_items += 1
+        return {
+            "message": f"{platform_key} orders imported successfully.",
+            "platform": platform_key,
+            "source_user_id": source_user_id,
+            "created_orders": created_orders,
+            "skipped_orders": skipped_orders,
+            "created_items": created_items
+        }
 
-    db.commit()
-
-    return {
-        "platform": platform_key,
-        "message": f"{platform_key} siparişleri başarıyla aktarıldı",
-        "created_orders": created_orders,
-        "updated_orders": updated_orders,
-        "created_items": created_items,
-    }
-
-
-def import_all_orders(db: Session):
-    results = []
-
-    for platform_key in ORDER_FILES.keys():
-        result = import_orders_by_platform(db, platform_key)
-        results.append(result)
-
-    return {
-        "message": "Tüm platform siparişleri başarıyla aktarıldı",
-        "results": results,
-    }
+    except Exception as e:
+        db.rollback()
+        return {
+            "error": str(e)
+        }

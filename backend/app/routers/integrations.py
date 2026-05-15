@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.core.security import get_current_user
 from app.models.user_model import User
@@ -22,6 +22,18 @@ def import_platform_products(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    SUPPORTED_PLATFORMS = [
+        "amazon",
+        "trendyol",
+        "hepsiburada",
+    ]
+
+    if platform_key.lower() not in SUPPORTED_PLATFORMS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported platform: {platform_key}"
+        )
+    
     return import_products_by_platform(
         db=db,
         platform_key=platform_key,

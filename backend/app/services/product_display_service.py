@@ -39,7 +39,7 @@ def base_user_products_query(db: Session, user_id: int):
     return (
         db.query(ProductListing)
         .join(Product, ProductListing.internal_product_id == Product.id)
-        .filter(ProductListing.user_id == user_id)#Login olan kullanıcının listingleri sadece
+        .filter(ProductListing.user_id == user_id)#Login olan kullanıcının listinglerini hesaba kat sadece
     )
 
 
@@ -105,8 +105,14 @@ def filter_user_products(
     brand: str | None = None,
     category: str | None = None,
     color: str | None = None,
+    size: str | None = None,
+    status: str | None = None,
     min_price: float | None = None,
     max_price: float | None = None,
+    min_stock: int | None = None,
+    max_stock: int | None = None,
+    min_commission_rate: float | None = None,
+    max_commission_rate: float | None = None,
 ):
     query = base_user_products_query(db, user_id)
 
@@ -122,11 +128,29 @@ def filter_user_products(
     if color:
         query = query.filter(func.lower(Product.color) == color.lower())
 
+    if size:
+        query = query.filter(func.lower(Product.size) == size.lower())
+
+    if status:
+        query = query.filter(func.lower(ProductListing.status) == status.lower())
+
     if min_price is not None:
         query = query.filter(ProductListing.price >= min_price)
 
     if max_price is not None:
         query = query.filter(ProductListing.price <= max_price)
+
+    if min_stock is not None:
+        query = query.filter(ProductListing.stock >= min_stock)
+
+    if max_stock is not None:
+        query = query.filter(ProductListing.stock <= max_stock)
+
+    if min_commission_rate is not None:
+        query = query.filter(ProductListing.commission_rate >= min_commission_rate)
+
+    if max_commission_rate is not None:
+        query = query.filter(ProductListing.commission_rate <= max_commission_rate)
 
     listings = query.all()
 
@@ -137,8 +161,14 @@ def filter_user_products(
             "brand": brand,
             "category": category,
             "color": color,
+            "size": size,
+            "status": status,
             "min_price": min_price,
             "max_price": max_price,
+            "min_stock": min_stock,
+            "max_stock": max_stock,
+            "min_commission_rate": min_commission_rate,
+            "max_commission_rate": max_commission_rate,
         },
         "products": [serialize_product_listing(listing) for listing in listings]
     }
@@ -236,4 +266,73 @@ def get_least_reviewed_products(db: Session, user_id: int, limit: int = 10):
     return {
         "count": len(listings),
         "products": [serialize_product_listing(listing) for listing in listings]
+    }
+
+
+def get_low_stock_products(
+    db: Session,
+    user_id: int,
+    threshold: int = 10
+):
+    listings = (
+        base_user_products_query(db, user_id)
+        .filter(ProductListing.stock <= threshold)
+        .order_by(ProductListing.stock.asc())
+        .all()
+    )
+
+    return {
+        "threshold": threshold,
+        "count": len(listings),
+        "products": [serialize_product_listing(listing) for listing in listings]
+    }
+
+
+def get_user_product_tags(
+    db: Session,
+    user_id: int
+):
+    listings = base_user_products_query(db, user_id).all()
+
+    tags_set = set()
+
+    for listing in listings:
+        product = listing.product
+
+        if product and product.tags:
+            for tag in product.tags:
+                tags_set.add(tag)
+
+    return {
+        "count": len(tags_set),
+        "tags": sorted(list(tags_set))
+    }
+
+
+def get_category_item_counts(
+    db: Session,
+    user_id: int
+):
+    results = (
+        base_user_products_query(db, user_id)
+        .with_entities(
+            Product.category,
+            func.count(Product.id)
+        )
+        .group_by(Product.category)
+        .order_by(func.count(Product.id).desc())
+        .all()
+    )
+
+    categories = []
+
+    for category, count in results:
+        categories.append({
+            "category": category,
+            "count": count
+        })
+
+    return {
+        "total_categories": len(categories),
+        "categories": categories
     }

@@ -17,10 +17,13 @@ from app.services.product_display_service import (
     get_most_reviewed_products,
     get_top_rated_products,
     get_least_reviewed_products,
-    get_lowest_rated_products
+    get_lowest_rated_products,
+    get_low_stock_products,
+    get_user_product_tags,
+    get_category_item_counts
 )
 
-router = APIRouter(prefix="/products_display", tags=["Products","Display"])
+router = APIRouter(prefix="/products_display", tags=["Products_Display"])
 
 
 
@@ -74,8 +77,14 @@ def filter_products(
     brand: str | None = None,
     category: str | None = None,
     color: str | None = None,
+    size: str | None = None,
+    status: str | None = None,
     min_price: float | None = None,
     max_price: float | None = None,
+    min_stock: int | None = None,
+    max_stock: int | None = None,
+    min_commission_rate: float | None = None,
+    max_commission_rate: float | None = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -86,10 +95,15 @@ def filter_products(
         brand=brand,
         category=category,
         color=color,
+        size=size,
+        status=status,
         min_price=min_price,
         max_price=max_price,
+        min_stock=min_stock,
+        max_stock=max_stock,
+        min_commission_rate=min_commission_rate,
+        max_commission_rate=max_commission_rate,
     )
-
 
 
 
@@ -109,8 +123,16 @@ def get_brands(
 ):
     return get_user_product_brands(db, current_user.id)
 
+#Productların taglarını getir
+@router.get("/options/tags")
+def get_tags(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return get_user_product_tags(db, current_user.id)
 
 #Renkleri getir
+@router.get("/options/colors")
 def get_colors(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -138,7 +160,7 @@ def top_rated_products(
 ):
     return get_top_rated_products(db, current_user.id, limit)
 
-
+#En az rating yüksek ürünler
 @router.get("/ranking/lowest-rated")
 def lowest_rated_products(
     limit: int = 10,
@@ -147,7 +169,7 @@ def lowest_rated_products(
 ):
     return get_lowest_rated_products(db, current_user.id, limit)
 
-
+#En az yorum alan ürünler
 @router.get("/ranking/least-reviewed")
 def least_reviewed_products(
     limit: int = 10,
@@ -157,5 +179,22 @@ def least_reviewed_products(
     return get_least_reviewed_products(db, current_user.id, limit)
 
 
-#Stok az olan ürünler(sorna ekle, o order.jsonlarda)
-#@router.get("/platform/{platform_key}")
+#Stok az olan ürünleri döndür
+@router.get("/stock/low")
+def low_stock_products(
+    threshold: int = 10,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return get_low_stock_products(db, current_user.id, threshold)
+
+
+@router.get("/analytics/category-counts")
+def category_item_counts(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return get_category_item_counts(
+        db=db,
+        user_id=current_user.id
+    )

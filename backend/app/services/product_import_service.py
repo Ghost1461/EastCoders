@@ -77,6 +77,7 @@ def import_products_by_platform(db: Session, platform_key: str, user_id: int, so
     for raw_item in raw_products:
         item = normalize_product(platform_key, raw_item)
 
+        
         if str(item.get("source_user_id")) != str(source_user_id):
             continue
 

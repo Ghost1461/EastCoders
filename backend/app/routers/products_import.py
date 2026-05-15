@@ -5,7 +5,7 @@ from app.core.database import get_db
 from app.models import Product, ProductListing, User
 from app.core.security import get_current_user
 
-router = APIRouter(prefix="/products_import", tags=["Import"])
+router = APIRouter(prefix="/products_import", tags=["Product_Import"])
 
 
 #belki lazım olabilir, product temelli nested response dönüyor

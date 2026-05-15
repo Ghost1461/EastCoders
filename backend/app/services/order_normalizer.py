@@ -45,8 +45,9 @@ NORMALIZERS = {
 
 
 def normalize_order(platform_key: str, item: dict) -> dict:
+    platform_key = platform_key.lower()
     normalizer = NORMALIZERS.get(platform_key)
-
+    
     if not normalizer:
         raise ValueError(f"Unsupported platform: {platform_key}")
 

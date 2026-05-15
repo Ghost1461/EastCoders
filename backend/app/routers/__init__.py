@@ -9,8 +9,10 @@ from app.routers.alerts import router as alerts_router
 from app.routers.integrations import router as integrations_router
 from app.routers.authentication import router as authentication_router
 from app.routers.market_news import router as market_news_router
-from app.routers.order import router as order_router
 from app.routers.product_display import router as products_display_router
+from app.routers.order_import import router as order_import_router
+from app.routers.order_display import router as order_display_router
+
 
 
 router = APIRouter()
@@ -24,5 +26,6 @@ router.include_router(alerts_router)
 router.include_router(integrations_router)
 router.include_router(authentication_router)
 router.include_router(market_news_router)
-router.include_router(order_router)
 router.include_router(products_display_router)
+router.include_router(order_display_router)
+router.include_router(order_import_router)

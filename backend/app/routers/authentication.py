@@ -57,3 +57,8 @@ def login_json(
         return auth_service.login(request, db)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
+    
+
+@router.post("/logout")
+def logout():
+    return auth_service.logout()

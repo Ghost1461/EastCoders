@@ -22,3 +22,4 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     listings = relationship("ProductListing", back_populates="user")
+    orders = relationship("Order", back_populates="user")
