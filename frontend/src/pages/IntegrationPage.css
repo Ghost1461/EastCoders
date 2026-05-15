@@ -1,0 +1,172 @@
+.integration-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 150px);
+}
+
+.integration-header {
+    text-align: center;
+    margin-bottom: 56px;
+}
+
+.integration-header h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 16px;
+}
+
+.integration-header p {
+    color: #64748b;
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.platforms-container {
+    width: 100%;
+    max-width: 900px;
+}
+
+.platforms-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.platform-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 240px;
+}
+
+.platform-btn {
+    width: 100%;
+    height: 140px;
+    background: #ffffff;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.platform-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background-color: var(--brand-color);
+    transition: height 0.3s ease;
+}
+
+.platform-btn:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+}
+
+.platform-btn.active {
+    border-color: var(--brand-color);
+    box-shadow: 0 8px 20px rgba(0,0,0, 0.08);
+}
+
+.platform-btn.active::before {
+    height: 8px;
+}
+
+.platform-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
+}
+
+.api-key-form {
+    margin-top: 20px;
+    width: 100%;
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+.api-key-form .input-group {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+}
+
+.api-key-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+    font-family: inherit;
+    background: #ffffff;
+}
+
+.api-key-form input:focus {
+    border-color: #3b82f6;
+}
+
+.connect-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 0 12px 12px 0;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.connect-btn:hover {
+    background: #2563eb;
+}
+
+.connect-btn:active {
+    transform: translateY(1px);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 860px) {
+    .platforms-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+    .platform-card-wrapper {
+        width: 100%;
+        max-width: 320px;
+    }
+    .platform-btn {
+        height: 100px;
+    }
+}

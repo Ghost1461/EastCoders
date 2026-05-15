@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
+import { OverviewPage } from './pages/OverviewPage';
+import { ProductsPage } from './pages/ProductsPage';
+import { IntegrationPage } from './pages/IntegrationPage';
 import { useAuth } from './context/AuthContext';
 
 function App() {
@@ -13,7 +16,9 @@ function App() {
         <Route path="/signup" element={!user ? <SignupPage /> : <Navigate to="/dashboard" />} />
         
         {/* Korumalı Route: Giriş yapmayan dashboard'u göremez */}
-        <Route path="/dashboard" element={user ? <div>Hoş geldin, {user.full_name}</div> : <Navigate to="/login" />} />
+        <Route path="/dashboard" element={user ? <OverviewPage /> : <Navigate to="/login" />} />
+        <Route path="/products" element={user ? <ProductsPage /> : <Navigate to="/login" />} />
+        <Route path="/integration" element={user ? <IntegrationPage /> : <Navigate to="/login" />} />
         
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>

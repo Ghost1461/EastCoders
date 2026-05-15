@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export const SignupPage = () => {
     const { signup } = useAuth();
     const navigate = useNavigate();
+    const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         full_name: '',
         email: '',
@@ -19,29 +20,56 @@ export const SignupPage = () => {
 
     const handleSignup = async (e) => {
         e.preventDefault();
+        setError('');
         if (formData.password !== formData.password_confirm) {
-            alert("Şifreler eşleşmiyor!");
+            setError("Şifreler eşleşmiyor!");
             return;
         }
         try {
             await signup(formData);
             navigate('/dashboard'); 
         } catch (err) {
-            alert("Kayıt hatası: " + err.response?.data?.detail);
+            setError(err.response?.data?.detail || "Kayıt işlemi başarısız.");
         }
     };
 
     return (
-        <div className="auth-card">
-            <h2>Hemen Kaydol</h2>
-            <form onSubmit={handleSignup}>
-                <input name="full_name" placeholder="Ad Soyad" onChange={handleChange} required />
-                <input name="email" type="email" placeholder="E-posta" onChange={handleChange} required />
-                <input name="phone_number" placeholder="Telefon (örn: 5554443322)" onChange={handleChange} required />
-                <input name="password" type="password" placeholder="Şifre" onChange={handleChange} required />
-                <input name="password_confirm" type="password" placeholder="Şifre Onay" onChange={handleChange} required />
-                <button type="submit">Kayıt Ol</button>
-            </form>
+        <div className="auth-container">
+            <div className="auth-card">
+                <div className="auth-header">
+                    <h2>Hesap Oluştur</h2>
+                    <p>Aramıza katılmak için formu doldurun</p>
+                </div>
+                {error && <div className="auth-error">{error}</div>}
+                <form className="auth-form" onSubmit={handleSignup}>
+                    <div className="input-group">
+                        <label>Ad Soyad</label>
+                        <input name="full_name" placeholder="John Doe" onChange={handleChange} required />
+                    </div>
+                    <div className="input-group">
+                        <label>E-posta</label>
+                        <input name="email" type="email" placeholder="ornek@email.com" onChange={handleChange} required />
+                    </div>
+                    <div className="input-group">
+                        <label>Telefon</label>
+                        <input name="phone_number" placeholder="555 444 33 22" onChange={handleChange} required />
+                    </div>
+                    <div className="input-row">
+                        <div className="input-group">
+                            <label>Şifre</label>
+                            <input name="password" type="password" placeholder="••••••••" onChange={handleChange} required />
+                        </div>
+                        <div className="input-group">
+                            <label>Şifre Onayı</label>
+                            <input name="password_confirm" type="password" placeholder="••••••••" onChange={handleChange} required />
+                        </div>
+                    </div>
+                    <button className="auth-button" type="submit">Kayıt Ol</button>
+                </form>
+                <div className="auth-footer">
+                    <p>Zaten bir hesabınız var mı? <Link to="/login">Giriş Yap</Link></p>
+                </div>
+            </div>
         </div>
     );
 };
