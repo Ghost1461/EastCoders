@@ -3,7 +3,8 @@ from fastapi import APIRouter
 from app.routers.products_import import router as products_import_router
 from app.routers.dashboard import router as dashboard_router
 from app.routers.trends import router as trends_router
-from app.routers.reviews import router as reviews_router
+from app.routers.reviews_import import router as reviews_import_router
+from app.routers.review_display import router as review_display_router
 from app.routers.reports import router as reports_router
 from app.routers.alerts import router as alerts_router
 from app.routers.integrations import router as integrations_router
@@ -20,7 +21,8 @@ router = APIRouter()
 router.include_router(products_import_router)
 router.include_router(dashboard_router)
 router.include_router(trends_router)
-router.include_router(reviews_router)
+router.include_router(reviews_import_router)
+router.include_router(review_display_router)
 router.include_router(reports_router)
 router.include_router(alerts_router)
 router.include_router(integrations_router)

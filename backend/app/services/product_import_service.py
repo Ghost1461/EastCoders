@@ -111,7 +111,9 @@ def import_products_by_platform(db: Session, platform_key: str, user_id: int, so
             imported_products += 1
         else:
             product.tags = item.get("tags") or build_tags(item)
-            product.image_url = item.get("image_url")
+            #daha önceden image_url yoksa güncelle, yoksa ezme
+            if not product.image_url:
+                product.image_url = item.get("image_url")
             product.last_updated = item.get("last_updated")
 
         listing = db.query(ProductListing).filter(
