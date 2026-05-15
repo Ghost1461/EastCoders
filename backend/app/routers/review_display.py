@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
 router = APIRouter(
-    prefix="/reviews",
-    tags=["Review"]
+    prefix="/review_display",
+    tags=["Review_Display"]
 )
 
 @router.get("/")

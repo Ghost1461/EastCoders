@@ -2,6 +2,7 @@ import json
 import uuid
 from pathlib import Path
 from sqlalchemy.orm import Session
+from rapidfuzz import fuzz
 
 from app.models import Product, ProductListing
 from app.services.product_normalizer_service import normalize_product
@@ -17,12 +18,36 @@ PRODUCT_FILES = {
 }
 
 
-def generate_product_id() -> str:
-    return f"P-{uuid.uuid4().hex[:8].upper()}"
+def find_similar_product(db: Session, item: dict, threshold: int = 90):
+    candidates = db.query(Product).filter(
+        Product.brand == item.get("brand"),
+        Product.category == item.get("category"),
+        Product.color == item.get("color"),
+        Product.size == item.get("size"),
+    ).all()
+
+    for product in candidates:
+        score = fuzz.token_sort_ratio(
+            (product.name or "").lower().strip(),
+            (item.get("name") or "").lower().strip()
+        )
+
+        if score >= threshold:
+            return product
+
+    return None
 
 
-def generate_listing_id() -> str:
-    return f"L-{uuid.uuid4().hex[:8].upper()}"
+def create_unique_listing_id(db: Session) -> str:
+    while True:
+        listing_id = f"L-{uuid.uuid4().hex[:8].upper()}"
+
+        exists = db.query(ProductListing).filter(
+            ProductListing.listing_id == listing_id
+        ).first()
+
+        if not exists:
+            return listing_id
 
 
 def build_tags(item: dict) -> list[str]:
@@ -36,7 +61,7 @@ def build_tags(item: dict) -> list[str]:
     return list(set(tags))
 
 
-def import_products_by_platform(db: Session, platform_key: str):
+def import_products_by_platform(db: Session, platform_key: str, user_id: int, source_user_id: str):
     file_path = PRODUCT_FILES.get(platform_key)
 
     if not file_path:
@@ -52,16 +77,25 @@ def import_products_by_platform(db: Session, platform_key: str):
     for raw_item in raw_products:
         item = normalize_product(platform_key, raw_item)
 
-        internal_product_id = item.get("internal_product_id") or generate_product_id()
+        
+        if str(item.get("source_user_id")) != str(source_user_id):
+            continue
+
         seller_sku = item.get("seller_sku")
 
         product = db.query(Product).filter(
-            Product.internal_product_id == internal_product_id
+            Product.name == item.get("name"),
+            Product.brand == item.get("brand"),
+            Product.category == item.get("category"),
+            Product.color == item.get("color"),
+            Product.size == item.get("size"),
         ).first()
+        
+        if not product:
+            product = find_similar_product(db, item)
 
         if not product:
             product = Product(
-                internal_product_id=internal_product_id,
                 name=item.get("name"),
                 brand=item.get("brand"),
                 category=item.get("category"),
@@ -76,16 +110,14 @@ def import_products_by_platform(db: Session, platform_key: str):
             db.flush()
             imported_products += 1
         else:
-            product.name = item.get("name", product.name)
-            product.brand = item.get("brand")
-            product.category = item.get("category")
-            product.color = item.get("color")
-            product.size = item.get("size")
             product.tags = item.get("tags") or build_tags(item)
-            product.image_url = item.get("image_url")
+            #daha önceden image_url yoksa güncelle, yoksa ezme
+            if not product.image_url:
+                product.image_url = item.get("image_url")
             product.last_updated = item.get("last_updated")
 
         listing = db.query(ProductListing).filter(
+            ProductListing.user_id == user_id,
             ProductListing.platform == item.get("platform"),
             ProductListing.external_product_id == item.get("external_product_id"),
         ).first()
@@ -102,8 +134,10 @@ def import_products_by_platform(db: Session, platform_key: str):
 
         else:
             listing = ProductListing(
-                listing_id=generate_listing_id(),
-                internal_product_id=product.internal_product_id,
+                listing_id=create_unique_listing_id(db),
+                user_id=user_id,
+                source_user_id=item.get("source_user_id"),#raw datada ismi bu
+                internal_product_id=product.id,
                 platform=item.get("platform"),
                 external_product_id=item.get("external_product_id"),
                 seller_sku=seller_sku,
@@ -129,14 +163,3 @@ def import_products_by_platform(db: Session, platform_key: str):
     }
 
 
-def import_all_products(db: Session):
-    results = []
-
-    for platform_key in PRODUCT_FILES.keys():
-        result = import_products_by_platform(db, platform_key)
-        results.append(result)
-
-    return {
-        "message": "Tüm platform ürünleri başarıyla aktarıldı",
-        "results": results,
-    }
