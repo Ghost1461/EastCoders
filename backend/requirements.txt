@@ -7,3 +7,9 @@ python-jose
 bcrypt
 email-validator
 requests
+google-generativeai
+httpx 
+beautifulsoup4
+apscheduler
+feedparser
+python-dateutil

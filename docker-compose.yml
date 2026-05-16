@@ -22,7 +22,6 @@ services:
       - ./backend/data:/app/data
     environment:
       DATABASE_URL: postgresql://admin:123456@db:5432/seller_dashboard
-      NEWS_API_KEY: 855d2ca8b6ed415e80a65f54e6bf493b
 
   pgadmin:
     image: dpage/pgadmin4:latest

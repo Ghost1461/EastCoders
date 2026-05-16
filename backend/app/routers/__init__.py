@@ -8,7 +8,8 @@ from app.routers.reports import router as reports_router
 from app.routers.alerts import router as alerts_router
 from app.routers.integrations import router as integrations_router
 from app.routers.authentication import router as authentication_router
-from app.routers.market_news import router as market_news_router
+from app.routers.market_news import market_news_router
+from app.routers.news_notifications import router as news_notifications_router
 
 router = APIRouter()
 
@@ -21,3 +22,4 @@ router.include_router(alerts_router)
 router.include_router(integrations_router)
 router.include_router(authentication_router)
 router.include_router(market_news_router)
+router.include_router(news_notifications_router)
