@@ -11,7 +11,7 @@ requests
 rapidfuzz
 python-multipart
 google-generativeai
-fakergoogle-generativeai
+faker
 httpx 
 beautifulsoup4
 apscheduler
