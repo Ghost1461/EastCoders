@@ -2,12 +2,16 @@ fastapi
 uvicorn
 sqlalchemy
 psycopg2-binary
+pydantic[email]
 python-dotenv
-python-jose
+python-jose[cryptography]
 bcrypt
 email-validator
 requests
+rapidfuzz
+python-multipart
 google-generativeai
+fakergoogle-generativeai
 httpx 
 beautifulsoup4
 apscheduler

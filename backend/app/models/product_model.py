@@ -6,8 +6,7 @@ from app.core.database import Base
 class Product(Base):
     __tablename__ = "products"
 
-    internal_product_id = Column(String, primary_key=True, index=True)
-
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
     brand = Column(String, nullable=True)
     category = Column(String, nullable=True)
