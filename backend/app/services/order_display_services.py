@@ -11,6 +11,11 @@ from app.models.order_item import OrderItem
 
 
 def serialize_order(order: Order):
+    order_total_price = sum(
+        item.quantity * item.unit_price
+        for item in order.items
+    )
+
     return {
         "id": order.id,
         "order_id": order.order_id,
@@ -21,6 +26,9 @@ def serialize_order(order: Order):
         "customer_id": order.customer_id,
         "status": order.status,
         "order_date": order.order_date,
+
+        "order_total_price": order_total_price,
+
         "items": [
             {
                 "id": item.id,
@@ -295,10 +303,13 @@ def get_time_based_analysis(db, current_user, period: str):
 
         if order.status == "delivered":
             grouped_data[key]["delivered_orders"] += 1
+
         elif order.status == "cancelled":
             grouped_data[key]["cancelled_orders"] += 1
+
         elif order.status == "returned":
             grouped_data[key]["returned_orders"] += 1
+
         elif order.status == "shipped":
             grouped_data[key]["shipped_orders"] += 1
 
@@ -308,12 +319,18 @@ def get_time_based_analysis(db, current_user, period: str):
     result = []
 
     for key, value in grouped_data.items():
-        total_orders = value["total_orders"]
         total_revenue = value["total_revenue"]
 
+        successful_orders = (
+            value["delivered_orders"] +
+            value["shipped_orders"]
+        )
+
+        value["successful_orders"] = successful_orders
+
         value["average_order_value"] = (
-            round(total_revenue / total_orders, 2)
-            if total_orders > 0
+            round(total_revenue / successful_orders, 2)
+            if successful_orders > 0
             else 0
         )
 

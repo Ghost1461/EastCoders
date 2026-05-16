@@ -4,13 +4,23 @@ from pathlib import Path
 from app.models.order_model import Order
 from app.models.order_item import OrderItem
 from app.services.order_normalizer import normalize_order
+from app.services.connected_account_service import validate_connected_account
 
 def import_orders_service(
     platform_key: str,
     source_user_id: str,
     db,
     current_user
-):
+    ):
+    
+    #Bu user bu platform hesabını bağlamış mı
+    validate_connected_account(
+    db=db,
+    current_user=current_user,
+    platform=platform_key,
+    source_user_id=source_user_id
+    )
+    
     created_orders = 0
     skipped_orders = 0
     created_items = 0
@@ -31,7 +41,7 @@ def import_orders_service(
 
         if json_path is None:
             return {
-                "error": f"Unsupported platform: {platform_key}"
+                "error": f"Desteklenmeyen platform: {platform_key}"
             }
 
         if not json_path.exists():
@@ -46,7 +56,7 @@ def import_orders_service(
         for order_data in orders_data:
             normalized_order = normalize_order(platform_key, order_data)
 
-            #Sadece o login olan kullanıcının orderlarını import et
+            #Sadece o login olan kullanıcının orderlarını import et(connected account bağlansa bile yanlış seller’ın orderı import edilmez)
             if normalized_order.get("user_id") != source_user_id:
                 continue
 

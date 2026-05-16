@@ -125,3 +125,12 @@ class AuthenticationService:
         return {
             "message": "Başarıyla çıkış yapıldı."
         }
+    
+    def get_me(self, current_user: User):
+        return {
+            "id": current_user.id,
+            "full_name": current_user.full_name,
+            "email": current_user.email,
+            "phone_number": current_user.phone_number,
+            "role": current_user.role
+        }

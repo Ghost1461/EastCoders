@@ -100,6 +100,6 @@ def normalize_product(platform_key: str, item: dict) -> dict:
     normalizer = NORMALIZERS.get(platform_key)
 
     if not normalizer:
-        raise ValueError(f"Unsupported platform: {platform_key}")
+        raise ValueError(f"Desteklenmeyen platform: {platform_key}")
 
     return normalizer(item)

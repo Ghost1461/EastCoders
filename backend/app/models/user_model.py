@@ -23,3 +23,9 @@ class User(Base):
 
     listings = relationship("ProductListing", back_populates="user")
     orders = relationship("Order", back_populates="user")
+    connected_accounts = relationship(
+    "ConnectedAccount",
+    back_populates="user",
+    cascade="all, delete-orphan"
+
+)

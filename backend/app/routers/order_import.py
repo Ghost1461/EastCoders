@@ -55,7 +55,7 @@ def import_orders_by_platform(
     if platform_key.lower() not in SUPPORTED_PLATFORMS:
         raise HTTPException(
             status_code=400,
-            detail=f"Unsupported platform: {platform_key}"
+            detail=f"Desteklenmeyen platform: {platform_key}"
         )
     
     return import_orders_service(

@@ -13,6 +13,9 @@ from app.routers.market_news import router as market_news_router
 from app.routers.product_display import router as products_display_router
 from app.routers.order_import import router as order_import_router
 from app.routers.order_display import router as order_display_router
+from app.routers.connected_account import router as connected_account
+from app.routers.profile import router as profile
+
 
 
 
@@ -31,3 +34,5 @@ router.include_router(market_news_router)
 router.include_router(products_display_router)
 router.include_router(order_display_router)
 router.include_router(order_import_router)
+router.include_router(connected_account)
+router.include_router(profile)
