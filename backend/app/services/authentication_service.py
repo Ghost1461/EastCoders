@@ -70,7 +70,7 @@ class AuthenticationService:
         db.refresh(new_user)
 
         access_token = self.create_access_token({
-            "sub": new_user.email,
+            "sub": str(new_user.id),
             "role": new_user.role
         })
 
@@ -105,7 +105,7 @@ class AuthenticationService:
             raise ValueError("E-posta veya şifre hatalı.")
 
         access_token = self.create_access_token({
-            "sub": user.email,
+            "sub": str(user.id),
             "role": user.role
         })
 
