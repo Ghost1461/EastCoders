@@ -8,7 +8,7 @@ def normalize_review(platform_key: str, raw_review: dict):
 
         "customer_id": raw_review.get("customer_id"),
 
-        "internal_product_id": raw_review.get("internal_product_id"),
+        "external_product_id": raw_review.get("external_product_id"),
 
         "listing_id": raw_review.get("listing_id"),
 

@@ -13,7 +13,7 @@ class OrderItem(Base):
         ForeignKey("orders.id")
     )
     listing_id = Column(String)
-    internal_product_id = Column(String)
+    external_product_id = Column(String)
 
     quantity = Column(Integer)
     unit_price = Column(Float)

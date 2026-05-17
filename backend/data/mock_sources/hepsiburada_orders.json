@@ -8,7 +8,7 @@
         "items": [
             {
                 "listing_id": "L-298",
-                "internal_product_id": "INT-P-92435",
+                "external_product_id": "INT-P-92435",
                 "quantity": 1,
                 "unit_price": 1089
             }
@@ -25,7 +25,7 @@
         "items": [
             {
                 "listing_id": "L-118",
-                "internal_product_id": "INT-P-80397",
+                "external_product_id": "INT-P-80397",
                 "quantity": 2,
                 "unit_price": 885
             }
@@ -42,13 +42,13 @@
         "items": [
             {
                 "listing_id": "L-831",
-                "internal_product_id": "INT-P-64481",
+                "external_product_id": "INT-P-64481",
                 "quantity": 1,
                 "unit_price": 1152
             },
             {
                 "listing_id": "L-425",
-                "internal_product_id": "INT-P-56350",
+                "external_product_id": "INT-P-56350",
                 "quantity": 2,
                 "unit_price": 969
             }
@@ -65,13 +65,13 @@
         "items": [
             {
                 "listing_id": "L-598",
-                "internal_product_id": "INT-P-92435",
+                "external_product_id": "INT-P-92435",
                 "quantity": 1,
                 "unit_price": 1089
             },
             {
                 "listing_id": "L-189",
-                "internal_product_id": "INT-P-73031",
+                "external_product_id": "INT-P-73031",
                 "quantity": 1,
                 "unit_price": 1339
             }
@@ -88,7 +88,7 @@
         "items": [
             {
                 "listing_id": "L-665",
-                "internal_product_id": "INT-P-73031",
+                "external_product_id": "INT-P-73031",
                 "quantity": 1,
                 "unit_price": 1339
             }
@@ -105,7 +105,7 @@
         "items": [
             {
                 "listing_id": "L-908",
-                "internal_product_id": "INT-P-80397",
+                "external_product_id": "INT-P-80397",
                 "quantity": 1,
                 "unit_price": 885
             }
@@ -122,7 +122,7 @@
         "items": [
             {
                 "listing_id": "L-428",
-                "internal_product_id": "INT-P-49769",
+                "external_product_id": "INT-P-49769",
                 "quantity": 2,
                 "unit_price": 1136
             }
@@ -139,13 +139,13 @@
         "items": [
             {
                 "listing_id": "L-493",
-                "internal_product_id": "INT-P-64481",
+                "external_product_id": "INT-P-64481",
                 "quantity": 2,
                 "unit_price": 1152
             },
             {
                 "listing_id": "L-217",
-                "internal_product_id": "INT-P-64748",
+                "external_product_id": "INT-P-64748",
                 "quantity": 1,
                 "unit_price": 1280
             }
@@ -162,13 +162,13 @@
         "items": [
             {
                 "listing_id": "L-587",
-                "internal_product_id": "INT-P-49769",
+                "external_product_id": "INT-P-49769",
                 "quantity": 1,
                 "unit_price": 1136
             },
             {
                 "listing_id": "L-844",
-                "internal_product_id": "INT-P-73031",
+                "external_product_id": "INT-P-73031",
                 "quantity": 2,
                 "unit_price": 1339
             }
@@ -185,7 +185,7 @@
         "items": [
             {
                 "listing_id": "L-631",
-                "internal_product_id": "INT-P-80397",
+                "external_product_id": "INT-P-80397",
                 "quantity": 1,
                 "unit_price": 885
             }
@@ -202,7 +202,7 @@
         "items": [
             {
                 "listing_id": "L-193",
-                "internal_product_id": "INT-P-80397",
+                "external_product_id": "INT-P-80397",
                 "quantity": 1,
                 "unit_price": 885
             }
@@ -219,13 +219,13 @@
         "items": [
             {
                 "listing_id": "L-244",
-                "internal_product_id": "INT-P-56350",
+                "external_product_id": "INT-P-56350",
                 "quantity": 2,
                 "unit_price": 969
             },
             {
                 "listing_id": "L-582",
-                "internal_product_id": "INT-P-64481",
+                "external_product_id": "INT-P-64481",
                 "quantity": 1,
                 "unit_price": 1152
             }
@@ -242,7 +242,7 @@
         "items": [
             {
                 "listing_id": "L-141",
-                "internal_product_id": "INT-P-60628",
+                "external_product_id": "INT-P-60628",
                 "quantity": 2,
                 "unit_price": 1499
             }
@@ -258,8 +258,8 @@
         "customer_id": "C-147",
         "items": [
             {
-                "listing_id": "L-141",
-                "internal_product_id": "INT-P-60628",
+                "listing_id": "L-142",
+                "external_product_id": "INT-P-60628",
                 "quantity": 2,
                 "unit_price": 1499
             }

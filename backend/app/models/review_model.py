@@ -24,7 +24,7 @@ class Review(Base):
 
     customer_id = Column(String, nullable=True)
 
-    internal_product_id = Column(String, nullable=True)
+    external_product_id = Column(String, nullable=True)
 
     #review'de listing doğrulamasını DB relationship ile değil, service içinde OrderItem kontrolüyle sağlanıyor
     listing_id = Column(String, nullable=False, index=True)

@@ -1,6 +1,9 @@
 from sqlalchemy import func
 from sqlalchemy.orm import Session
+from sqlalchemy import func, and_
+from sqlalchemy.orm import Session
 
+from app.models.connected_account_model import ConnectedAccount
 from app.models.review_model import Review
 
 #sürekli aynı şeyi tekrar etmemek için
@@ -13,7 +16,7 @@ def serialize_review(review: Review):
         "platform": review.platform,
         "external_order_id": review.external_order_id,
         "customer_id": review.customer_id,
-        "internal_product_id": review.internal_product_id,
+        "external_product_id": review.external_product_id,
         "listing_id": review.listing_id,
         "rating": review.rating,
         "comment": review.comment,
@@ -24,8 +27,18 @@ def serialize_review(review: Review):
 
 
 def base_review_query(db: Session, current_user):
-    return db.query(Review).filter(
-        Review.owner_user_id == current_user.id
+    return (
+        db.query(Review)
+        .join(
+            ConnectedAccount,
+            and_(
+                ConnectedAccount.owner_user_id == Review.owner_user_id,
+                ConnectedAccount.platform == Review.platform,
+                ConnectedAccount.source_user_id == Review.source_user_id,
+                ConnectedAccount.is_active == True
+            )
+        )
+        .filter(Review.owner_user_id == current_user.id)
     )
 
 
@@ -90,19 +103,19 @@ def get_reviews_by_listing_service(listing_id: str, db: Session, current_user):
 
 
 def get_reviews_by_product_service(
-    internal_product_id: str,
+    external_product_id: str,
     db: Session,
     current_user
 ):
     reviews = (
         base_review_query(db, current_user)
-        .filter(Review.internal_product_id == internal_product_id)
+        .filter(Review.external_product_id == external_product_id)
         .order_by(Review.created_at.desc())
         .all()
     )
 
     return {
-        "internal_product_id": internal_product_id,
+        "external_product_id": external_product_id,
         "total": len(reviews),
         "reviews": [serialize_review(review) for review in reviews]
     }

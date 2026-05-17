@@ -27,9 +27,6 @@ router = APIRouter(
 )
 
 
-@router.get("/")
-def dashboard_home():
-    return {"message": "review çalışıyor"}
 
 
 #Tüm reviewlarları çek
@@ -83,14 +80,14 @@ def get_reviews_by_listing(
     )
 
 #Bir ürün için reviewlar.
-@router.get("/product/{internal_product_id}")
+@router.get("/product/{external_product_id}")
 def get_reviews_by_product(
-    internal_product_id: str,
+    external_product_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     return get_reviews_by_product_service(
-        internal_product_id=internal_product_id,
+        external_product_id=external_product_id,
         db=db,
         current_user=current_user
     )

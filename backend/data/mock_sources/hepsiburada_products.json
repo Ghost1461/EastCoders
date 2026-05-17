@@ -1,7 +1,5 @@
 [
     {
-        "internal_product_id": "INT-P-56350",
-        "product_id": "HB-4965",
         "user_id": "u_001",
         "platform": "hepsiburada",
         "external_product_id": "HEPSIBURADA-11964",
@@ -9,6 +7,7 @@
         "name": "White T-Shirt",
         "brand": "ModaNova",
         "category": "T-Shirt",
+        "gender": "Male",
         "color": "White",
         "size": "L",
         "price": 969,
@@ -26,8 +25,6 @@
         "last_updated": "2026-05-13T06:48:45"
     },
     {
-        "internal_product_id": "INT-P-49769",
-        "product_id": "HB-6582",
         "user_id": "u_001",
         "platform": "hepsiburada",
         "external_product_id": "HEPSIBURADA-31624",
@@ -35,6 +32,7 @@
         "name": "Grey Dress",
         "brand": "BasicLine",
         "category": "Dress",
+        "gender": "Male",
         "color": "Grey",
         "size": "M",
         "price": 1136,
@@ -52,8 +50,6 @@
         "last_updated": "2026-05-13T15:44:42"
     },
     {
-        "internal_product_id": "INT-P-73031",
-        "product_id": "HB-4758",
         "user_id": "u_001",
         "platform": "hepsiburada",
         "external_product_id": "HEPSIBURADA-92365",
@@ -61,6 +57,7 @@
         "name": "Pink Pants",
         "brand": "BasicLine",
         "category": "Pants",
+        "gender": "Female",
         "color": "Pink",
         "size": "S",
         "price": 1339,
@@ -78,8 +75,6 @@
         "last_updated": "2026-05-13T14:10:28"
     },
     {
-        "internal_product_id": "INT-P-92435",
-        "product_id": "HB-8097",
         "user_id": "u_001",
         "platform": "hepsiburada",
         "external_product_id": "HEPSIBURADA-16029",
@@ -87,6 +82,7 @@
         "name": "Purple Hat",
         "brand": "ModaNova",
         "category": "Hat",
+        "gender": "Male",
         "color": "Purple",
         "size": "L",
         "price": 1089,
@@ -104,8 +100,6 @@
         "last_updated": "2026-05-13T06:02:34"
     },
     {
-        "internal_product_id": "INT-P-64481",
-        "product_id": "HB-6824",
         "user_id": "u_001",
         "platform": "hepsiburada",
         "external_product_id": "HEPSIBURADA-41083",
@@ -113,6 +107,7 @@
         "name": "Yellow Hoodie",
         "brand": "BasicLine",
         "category": "Hoodie",
+        "gender": "Female",
         "color": "Yellow",
         "size": "M",
         "price": 1152,
@@ -130,8 +125,6 @@
         "last_updated": "2026-05-13T12:19:33"
     },
     {
-        "internal_product_id": "INT-P-59910",
-        "product_id": "HB-5304",
         "user_id": "u_001",
         "platform": "hepsiburada",
         "external_product_id": "HEPSIBURADA-60460",
@@ -139,6 +132,7 @@
         "name": "Navy Blue Hat",
         "brand": "TrendStyle",
         "category": "Hat",
+        "gender": "Female",
         "color": "Navy Blue",
         "size": "S",
         "price": 657,
@@ -156,8 +150,6 @@
         "last_updated": "2026-05-13T09:28:11"
     },
     {
-        "internal_product_id": "INT-P-80397",
-        "product_id": "HB-2516",
         "user_id": "u_001",
         "platform": "hepsiburada",
         "external_product_id": "HEPSIBURADA-82069",
@@ -165,6 +157,7 @@
         "name": "Purple Pants",
         "brand": "UrbanWear",
         "category": "Pants",
+        "gender": "Male",
         "color": "Purple",
         "size": "L",
         "price": 885,
@@ -182,8 +175,6 @@
         "last_updated": "2026-05-13T04:50:45"
     },
     {
-        "internal_product_id": "INT-P-64748",
-        "product_id": "HB-9535",
         "user_id": "u_001",
         "platform": "hepsiburada",
         "external_product_id": "HEPSIBURADA-25060",
@@ -191,6 +182,7 @@
         "name": "Beige Dress",
         "brand": "TrendStyle",
         "category": "Dress",
+        "gender": "Male",
         "color": "Beige",
         "size": "L",
         "price": 1280,

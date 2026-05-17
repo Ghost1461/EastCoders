@@ -10,6 +10,7 @@ class Product(Base):
     name = Column(String, nullable=False)
     brand = Column(String, nullable=True)
     category = Column(String, nullable=True)
+    gender= Column(String, nullable=True)
     color = Column(String, nullable=True)
     size = Column(String, nullable=True)
 

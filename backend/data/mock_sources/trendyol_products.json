@@ -1,7 +1,5 @@
 [
     {
-        "internal_product_id": "INT-P-67067",
-        "product_id": "TR-9386",
         "user_id": "u_001",
         "platform": "trendyol",
         "external_product_id": "TRENDYOL-56222",
@@ -9,6 +7,7 @@
         "name": "Yellow Hat",
         "brand": "BasicLine",
         "category": "Hat",
+        "gender": "Female",
         "color": "Yellow",
         "size": "S",
         "price": 534,
@@ -26,8 +25,6 @@
         "last_updated": "2026-05-13T01:42:33"
     },
     {
-        "internal_product_id": "INT-P-53593",
-        "product_id": "TR-4848",
         "user_id": "u_001",
         "platform": "trendyol",
         "external_product_id": "TRENDYOL-84974",
@@ -35,6 +32,7 @@
         "name": "Pink T-Shirt",
         "brand": "ModaNova",
         "category": "T-Shirt",
+        "gender": "Female",
         "color": "Pink",
         "size": "XXL",
         "price": 1439,
@@ -52,8 +50,6 @@
         "last_updated": "2026-05-12T20:11:50"
     },
     {
-        "internal_product_id": "INT-P-89840",
-        "product_id": "TR-6073",
         "user_id": "u_001",
         "platform": "trendyol",
         "external_product_id": "TRENDYOL-70434",
@@ -61,6 +57,7 @@
         "name": "Purple Hoodie",
         "brand": "TrendStyle",
         "category": "Hoodie",
+        "gender": "Male",
         "color": "Purple",
         "size": "XXL",
         "price": 640,
@@ -78,8 +75,6 @@
         "last_updated": "2026-05-13T04:49:31"
     },
     {
-        "internal_product_id": "INT-P-58490",
-        "product_id": "TR-5204",
         "user_id": "u_001",
         "platform": "trendyol",
         "external_product_id": "TRENDYOL-96995",
@@ -87,6 +82,7 @@
         "name": "Purple T-Shirt",
         "brand": "TrendStyle",
         "category": "T-Shirt",
+        "gender": "Male",
         "color": "Purple",
         "size": "XXL",
         "price": 423,
@@ -104,8 +100,6 @@
         "last_updated": "2026-05-13T08:01:11"
     },
     {
-        "internal_product_id": "INT-P-32667",
-        "product_id": "TR-6126",
         "user_id": "u_001",
         "platform": "trendyol",
         "external_product_id": "TRENDYOL-84796",
@@ -113,6 +107,7 @@
         "name": "Black Dress",
         "brand": "UrbanWear",
         "category": "Dress",
+        "gender": "Female",
         "color": "Black",
         "size": "L",
         "price": 732,
@@ -130,8 +125,6 @@
         "last_updated": "2026-05-13T19:01:04"
     },
     {
-        "internal_product_id": "INT-P-34218",
-        "product_id": "TR-8178",
         "user_id": "u_001",
         "platform": "trendyol",
         "external_product_id": "TRENDYOL-30033",
@@ -139,6 +132,7 @@
         "name": "Navy Blue Pants",
         "brand": "UrbanWear",
         "category": "Pants",
+        "gender": "Female",
         "color": "Navy Blue",
         "size": "L",
         "price": 524,
@@ -156,8 +150,6 @@
         "last_updated": "2026-05-13T06:29:10"
     },
     {
-        "internal_product_id": "INT-P-40461",
-        "product_id": "TR-5841",
         "user_id": "u_001",
         "platform": "trendyol",
         "external_product_id": "TRENDYOL-92337",
@@ -165,6 +157,7 @@
         "name": "Grey Jacket",
         "brand": "TrendStyle",
         "category": "Jacket",
+        "gender": "Male",
         "color": "Grey",
         "size": "XL",
         "price": 1309,
@@ -182,8 +175,6 @@
         "last_updated": "2026-05-13T18:25:01"
     },
     {
-        "internal_product_id": "INT-P-60268",
-        "product_id": "TR-2038",
         "user_id": "u_001",
         "platform": "trendyol",
         "external_product_id": "TRENDYOL-60967",
@@ -191,6 +182,7 @@
         "name": "Purple Dress",
         "brand": "UrbanWear",
         "category": "Dress",
+        "gender": "Female",
         "color": "Purple",
         "size": "XL",
         "price": 686,

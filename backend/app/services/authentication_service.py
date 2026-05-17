@@ -132,5 +132,6 @@ class AuthenticationService:
             "full_name": current_user.full_name,
             "email": current_user.email,
             "phone_number": current_user.phone_number,
-            "role": current_user.role
+            "role": current_user.role,
+            "profile_image_url": current_user.profile_image_url
         }

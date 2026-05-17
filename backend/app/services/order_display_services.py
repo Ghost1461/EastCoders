@@ -1,12 +1,13 @@
 from sqlalchemy import or_
 from fastapi import HTTPException
 from sqlalchemy.orm import joinedload
-from sqlalchemy import func
+from sqlalchemy import func, and_
 from collections import defaultdict
 from datetime import datetime
 
 from app.models.order_model import Order
 from app.models.order_item import OrderItem
+from app.models.connected_account_model import ConnectedAccount
 
 
 
@@ -33,7 +34,7 @@ def serialize_order(order: Order):
             {
                 "id": item.id,
                 "listing_id": item.listing_id,
-                "internal_product_id": item.internal_product_id,
+                "external_product_id": item.external_product_id,
                 "quantity": item.quantity,
                 "unit_price": item.unit_price,
                 "total_price": item.quantity * item.unit_price
@@ -47,6 +48,15 @@ def base_order_query(db, current_user):
     return (
         db.query(Order)
         .options(joinedload(Order.items))
+        .join(
+            ConnectedAccount,
+            and_(
+                ConnectedAccount.owner_user_id == Order.owner_user_id,
+                ConnectedAccount.platform == Order.platform,
+                ConnectedAccount.source_user_id == Order.source_user_id,
+                ConnectedAccount.is_active == True
+            )
+        )
         .filter(Order.owner_user_id == current_user.id)
     )
 
@@ -139,7 +149,7 @@ def search_orders_service(q: str, db, current_user):
 
 def get_order_detail_service(order_id: str, db, current_user):
     order = (
-        db.query(Order)
+        base_order_query(db, current_user)
         .options(joinedload(Order.items))
         .filter(
             Order.owner_user_id == current_user.id,
@@ -170,7 +180,7 @@ def get_order_detail_service(order_id: str, db, current_user):
             {
                 "id": item.id,
                 "listing_id": item.listing_id,
-                "internal_product_id": item.internal_product_id,
+                "external_product_id": item.external_product_id,
                 "quantity": item.quantity,
                 "unit_price": item.unit_price,
                 "total_price": item.quantity * item.unit_price
@@ -182,7 +192,7 @@ def get_order_detail_service(order_id: str, db, current_user):
 
 def get_order_items_service(order_id: str, db, current_user):
     order = (
-        db.query(Order)
+        base_order_query(db, current_user)
         .options(joinedload(Order.items))
         .filter(
             Order.owner_user_id == current_user.id,
@@ -204,7 +214,7 @@ def get_order_items_service(order_id: str, db, current_user):
             {
                 "id": item.id,
                 "listing_id": item.listing_id,
-                "internal_product_id": item.internal_product_id,
+                "external_product_id": item.external_product_id,
                 "quantity": item.quantity,
                 "unit_price": item.unit_price,
                 "total_price": item.quantity * item.unit_price
@@ -216,7 +226,7 @@ def get_order_items_service(order_id: str, db, current_user):
 
 def get_order_summary_service(db, current_user):
     base_query = (
-        db.query(Order)
+        base_order_query(db, current_user)
         .filter(Order.owner_user_id == current_user.id)
     )
 
@@ -228,19 +238,28 @@ def get_order_summary_service(db, current_user):
     shipped_orders = base_query.filter(Order.status == "shipped").count()
 
     total_revenue = (
-        db.query(
-            func.coalesce(
-                func.sum(OrderItem.quantity * OrderItem.unit_price),
-                0
-            )
+    db.query(
+        func.coalesce(
+            func.sum(OrderItem.quantity * OrderItem.unit_price),
+            0
         )
-        .join(Order, Order.id == OrderItem.order_id)
-        .filter(
-            Order.owner_user_id == current_user.id,
-            Order.status.in_(["delivered", "shipped"])        
-        )
-        .scalar()
     )
+    .join(Order, Order.id == OrderItem.order_id)
+    .join(
+        ConnectedAccount,
+        and_(
+            ConnectedAccount.owner_user_id == Order.owner_user_id,
+            ConnectedAccount.platform == Order.platform,
+            ConnectedAccount.source_user_id == Order.source_user_id,
+            ConnectedAccount.is_active == True
+        )
+    )
+    .filter(
+        Order.owner_user_id == current_user.id,
+        Order.status.in_(["delivered", "shipped"])
+    )
+    .scalar()
+)
 
     average_order_value = 0
     successful_orders = delivered_orders + shipped_orders
@@ -268,7 +287,7 @@ def calculate_order_total(order):
 
 def get_time_based_analysis(db, current_user, period: str):
     orders = (
-        db.query(Order)
+        base_order_query(db, current_user)
         .options(joinedload(Order.items))
         .filter(Order.owner_user_id == current_user.id)
         .all()
@@ -375,7 +394,7 @@ def get_monthly_order_analysis_service(db, current_user):
 
 def get_platform_analysis_service(db, current_user):
     orders = (
-        db.query(Order)
+        base_order_query(db, current_user)
         .options(joinedload(Order.items))
         .filter(Order.owner_user_id == current_user.id)
         .all()

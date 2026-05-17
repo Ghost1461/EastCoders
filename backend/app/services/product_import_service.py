@@ -26,6 +26,7 @@ def find_similar_product(db: Session, item: dict, threshold: int = 90):
         Product.category == item.get("category"),
         Product.color == item.get("color"),
         Product.size == item.get("size"),
+        Product.gender == item.get("gender"),
     ).all()
 
     for product in candidates:
@@ -59,7 +60,7 @@ def has_changes(obj, values: dict) -> bool:
 def build_tags(item: dict) -> list[str]:
     tags = []
 
-    for key in ["name", "brand", "category", "color", "size"]:
+    for key in ["name", "brand", "category", "color", "size", "gender"]:
         value = item.get(key)
         if value:
             tags.extend(str(value).lower().split())
@@ -103,6 +104,7 @@ def import_products_by_platform(db, platform_key, current_user, source_user_id):
             Product.category == item.get("category"),
             Product.color == item.get("color"),
             Product.size == item.get("size"),
+            Product.gender == item.get("gender"),
         ).first()
         
         if not product:
@@ -113,6 +115,7 @@ def import_products_by_platform(db, platform_key, current_user, source_user_id):
                 name=item.get("name"),
                 brand=item.get("brand"),
                 category=item.get("category"),
+                gender=item.get("gender"),
                 color=item.get("color"),
                 size=item.get("size"),
                 tags=item.get("tags") or build_tags(item),

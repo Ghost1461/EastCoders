@@ -89,7 +89,7 @@ def import_orders_service(
                 new_item = OrderItem(
                     order_id=new_order.id,
                     listing_id=order_item ["listing_id"],
-                    internal_product_id=order_item ["internal_product_id"],
+                    external_product_id=order_item ["external_product_id"],
                     quantity=order_item ["quantity"],
                     unit_price=order_item ["unit_price"]
                 )
@@ -102,7 +102,7 @@ def import_orders_service(
         db.commit()
 
         return {
-            "message": f"{platform_key} orders imported successfully.",
+            "message": f"{platform_key} siparişler başarıyla içe aktarıldı.",
             "platform": platform_key,
             "source_user_id": source_user_id,
             "created_orders": created_orders,

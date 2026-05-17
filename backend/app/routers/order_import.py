@@ -21,7 +21,7 @@ router = APIRouter(
 #JSON validate için, Swagger docs üretmek için 
 class OrderItemImport(BaseModel):
     listing_id: str
-    internal_product_id: str
+    external_product_id: str
     quantity: int
     unit_price: float
 

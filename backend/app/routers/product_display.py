@@ -20,7 +20,11 @@ from app.services.product_display_service import (
     get_lowest_rated_products,
     get_low_stock_products,
     get_user_product_tags,
-    get_category_item_counts
+    get_category_item_counts,
+    get_user_product_genders,
+    get_gender_distribution,
+    get_gender_item_counts,
+    get_low_stock_products_by_gender,
 )
 
 router = APIRouter(prefix="/products_display", tags=["Products_Display"])
@@ -131,6 +135,14 @@ def get_tags(
 ):
     return get_user_product_tags(db, current_user.id)
 
+#Cinsiyetleri getir
+@router.get("/options/genders")
+def get_genders(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return get_user_product_genders(db, current_user.id)
+
 #Renkleri getir
 @router.get("/options/colors")
 def get_colors(
@@ -197,4 +209,41 @@ def category_item_counts(
     return get_category_item_counts(
         db=db,
         user_id=current_user.id
+    )
+
+
+@router.get("/analytics/gender-distribution")
+def gender_distribution(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return get_gender_distribution(
+        db=db,
+        user_id=current_user.id
+    )
+
+
+@router.get("/analytics/gender-item-counts")
+def gender_item_counts(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return get_gender_item_counts(
+        db=db,
+        user_id=current_user.id
+    )
+
+
+@router.get("/low-stock/gender/{gender}")
+def low_stock_products_by_gender(
+    gender: str,
+    threshold: int = 10,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    return get_low_stock_products_by_gender(
+        db=db,
+        user_id=current_user.id,
+        gender=gender,
+        threshold=threshold
     )

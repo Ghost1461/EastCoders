@@ -97,7 +97,7 @@ def import_reviews_service(
             if existing_review:
                 skipped_reviews += 1#bu review daha önce eklendi
                 continue
-
+            
             new_review = Review(
                 review_id=review_data["review_id"],
 
@@ -108,7 +108,7 @@ def import_reviews_service(
                 external_order_id=review_data["external_order_id"],
                 customer_id=review_data["customer_id"],
 
-                internal_product_id=review_data.get("internal_product_id"),
+                external_product_id=review_data.get("external_product_id"),
                 listing_id=review_data["listing_id"],
 
                 rating=review_data["rating"],
@@ -124,7 +124,7 @@ def import_reviews_service(
         db.commit()
 
         return {
-            "message": f"{platform_key} reviews imported successfully.",
+            "message": f"{platform_key} yorumları başarıyla içe aktarıldı.",
             "platform": platform_key,
             "source_user_id": source_user_id,
             "created_reviews": created_reviews,

@@ -1,7 +1,5 @@
 [
     {
-        "internal_product_id": "INT-P-53927",
-        "product_id": "AZN-3181",
         "user_id": "u_001",
         "platform": "amazon",
         "external_product_id": "AMAZON-47707",
@@ -9,6 +7,7 @@
         "name": "White Hoodie",
         "brand": "EastCoders",
         "category": "Hoodie",
+        "gender": "Female",
         "color": "White",
         "size": "M",
         "price": 634,
@@ -26,8 +25,6 @@
         "last_updated": "2026-05-13T13:18:20"
     },
     {
-        "internal_product_id": "INT-P-60628",
-        "product_id": "AZN-7308",
         "user_id": "u_001",
         "platform": "amazon",
         "external_product_id": "AMAZON-75695",
@@ -35,6 +32,7 @@
         "name": "Grey T-Shirt",
         "brand": "ModaNova",
         "category": "T-Shirt",
+        "gender": "Male",
         "color": "Grey",
         "size": "S",
         "price": 1499,
@@ -52,8 +50,6 @@
         "last_updated": "2026-05-13T19:44:55"
     },
     {
-        "internal_product_id": "INT-P-83243",
-        "product_id": "AZN-6985",
         "user_id": "u_001",
         "platform": "amazon",
         "external_product_id": "AMAZON-16292",
@@ -61,6 +57,7 @@
         "name": "Navy Blue Jacket",
         "brand": "EastCoders",
         "category": "Jacket",
+        "gender": "Male",
         "color": "Navy Blue",
         "size": "M",
         "price": 1078,
@@ -78,8 +75,6 @@
         "last_updated": "2026-05-13T07:22:55"
     },
     {
-        "internal_product_id": "INT-P-88103",
-        "product_id": "AZN-6259",
         "user_id": "u_001",
         "platform": "amazon",
         "external_product_id": "AMAZON-25476",
@@ -87,6 +82,7 @@
         "name": "Grey Pants",
         "brand": "TrendStyle",
         "category": "Pants",
+        "gender": "Female",
         "color": "Grey",
         "size": "L",
         "price": 1213,
@@ -104,8 +100,6 @@
         "last_updated": "2026-05-13T15:35:43"
     },
     {
-        "internal_product_id": "INT-P-67973",
-        "product_id": "AZN-5056",
         "user_id": "u_001",
         "platform": "amazon",
         "external_product_id": "AMAZON-87201",
@@ -113,6 +107,7 @@
         "name": "Pink Dress",
         "brand": "TrendStyle",
         "category": "Dress",
+        "gender": "Female",
         "color": "Pink",
         "size": "S",
         "price": 971,
@@ -130,8 +125,6 @@
         "last_updated": "2026-05-13T01:06:48"
     },
     {
-        "internal_product_id": "INT-P-22203",
-        "product_id": "AZN-1776",
         "user_id": "u_001",
         "platform": "amazon",
         "external_product_id": "AMAZON-92714",
@@ -139,6 +132,7 @@
         "name": "Purple Jacket",
         "brand": "EastCoders",
         "category": "Jacket",
+        "gender": "Male",
         "color": "Purple",
         "size": "S",
         "price": 1138,
@@ -156,8 +150,6 @@
         "last_updated": "2026-05-13T07:08:44"
     },
     {
-        "internal_product_id": "INT-P-45586",
-        "product_id": "AZN-4284",
         "user_id": "u_001",
         "platform": "amazon",
         "external_product_id": "AMAZON-85133",
@@ -165,6 +157,7 @@
         "name": "Purple Dress",
         "brand": "TrendStyle",
         "category": "Dress",
+        "gender": "Female",
         "color": "Purple",
         "size": "L",
         "price": 1027,
@@ -182,8 +175,6 @@
         "last_updated": "2026-05-13T07:04:32"
     },
     {
-        "internal_product_id": "INT-P-14399",
-        "product_id": "AZN-7278",
         "user_id": "u_001",
         "platform": "amazon",
         "external_product_id": "AMAZON-31008",
@@ -191,6 +182,7 @@
         "name": "Grey T-Shirt",
         "brand": "ModaNova",
         "category": "T-Shirt",
+        "gender": "Male",
         "color": "Grey",
         "size": "L",
         "price": 839,
@@ -208,8 +200,6 @@
         "last_updated": "2026-05-13T09:33:02"
     },
     {
-        "internal_product_id": "INT-P-14329",
-        "product_id": "AZN-7279",
         "user_id": "u_002",
         "platform": "amazon",
         "external_product_id": "AMAZON-31008",
@@ -217,6 +207,7 @@
         "name": "Grey T-Shirt",
         "brand": "ModaNova",
         "category": "T-Shirt",
+        "gender": "Female",
         "color": "Grey",
         "size": "L",
         "price": 839,
