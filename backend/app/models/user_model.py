@@ -1,7 +1,12 @@
 from sqlalchemy import Column, Integer, String, DateTime
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import relationship
 
+TR_TIMEZONE = timezone(timedelta(hours=3))
+
+
+def now_tr():
+    return datetime.now(TR_TIMEZONE)
 
 from app.core.database import Base
 
@@ -17,9 +22,13 @@ class User(Base):
 
     hashed_password = Column(String, nullable=False)
 
-    role = Column(String, default="seller")
+    role = Column(String, nullable=False, default="seller")
 
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(
+    DateTime(timezone=True),
+    default=now_tr
+    )
+
     profile_image_url = Column(String, nullable=True)
 
     listings = relationship("ProductListing", back_populates="user")
