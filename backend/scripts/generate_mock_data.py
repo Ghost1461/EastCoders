@@ -10,12 +10,12 @@ from faker import Faker
 
 class MockDataGenerator:
     PLATFORMS = ["trendyol", "hepsiburada", "amazon"]
-    CATEGORIES = ["Hoodie", "T-Shirt", "Pants", "Hat", "Dress", "Jacket"]
-    COLORS = ["Black", "White", "Beige", "Navy Blue", "Grey", "Yellow", "Pink", "Purple"]
-    BRANDS = ["ModaNova", "TrendStyle", "UrbanWear", "BasicLine", "EastCoders"]
-    SIZES = ["S", "M", "L", "XL", "XXL"]
-    GENDERS = ["Unisex", "Men", "Women"]
-    STATUSES = ["Active", "Out of Stock"]
+    CATEGORIES = ["Kapüşonlu", "T-Shirt", "Pantolon", "Şapka", "Elbise", "Ceket"]
+    COLORS = ["Siyah", "Beyaz", "Bej", "Lacivert", "Gri", "Sarı", "Pembe", "Mor"]
+    BRANDS = ["ModaNova", "TrendStyle", "UrbanWear", "BasicLine", "EastCoders"] # Marka isimleri genellikle orijinal bırakılır
+    SIZES = ["S", "M", "L", "XL", "XXL"] # Beden kodları evrenseldir (İstersen: Küçük, Orta, Büyük, X-Büyük, XX-Büyük)
+    GENDERS = ["Unisex", "Erkek", "Kadın"]
+    STATUSES = ["Aktif", "Stokta Yok"]
 
     PLATFORM_PREFIXES = {
         "trendyol": "TR",

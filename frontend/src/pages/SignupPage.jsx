@@ -29,7 +29,15 @@ export const SignupPage = () => {
             await signup(formData);
             navigate('/dashboard'); 
         } catch (err) {
-            setError(err.response?.data?.detail || "Kayıt işlemi başarısız.");
+            const detail = err.response?.data?.detail;
+            if (Array.isArray(detail)) {
+                // Extract first validation error message
+                setError(detail[0].msg);
+            } else if (typeof detail === 'string') {
+                setError(detail);
+            } else {
+                setError("Kayıt işlemi başarısız.");
+            }
         }
     };
 
