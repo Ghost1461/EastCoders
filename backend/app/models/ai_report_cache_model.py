@@ -28,7 +28,7 @@ class AiReportCache(Base):
     created_at = Column(
     DateTime(timezone=True),
     default=now_tr
-)
+    )
 
     __table_args__ = (
         UniqueConstraint(
