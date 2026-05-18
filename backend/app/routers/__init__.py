@@ -14,7 +14,7 @@ from app.routers.news_notifications import router as news_notifications_router
 from app.routers.product_display import router as products_display_router
 from app.routers.order_import import router as order_import_router
 from app.routers.order_display import router as order_display_router
-
+from app.routers.trends import router as trends_router
 
 
 router = APIRouter()
@@ -33,3 +33,4 @@ router.include_router(products_display_router)
 router.include_router(order_display_router)
 router.include_router(order_import_router)
 router.include_router(news_notifications_router)
+router.include_router(trends_router)

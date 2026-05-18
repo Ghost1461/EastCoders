@@ -1,16 +1,13 @@
+import asyncio
+
 from fastapi import FastAPI
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from app.routers import router
-from app.core.database import (
-    Base,
-    engine,
-    SessionLocal
-)
-
+from app.core.database import Base, engine, SessionLocal
 from app import models
 
-from app.services.news_fetch_service import NewsFetchService
+from app.services.trend_service import generate_market_trends_for_system
 
 
 app = FastAPI(
@@ -22,47 +19,38 @@ app.include_router(router)
 
 Base.metadata.create_all(bind=engine)
 
-
 scheduler = BackgroundScheduler()
 
 
-def fetch_news_job():
+def scheduled_market_trend_job():
     db = SessionLocal()
 
     try:
-        service = NewsFetchService()
-
-        service.fetch_and_store_news(
-            db=db,
-            category="fashion"
-        )
-
-        service.fetch_and_store_news(
-            db=db,
-            category="commerce_finance"
-        )
-
-        print("AUTO NEWS FETCH COMPLETED")
-
+        asyncio.run(generate_market_trends_for_system(db=db))
+        print("Daily market trend update completed.")
     except Exception as e:
-        print("AUTO NEWS FETCH ERROR:", e)
-
+        print("Daily market trend update failed:", e)
     finally:
         db.close()
 
 
 @app.on_event("startup")
 def start_scheduler():
-
     scheduler.add_job(
-        fetch_news_job,
+        scheduled_market_trend_job,
         "interval",
-        hours=3
+        hours=24,
+        id="daily_market_trend_update",
+        replace_existing=True
     )
 
     scheduler.start()
+    print("Trend scheduler started.")
 
-    print("NEWS SCHEDULER STARTED")
+
+@app.on_event("shutdown")
+def shutdown_scheduler():
+    scheduler.shutdown()
 
 
 @app.get("/")

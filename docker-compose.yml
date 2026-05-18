@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./backend/data:/app/data
+      - ./backend:/app
     environment:
       DATABASE_URL: postgresql://admin:123456@db:5432/seller_dashboard
 

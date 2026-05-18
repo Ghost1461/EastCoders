@@ -17,3 +17,4 @@ beautifulsoup4
 apscheduler
 feedparser
 python-dateutil
+playwright
