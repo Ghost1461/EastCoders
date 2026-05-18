@@ -10,6 +10,7 @@ def normalize_trendyol_product(item: dict) -> dict:
         "name": item.get("name"),
         "brand": item.get("brand"),
         "category": item.get("category"),
+        "gender": item.get("gender"),
         "color": item.get("color"),
         "size": item.get("size"),
 
@@ -41,6 +42,7 @@ def normalize_hepsiburada_product(item: dict) -> dict:
         "name": item.get("name"),
         "brand": item.get("brand"),
         "category": item.get("category"),
+        "gender": item.get("gender"),
         "color": item.get("color"),
         "size": item.get("size"),
 
@@ -60,8 +62,6 @@ def normalize_hepsiburada_product(item: dict) -> dict:
 
 def normalize_amazon_product(item: dict) -> dict:
     return {
-        #"user_id": item.get("user_id"),
-
         "platform": item.get("platform", "amazon"),
 
         "external_product_id": item.get("external_product_id"),
@@ -72,6 +72,7 @@ def normalize_amazon_product(item: dict) -> dict:
         "name": item.get("name"),
         "brand": item.get("brand"),
         "category": item.get("category"),
+        "gender": item.get("gender"),
         "color": item.get("color"),
         "size": item.get("size"),
 
@@ -100,6 +101,6 @@ def normalize_product(platform_key: str, item: dict) -> dict:
     normalizer = NORMALIZERS.get(platform_key)
 
     if not normalizer:
-        raise ValueError(f"Unsupported platform: {platform_key}")
+        raise ValueError(f"Desteklenmeyen platform: {platform_key}")
 
     return normalizer(item)

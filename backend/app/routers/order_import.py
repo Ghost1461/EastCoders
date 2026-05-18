@@ -21,7 +21,7 @@ router = APIRouter(
 #JSON validate için, Swagger docs üretmek için 
 class OrderItemImport(BaseModel):
     listing_id: str
-    internal_product_id: str
+    external_product_id: str
     quantity: int
     unit_price: float
 
@@ -55,7 +55,7 @@ def import_orders_by_platform(
     if platform_key.lower() not in SUPPORTED_PLATFORMS:
         raise HTTPException(
             status_code=400,
-            detail=f"Unsupported platform: {platform_key}"
+            detail=f"Desteklenmeyen platform: {platform_key}"
         )
     
     return import_orders_service(

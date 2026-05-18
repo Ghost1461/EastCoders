@@ -7,10 +7,10 @@
         "customer_id": "C-579",
         "items": [
             {
-                "listing_id": "L-488",
-                "product_id": "TRENDYOL-43034",
-                "quantity": 1,
-                "unit_price": 1259
+                "listing_id": "L-951",
+                "external_product_id": "INT-P-40461",
+                "quantity": 2,
+                "unit_price": 1309
             }
         ],
         "status": "shipped",
@@ -24,8 +24,8 @@
         "customer_id": "C-549",
         "items": [
             {
-                "listing_id": "L-651",
-                "product_id": "TRENDYOL-73720",
+                "listing_id": "L-839",
+                "external_product_id": "INT-P-67067",
                 "quantity": 1,
                 "unit_price": 1348
             },
@@ -47,8 +47,8 @@
         "customer_id": "C-233",
         "items": [
             {
-                "listing_id": "L-153",
-                "product_id": "TRENDYOL-61640",
+                "listing_id": "L-496",
+                "external_product_id": "INT-P-89840",
                 "quantity": 1,
                 "unit_price": 904
             }
@@ -64,10 +64,16 @@
         "customer_id": "C-853",
         "items": [
             {
-                "listing_id": "L-659",
-                "product_id": "TRENDYOL-29523",
+                "listing_id": "L-224",
+                "external_product_id": "INT-P-53593",
                 "quantity": 2,
-                "unit_price": 1366
+                "unit_price": 1439
+            },
+            {
+                "listing_id": "L-460",
+                "external_product_id": "INT-P-32667",
+                "quantity": 2,
+                "unit_price": 732
             }
         ],
         "status": "returned",
@@ -81,8 +87,8 @@
         "customer_id": "C-135",
         "items": [
             {
-                "listing_id": "L-870",
-                "product_id": "TRENDYOL-73720",
+                "listing_id": "L-428",
+                "external_product_id": "INT-P-60268",
                 "quantity": 1,
                 "unit_price": 1348
             }
@@ -98,14 +104,14 @@
         "customer_id": "C-888",
         "items": [
             {
-                "listing_id": "L-141",
-                "product_id": "TRENDYOL-43034",
-                "quantity": 2,
-                "unit_price": 1259
+                "listing_id": "L-976",
+                "external_product_id": "INT-P-53593",
+                "quantity": 1,
+                "unit_price": 1439
             },
             {
-                "listing_id": "L-454",
-                "product_id": "TRENDYOL-41008",
+                "listing_id": "L-861",
+                "external_product_id": "INT-P-67067",
                 "quantity": 2,
                 "unit_price": 989
             }
@@ -121,10 +127,10 @@
         "customer_id": "C-130",
         "items": [
             {
-                "listing_id": "L-999",
-                "product_id": "TRENDYOL-41008",
-                "quantity": 1,
-                "unit_price": 989
+                "listing_id": "L-740",
+                "external_product_id": "INT-P-89840",
+                "quantity": 2,
+                "unit_price": 640
             }
         ],
         "status": "returned",
@@ -138,8 +144,8 @@
         "customer_id": "C-585",
         "items": [
             {
-                "listing_id": "L-743",
-                "product_id": "TRENDYOL-89103",
+                "listing_id": "L-321",
+                "external_product_id": "INT-P-67067",
                 "quantity": 2,
                 "unit_price": 1225
             }
@@ -155,10 +161,10 @@
         "customer_id": "C-133",
         "items": [
             {
-                "listing_id": "L-144",
-                "product_id": "TRENDYOL-37605",
-                "quantity": 1,
-                "unit_price": 478
+                "listing_id": "L-967",
+                "external_product_id": "INT-P-34218",
+                "quantity": 2,
+                "unit_price": 524
             }
         ],
         "status": "returned",
@@ -172,16 +178,16 @@
         "customer_id": "C-179",
         "items": [
             {
-                "listing_id": "L-101",
-                "product_id": "TRENDYOL-37605",
+                "listing_id": "L-611",
+                "external_product_id": "INT-P-34218",
                 "quantity": 2,
                 "unit_price": 478
             },
             {
-                "listing_id": "L-940",
-                "product_id": "TRENDYOL-61640",
-                "quantity": 2,
-                "unit_price": 904
+                "listing_id": "L-486",
+                "external_product_id": "INT-P-67067",
+                "quantity": 1,
+                "unit_price": 534
             }
         ],
         "status": "returned",
@@ -195,14 +201,14 @@
         "customer_id": "C-318",
         "items": [
             {
-                "listing_id": "L-737",
-                "product_id": "TRENDYOL-14005",
-                "quantity": 2,
-                "unit_price": 1167
+                "listing_id": "L-604",
+                "external_product_id": "INT-P-60268",
+                "quantity": 1,
+                "unit_price": 686
             },
             {
-                "listing_id": "L-657",
-                "product_id": "TRENDYOL-59863",
+                "listing_id": "L-998",
+                "external_product_id": "INT-P-34218",
                 "quantity": 2,
                 "unit_price": 855
             }
@@ -218,8 +224,8 @@
         "customer_id": "C-560",
         "items": [
             {
-                "listing_id": "L-614",
-                "product_id": "TRENDYOL-57360",
+                "listing_id": "L-874",
+                "external_product_id": "INT-P-58490",
                 "quantity": 2,
                 "unit_price": 1235
             }
@@ -235,16 +241,16 @@
         "customer_id": "C-673",
         "items": [
             {
-                "listing_id": "L-746",
-                "product_id": "TRENDYOL-20785",
+                "listing_id": "L-623",
+                "external_product_id": "INT-P-89840",
                 "quantity": 2,
                 "unit_price": 458
             },
             {
-                "listing_id": "L-646",
-                "product_id": "TRENDYOL-73720",
-                "quantity": 1,
-                "unit_price": 1348
+                "listing_id": "L-330",
+                "external_product_id": "INT-P-32667",
+                "quantity": 2,
+                "unit_price": 732
             }
         ],
         "status": "cancelled",
@@ -258,8 +264,8 @@
         "customer_id": "C-887",
         "items": [
             {
-                "listing_id": "L-799",
-                "product_id": "TRENDYOL-46218",
+                "listing_id": "L-977",
+                "external_product_id": "INT-P-58490",
                 "quantity": 2,
                 "unit_price": 1363
             }
@@ -275,10 +281,16 @@
         "customer_id": "C-220",
         "items": [
             {
-                "listing_id": "L-147",
-                "product_id": "TRENDYOL-37605",
+                "listing_id": "L-518",
+                "external_product_id": "INT-P-40461",
                 "quantity": 2,
-                "unit_price": 478
+                "unit_price": 1309
+            },
+            {
+                "listing_id": "L-152",
+                "external_product_id": "INT-P-67067",
+                "quantity": 1,
+                "unit_price": 534
             }
         ],
         "status": "cancelled",

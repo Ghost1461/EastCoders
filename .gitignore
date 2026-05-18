@@ -1,8 +1,34 @@
+# Python
 venv/
 __pycache__/
-.env
-node_modules/
-dist/
 *.pyc
 *.pyo
+
+# Environment variables
+.env
+*.env
+
+# Frontend
+node_modules/
+dist/
+
+# Database / volumes
 postgres_data/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Pytest / cache
+.pytest_cache/
+.mypy_cache/
+
+# Build
+build/

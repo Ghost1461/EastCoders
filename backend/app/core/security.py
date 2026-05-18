@@ -25,23 +25,23 @@ def get_current_user(
             algorithms=[ALGORITHM]
         )
 
-        email = payload.get("sub")
+        user_id = payload.get("sub")
 
-        if not email:
+        if not user_id:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Geçersiz token"
             )
+
+        user = db.query(User).filter(
+            User.id == int(user_id)
+        ).first()
 
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Geçersiz token"
         )
-
-    user = db.query(User).filter(
-        User.email == email
-    ).first()
 
     if not user:
         raise HTTPException(

@@ -7,8 +7,8 @@
         "customer_id": "C-273",
         "items": [
             {
-                "listing_id": "L-831",
-                "product_id": "HEPSIBURADA-50288",
+                "listing_id": "L-298",
+                "external_product_id": "INT-P-92435",
                 "quantity": 1,
                 "unit_price": 1010
             }
@@ -24,8 +24,8 @@
         "customer_id": "C-378",
         "items": [
             {
-                "listing_id": "L-659",
-                "product_id": "HEPSIBURADA-26483",
+                "listing_id": "L-118",
+                "external_product_id": "INT-P-80397",
                 "quantity": 2,
                 "unit_price": 1039
             }
@@ -41,8 +41,14 @@
         "customer_id": "C-376",
         "items": [
             {
-                "listing_id": "L-507",
-                "product_id": "HEPSIBURADA-61021",
+                "listing_id": "L-831",
+                "external_product_id": "INT-P-64481",
+                "quantity": 1,
+                "unit_price": 1152
+            },
+            {
+                "listing_id": "L-425",
+                "external_product_id": "INT-P-56350",
                 "quantity": 2,
                 "unit_price": 822
             }
@@ -58,10 +64,16 @@
         "customer_id": "C-961",
         "items": [
             {
-                "listing_id": "L-526",
-                "product_id": "HEPSIBURADA-59889",
-                "quantity": 2,
-                "unit_price": 410
+                "listing_id": "L-598",
+                "external_product_id": "INT-P-92435",
+                "quantity": 1,
+                "unit_price": 1089
+            },
+            {
+                "listing_id": "L-189",
+                "external_product_id": "INT-P-73031",
+                "quantity": 1,
+                "unit_price": 1339
             }
         ],
         "status": "shipped",
@@ -75,8 +87,8 @@
         "customer_id": "C-832",
         "items": [
             {
-                "listing_id": "L-352",
-                "product_id": "HEPSIBURADA-25851",
+                "listing_id": "L-665",
+                "external_product_id": "INT-P-73031",
                 "quantity": 1,
                 "unit_price": 1453
             }
@@ -92,14 +104,8 @@
         "customer_id": "C-705",
         "items": [
             {
-                "listing_id": "L-733",
-                "product_id": "HEPSIBURADA-92574",
-                "quantity": 2,
-                "unit_price": 1086
-            },
-            {
-                "listing_id": "L-602",
-                "product_id": "HEPSIBURADA-49443",
+                "listing_id": "L-908",
+                "external_product_id": "INT-P-80397",
                 "quantity": 1,
                 "unit_price": 1172
             }
@@ -115,16 +121,10 @@
         "customer_id": "C-596",
         "items": [
             {
-                "listing_id": "L-365",
-                "product_id": "HEPSIBURADA-98493",
-                "quantity": 1,
-                "unit_price": 705
-            },
-            {
-                "listing_id": "L-355",
-                "product_id": "HEPSIBURADA-63971",
-                "quantity": 1,
-                "unit_price": 1006
+                "listing_id": "L-428",
+                "external_product_id": "INT-P-49769",
+                "quantity": 2,
+                "unit_price": 1136
             }
         ],
         "status": "shipped",
@@ -138,14 +138,14 @@
         "customer_id": "C-712",
         "items": [
             {
-                "listing_id": "L-968",
-                "product_id": "HEPSIBURADA-43545",
+                "listing_id": "L-493",
+                "external_product_id": "INT-P-64481",
                 "quantity": 2,
                 "unit_price": 1312
             },
             {
-                "listing_id": "L-326",
-                "product_id": "HEPSIBURADA-85929",
+                "listing_id": "L-217",
+                "external_product_id": "INT-P-64748",
                 "quantity": 1,
                 "unit_price": 630
             }
@@ -161,16 +161,16 @@
         "customer_id": "C-704",
         "items": [
             {
-                "listing_id": "L-704",
-                "product_id": "HEPSIBURADA-28652",
+                "listing_id": "L-587",
+                "external_product_id": "INT-P-49769",
                 "quantity": 1,
                 "unit_price": 632
             },
             {
-                "listing_id": "L-994",
-                "product_id": "HEPSIBURADA-49443",
-                "quantity": 1,
-                "unit_price": 1172
+                "listing_id": "L-844",
+                "external_product_id": "INT-P-73031",
+                "quantity": 2,
+                "unit_price": 1339
             }
         ],
         "status": "shipped",
@@ -184,16 +184,10 @@
         "customer_id": "C-951",
         "items": [
             {
-                "listing_id": "L-274",
-                "product_id": "HEPSIBURADA-94625",
-                "quantity": 2,
-                "unit_price": 1497
-            },
-            {
-                "listing_id": "L-172",
-                "product_id": "HEPSIBURADA-31023",
-                "quantity": 2,
-                "unit_price": 1394
+                "listing_id": "L-631",
+                "external_product_id": "INT-P-80397",
+                "quantity": 1,
+                "unit_price": 885
             }
         ],
         "status": "returned",
@@ -207,8 +201,8 @@
         "customer_id": "C-135",
         "items": [
             {
-                "listing_id": "L-389",
-                "product_id": "HEPSIBURADA-93411",
+                "listing_id": "L-193",
+                "external_product_id": "INT-P-80397",
                 "quantity": 1,
                 "unit_price": 780
             }
@@ -224,14 +218,14 @@
         "customer_id": "C-462",
         "items": [
             {
-                "listing_id": "L-764",
-                "product_id": "HEPSIBURADA-59889",
+                "listing_id": "L-244",
+                "external_product_id": "INT-P-56350",
                 "quantity": 2,
                 "unit_price": 410
             },
             {
-                "listing_id": "L-464",
-                "product_id": "HEPSIBURADA-26483",
+                "listing_id": "L-582",
+                "external_product_id": "INT-P-64481",
                 "quantity": 1,
                 "unit_price": 1039
             }
@@ -248,7 +242,7 @@
         "items": [
             {
                 "listing_id": "L-141",
-                "internal_product_id": "INT-P-60628",
+                "external_product_id": "INT-P-60628",
                 "quantity": 2,
                 "unit_price": 1499
             }
@@ -264,8 +258,8 @@
         "customer_id": "C-147",
         "items": [
             {
-                "listing_id": "L-141",
-                "internal_product_id": "INT-P-60628",
+                "listing_id": "L-142",
+                "external_product_id": "INT-P-60628",
                 "quantity": 2,
                 "unit_price": 1499
             }

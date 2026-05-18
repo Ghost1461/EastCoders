@@ -5,17 +5,17 @@ from app.core.database import get_db
 from app.core.security import get_current_user
 from app.models.user_model import User
 
-from app.services.review_import_service import import_reviews_service
+from app.services.sync_service import sync_platform_service
 
 
 router = APIRouter(
-    prefix="/reviews",
-    tags=["Review_Import"]
+    prefix="/sync",
+    tags=["Sync"]
 )
 
 
-@router.post("/{platform_key}/import_review/{source_user_id}")
-def import_reviews_by_platform(
+@router.post("/{platform_key}/{source_user_id}")
+def sync_platform(
     platform_key: str,
     source_user_id: str,
     db: Session = Depends(get_db),
@@ -32,10 +32,10 @@ def import_reviews_by_platform(
     if platform_key not in supported_platforms:
         raise HTTPException(
             status_code=400,
-            detail=f"Desteklenmeyen platform: {platform_key}"
+            detail=f"Unsupported platform: {platform_key}"
         )
 
-    return import_reviews_service(
+    return sync_platform_service(
         platform_key=platform_key,
         source_user_id=source_user_id,
         db=db,

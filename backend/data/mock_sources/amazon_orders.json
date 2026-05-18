@@ -7,10 +7,10 @@
         "customer_id": "C-824",
         "items": [
             {
-                "listing_id": "L-942",
-                "product_id": "AMAZON-93232",
-                "quantity": 2,
-                "unit_price": 955
+                "listing_id": "L-641",
+                "external_product_id": "INT-P-22203",
+                "quantity": 1,
+                "unit_price": 1138
             }
         ],
         "status": "shipped",
@@ -24,10 +24,10 @@
         "customer_id": "C-557",
         "items": [
             {
-                "listing_id": "L-125",
-                "product_id": "AMAZON-83422",
-                "quantity": 2,
-                "unit_price": 1060
+                "listing_id": "L-534",
+                "external_product_id": "INT-P-60628",
+                "quantity": 1,
+                "unit_price": 1499
             }
         ],
         "status": "delivered",
@@ -41,16 +41,16 @@
         "customer_id": "C-196",
         "items": [
             {
-                "listing_id": "L-419",
-                "product_id": "AMAZON-63631",
+                "listing_id": "L-233",
+                "external_product_id": "INT-P-60628",
                 "quantity": 2,
                 "unit_price": 1302
             },
             {
-                "listing_id": "L-636",
-                "product_id": "AMAZON-42520",
-                "quantity": 2,
-                "unit_price": 680
+                "listing_id": "L-257",
+                "external_product_id": "INT-P-88103",
+                "quantity": 1,
+                "unit_price": 1213
             }
         ],
         "status": "shipped",
@@ -64,14 +64,8 @@
         "customer_id": "C-841",
         "items": [
             {
-                "listing_id": "L-713",
-                "product_id": "AMAZON-85481",
-                "quantity": 2,
-                "unit_price": 525
-            },
-            {
-                "listing_id": "L-509",
-                "product_id": "AMAZON-36067",
+                "listing_id": "L-285",
+                "external_product_id": "INT-P-45586",
                 "quantity": 1,
                 "unit_price": 784
             }
@@ -87,8 +81,8 @@
         "customer_id": "C-869",
         "items": [
             {
-                "listing_id": "L-681",
-                "product_id": "AMAZON-93232",
+                "listing_id": "L-424",
+                "external_product_id": "INT-P-67973",
                 "quantity": 1,
                 "unit_price": 955
             }
@@ -104,10 +98,10 @@
         "customer_id": "C-305",
         "items": [
             {
-                "listing_id": "L-120",
-                "product_id": "AMAZON-70625",
-                "quantity": 2,
-                "unit_price": 453
+                "listing_id": "L-252",
+                "external_product_id": "INT-P-22203",
+                "quantity": 1,
+                "unit_price": 1138
             }
         ],
         "status": "cancelled",
@@ -121,8 +115,8 @@
         "customer_id": "C-396",
         "items": [
             {
-                "listing_id": "L-117",
-                "product_id": "AMAZON-85481",
+                "listing_id": "L-164",
+                "external_product_id": "INT-P-83243",
                 "quantity": 1,
                 "unit_price": 525
             },
@@ -144,8 +138,8 @@
         "customer_id": "C-789",
         "items": [
             {
-                "listing_id": "L-891",
-                "product_id": "AMAZON-85876",
+                "listing_id": "L-811",
+                "external_product_id": "INT-P-22203",
                 "quantity": 2,
                 "unit_price": 955
             }
@@ -154,23 +148,23 @@
         "order_date": "2026-05-13"
     },
     {
-        "order_id": "O-62928",
+        "order_id": "O-70461",
         "user_id": "u_001",
         "platform": "Amazon",
         "external_order_id": "AM-ORD-2021",
         "customer_id": "C-631",
         "items": [
             {
-                "listing_id": "L-977",
-                "product_id": "AMAZON-38207",
+                "listing_id": "L-864",
+                "external_product_id": "INT-P-45586",
                 "quantity": 1,
                 "unit_price": 1057
             },
             {
-                "listing_id": "L-558",
-                "product_id": "AMAZON-36067",
-                "quantity": 2,
-                "unit_price": 784
+                "listing_id": "L-111",
+                "external_product_id": "INT-P-88103",
+                "quantity": 1,
+                "unit_price": 1213
             }
         ],
         "status": "returned",
@@ -184,8 +178,8 @@
         "customer_id": "C-521",
         "items": [
             {
-                "listing_id": "L-544",
-                "product_id": "AMAZON-23713",
+                "listing_id": "L-141",
+                "external_product_id": "INT-P-60628",
                 "quantity": 2,
                 "unit_price": 1319
             }
@@ -202,7 +196,7 @@
         "items": [
             {
                 "listing_id": "L-141",
-                "internal_product_id": "INT-P-60628",
+                "external_product_id": "INT-P-60628",
                 "quantity": 2,
                 "unit_price": 1499
             }
@@ -219,7 +213,7 @@
         "items": [
             {
                 "listing_id": "L-141",
-                "internal_product_id": "INT-P-60628",
+                "external_product_id": "INT-P-60628",
                 "quantity": 2,
                 "unit_price": 1499
             }

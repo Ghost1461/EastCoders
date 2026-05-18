@@ -20,6 +20,13 @@ class User(Base):
     role = Column(String, default="seller")
 
     created_at = Column(DateTime, default=datetime.utcnow)
+    profile_image_url = Column(String, nullable=True)
 
     listings = relationship("ProductListing", back_populates="user")
     orders = relationship("Order", back_populates="user")
+    connected_accounts = relationship(
+    "ConnectedAccount",
+    back_populates="user",
+    cascade="all, delete-orphan"
+
+)

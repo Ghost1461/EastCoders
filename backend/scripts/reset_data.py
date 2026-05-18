@@ -1,1 +1,0 @@
-#Gerekirse mock database’i başlangıç haline döndürmek için(fabrika ayarları)

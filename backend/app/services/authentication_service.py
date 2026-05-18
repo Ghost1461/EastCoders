@@ -70,7 +70,7 @@ class AuthenticationService:
         db.refresh(new_user)
 
         access_token = self.create_access_token({
-            "sub": new_user.email,
+            "sub": str(new_user.id),
             "role": new_user.role
         })
 
@@ -105,7 +105,7 @@ class AuthenticationService:
             raise ValueError("E-posta veya şifre hatalı.")
 
         access_token = self.create_access_token({
-            "sub": user.email,
+            "sub": str(user.id),
             "role": user.role
         })
 
@@ -124,4 +124,14 @@ class AuthenticationService:
     def logout(self):
         return {
             "message": "Başarıyla çıkış yapıldı."
+        }
+    
+    def get_me(self, current_user: User):
+        return {
+            "id": current_user.id,
+            "full_name": current_user.full_name,
+            "email": current_user.email,
+            "phone_number": current_user.phone_number,
+            "role": current_user.role,
+            "profile_image_url": current_user.profile_image_url
         }

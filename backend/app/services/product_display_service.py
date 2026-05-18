@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, func
+from sqlalchemy import desc, func, and_
+from app.models.connected_account_model import ConnectedAccount
 
 from app.models import Product, ProductListing
 
@@ -26,6 +27,7 @@ def serialize_product_listing(listing: ProductListing):
             "name": product.name,
             "brand": product.brand,
             "category": product.category,
+            "gender": product.gender,
             "color": product.color,
             "size": product.size,
             "tags": product.tags,
@@ -39,7 +41,16 @@ def base_user_products_query(db: Session, user_id: int):
     return (
         db.query(ProductListing)
         .join(Product, ProductListing.internal_product_id == Product.id)
-        .filter(ProductListing.user_id == user_id)#Login olan kullanıcının listinglerini hesaba kat sadece
+        .join(
+            ConnectedAccount,
+            and_(
+                ConnectedAccount.owner_user_id == ProductListing.user_id,
+                ConnectedAccount.platform == ProductListing.platform,
+                ConnectedAccount.source_user_id == ProductListing.source_user_id,
+                ConnectedAccount.is_active == True
+            )
+        )
+        .filter(ProductListing.user_id == user_id)
     )
 
 
@@ -104,6 +115,7 @@ def filter_user_products(
     platform: str | None = None,
     brand: str | None = None,
     category: str | None = None,
+    gender: str | None = None,
     color: str | None = None,
     size: str | None = None,
     status: str | None = None,
@@ -124,6 +136,9 @@ def filter_user_products(
 
     if category:
         query = query.filter(func.lower(Product.category) == category.lower())
+
+    if gender:
+        query = query.filter(func.lower(Product.gender) == gender.lower())
 
     if color:
         query = query.filter(func.lower(Product.color) == color.lower())
@@ -160,6 +175,7 @@ def filter_user_products(
             "platform": platform,
             "brand": brand,
             "category": category,
+            "gender": gender,
             "color": color,
             "size": size,
             "status": status,
@@ -197,6 +213,18 @@ def get_user_product_brands(db: Session, user_id: int):
 
     return {
         "brands": [row[0] for row in rows if row[0]]
+    }
+
+def get_user_product_genders(db: Session, user_id: int):
+    rows = (
+        base_user_products_query(db, user_id)
+        .with_entities(Product.gender)
+        .distinct()
+        .all()
+    )
+
+    return {
+        "genders": [row[0] for row in rows if row[0]]
     }
 
 
@@ -335,4 +363,78 @@ def get_category_item_counts(
     return {
         "total_categories": len(categories),
         "categories": categories
+    }
+
+
+def get_gender_distribution(db: Session, user_id: int):
+    results = (
+        base_user_products_query(db, user_id)
+        .with_entities(
+            Product.gender,
+            func.count(Product.id)
+        )
+        .group_by(Product.gender)
+        .order_by(func.count(Product.id).desc())
+        .all()
+    )
+
+    genders = []
+
+    for gender, count in results:
+        genders.append({
+            "gender": gender or "unknown",
+            "count": count
+        })
+
+    return {
+        "total_genders": len(genders),
+        "genders": genders
+    }
+
+
+def get_gender_item_counts(db: Session, user_id: int):
+    results = (
+        base_user_products_query(db, user_id)
+        .with_entities(
+            Product.gender,
+            func.count(ProductListing.internal_product_id)
+        )
+        .group_by(Product.gender)
+        .order_by(func.count(ProductListing.internal_product_id).desc())
+        .all()
+    )
+
+    gender_counts = []
+
+    for gender, count in results:
+        gender_counts.append({
+            "gender": gender or "unknown",
+            "item_count": count
+        })
+
+    return {
+        "total_genders": len(gender_counts),
+        "gender_counts": gender_counts
+    }
+
+
+def get_low_stock_products_by_gender(
+    db: Session,
+    user_id: int,
+    gender: str,
+    threshold: int = 10
+):
+    listings = (
+        base_user_products_query(db, user_id)
+        .filter(func.lower(Product.gender) == gender.lower())
+        .filter(ProductListing.stock <= threshold)
+        .order_by(ProductListing.stock.asc())
+        .all()
+    )
+
+    return {
+        "gender": gender,
+        "threshold": threshold,
+        "count": len(listings),
+        "products": [serialize_product_listing(listing) for listing in listings]
     }

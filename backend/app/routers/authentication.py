@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
+from app.core.security import get_current_user
+from app.models.user_model import User
 from app.core.database import get_db
 from app.schemas.auth import SignUpRequest, LoginRequest, AuthResponse
 from app.services.authentication_service import AuthenticationService
@@ -62,3 +64,9 @@ def login_json(
 @router.post("/logout")
 def logout():
     return auth_service.logout()
+
+@router.get("/me")
+def get_me(
+    current_user: User = Depends(get_current_user)#token’dan user’ı çözüp service’e gönderiyor
+):
+    return auth_service.get_me(current_user)

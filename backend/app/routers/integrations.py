@@ -31,13 +31,13 @@ def import_platform_products(
     if platform_key.lower() not in SUPPORTED_PLATFORMS:
         raise HTTPException(
             status_code=400,
-            detail=f"Unsupported platform: {platform_key}"
+            detail=f"Desteklenmeyen platform: {platform_key}"
         )
     
     return import_products_by_platform(
         db=db,
-        platform_key=platform_key,
-        user_id=current_user.id,
+        platform_key=platform_key.lower(),
+        current_user=current_user,
         source_user_id=source_user_id
     )
 
