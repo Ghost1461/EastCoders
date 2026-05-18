@@ -8,6 +8,7 @@ export const NewsPage = () => {
     const location = useLocation();
     
     const [news, setNews] = useState([]);
+    const [activeFilter, setActiveFilter] = useState('all');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -21,20 +22,37 @@ export const NewsPage = () => {
                     return;
                 }
 
-                const response = await fetch('http://localhost:8000/news/display_market_news', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const headers = {
+                    'Authorization': `Bearer ${token}`
+                };
 
-                if (!response.ok) {
+                // Önce haberleri çek (fetch endpoints)
+                try {
+                    await Promise.all([
+                        fetch('http://localhost:8000/news/fashion/fetch', { method: 'POST', headers }),
+                        fetch('http://localhost:8000/news/commerce-finance/fetch', { method: 'POST', headers })
+                    ]);
+                } catch (fetchErr) {
+                    console.error("Haber getirme (fetch) hatası:", fetchErr);
+                }
+
+                // Sonra veritabanından arka arkaya oku
+                const [fashionRes, commerceRes] = await Promise.all([
+                    fetch('http://localhost:8000/news/fashion', { headers }),
+                    fetch('http://localhost:8000/news/commerce-finance', { headers })
+                ]);
+
+                if (!fashionRes.ok || !commerceRes.ok) {
                     throw new Error("Haberler yüklenirken bir sorun oluştu.");
                 }
 
-                const data = await response.json();
-                setNews(data);
+                const fashionData = await fashionRes.json();
+                const commerceData = await commerceRes.json();
+                
+                // Arka arkaya birleştir
+                setNews([...fashionData, ...commerceData]);
             } catch (err) {
-                console.error("Haber fetch hatası:", err);
+                console.error("Haber okuma hatası:", err);
                 setError(err.message || "Haberler yüklenemedi.");
             } finally {
                 setLoading(false);
@@ -44,27 +62,20 @@ export const NewsPage = () => {
         fetchNews();
     }, []);
 
+    const filteredNews = news.filter(item => {
+        if (activeFilter === 'all') return true;
+        if (activeFilter === 'fashion') return item.category === 'fashion';
+        if (activeFilter === 'commerce') return item.category === 'commerce_finance';
+        return true;
+    });
+
     const formatDate = (dateString) => {
         if (!dateString) return "Tarih belirtilmedi";
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         return new Date(dateString).toLocaleDateString('tr-TR', options);
     };
 
-    const getImpactBadgeClass = (impact) => {
-        switch(impact?.toLowerCase()) {
-            case 'high': return 'impact-high';
-            case 'low': return 'impact-low';
-            default: return 'impact-medium';
-        }
-    };
 
-    const getImpactLabel = (impact) => {
-        switch(impact?.toLowerCase()) {
-            case 'high': return 'Yüksek Etki';
-            case 'low': return 'Düşük Etki';
-            default: return 'Orta Etki';
-        }
-    };
 
     return (
         <div className="dashboard-container">
@@ -100,6 +111,21 @@ export const NewsPage = () => {
                 </div>
 
                 <div className="news-content">
+                    <div className="news-filter-buttons">
+                        <button 
+                            className={`filter-btn ${activeFilter === 'fashion' ? 'active' : ''}`}
+                            onClick={() => setActiveFilter(activeFilter === 'fashion' ? 'all' : 'fashion')}
+                        >
+                            Moda Haberleri
+                        </button>
+                        <button 
+                            className={`filter-btn ${activeFilter === 'commerce' ? 'active' : ''}`}
+                            onClick={() => setActiveFilter(activeFilter === 'commerce' ? 'all' : 'commerce')}
+                        >
+                            E-Ticaret Haberleri
+                        </button>
+                    </div>
+
                     {loading ? (
                         <div className="loading-state">
                             <div className="loading-spinner"></div>
@@ -111,62 +137,65 @@ export const NewsPage = () => {
                             <p>{error}</p>
                             <button onClick={() => window.location.reload()} style={{ marginTop: '16px', padding: '8px 16px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Tekrar Dene</button>
                         </div>
-                    ) : news.length === 0 ? (
+                    ) : filteredNews.length === 0 ? (
                         <div className="empty-state">
                             <div style={{ fontSize: '48px', marginBottom: '16px' }}>📰</div>
                             <p>Şu an için gösterilecek bir haber bulunmuyor.</p>
                         </div>
                     ) : (
                         <div className="news-list">
-                            {news.map((item) => (
+                            {filteredNews.map((item) => (
                                 <article key={item.news_id} className="news-card">
-                                    <div className="news-card-header">
-                                        <h2 className="news-title">
-                                            <a href={item.url} target="_blank" rel="noopener noreferrer">
-                                                {item.title}
-                                            </a>
-                                        </h2>
-                                    </div>
-                                    
-                                    <div className="news-meta">
-                                        {item.source && (
-                                            <span className="news-source">{item.source}</span>
-                                        )}
-                                        <div className="news-meta-item">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                            {formatDate(item.published_at)}
+                                    {item.image_url && (
+                                        <div className="news-card-image">
+                                            <img src={item.image_url} alt={item.title} />
                                         </div>
-                                        {item.category && (
+                                    )}
+                                    <div className="news-card-content">
+                                        <div className="news-card-header">
+                                            <h2 className="news-title">
+                                                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                                                    {item.title}
+                                                </a>
+                                            </h2>
+                                        </div>
+                                        
+                                        <div className="news-meta">
+                                            {item.source && (
+                                                <span className="news-source">{item.source}</span>
+                                            )}
                                             <div className="news-meta-item">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
-                                                {item.category}
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                                {formatDate(item.published_at)}
+                                            </div>
+                                            {item.category && (
+                                                <div className="news-meta-item">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                                                    {item.category}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {item.summary && (
+                                            <p className="news-summary">{item.summary}</p>
+                                        )}
+
+                                        {item.related_tags && item.related_tags.length > 0 && (
+                                            <div className="tags-list">
+                                                {item.related_tags.map((tag, index) => (
+                                                    <span key={index} className="tag-item">#{tag}</span>
+                                                ))}
                                             </div>
                                         )}
-                                    </div>
 
-                                    {item.summary && (
-                                        <p className="news-summary">{item.summary}</p>
-                                    )}
-
-                                    {item.related_tags && item.related_tags.length > 0 && (
-                                        <div className="tags-list">
-                                            {item.related_tags.map((tag, index) => (
-                                                <span key={index} className="tag-item">#{tag}</span>
-                                            ))}
+                                        <div className="news-footer">
+                                            {item.url && (
+                                                <a href={item.url} target="_blank" rel="noopener noreferrer" className="read-more-btn" style={{ marginLeft: 'auto' }}>
+                                                    Habere Git 
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+                                                </a>
+                                            )}
                                         </div>
-                                    )}
-
-                                    <div className="news-footer">
-                                        <span className={`impact-badge ${getImpactBadgeClass(item.impact_level)}`}>
-                                            {getImpactLabel(item.impact_level)}
-                                        </span>
-                                        
-                                        {item.url && (
-                                            <a href={item.url} target="_blank" rel="noopener noreferrer" className="read-more-btn">
-                                                Habere Git 
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
-                                            </a>
-                                        )}
                                     </div>
                                 </article>
                             ))}
