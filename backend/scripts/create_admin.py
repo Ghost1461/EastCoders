@@ -12,6 +12,10 @@ from app.core.database import SessionLocal
 from app.models.user_model import User
 from app.services.authentication_service import AuthenticationService
 
+from app import models
+from app.models.news_model import News
+from app.models.news_notification_model import NewsNotification
+
 db = SessionLocal()
 
 auth_service = AuthenticationService()
