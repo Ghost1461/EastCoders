@@ -1,37 +1,76 @@
+import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Navbar } from '../components/Navbar';
+import api from '../api/client';
 import './ProfilePage.css';
 
 export const ProfilePage = () => {
-    const { user, logout } = useAuth();
-    const location = useLocation();
+    const { user, setUser } = useAuth();
+    
+    // Profile Update State
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({
+        full_name: user?.full_name || '',
+        phone_number: user?.phone_number || '',
+        email: user?.email || '',
+    });
+    const [updateStatus, setUpdateStatus] = useState({ loading: false, error: null, success: false });
+
+    // Password Update State
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const [passwordData, setPasswordData] = useState({
+        current_password: '',
+        new_password: '',
+        new_password_confirm: ''
+    });
+    const [passwordStatus, setPasswordStatus] = useState({ loading: false, error: null, success: false });
+
+    const handleProfileChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleProfileSubmit = async () => {
+        setUpdateStatus({ loading: true, error: null, success: false });
+        try {
+            const res = await api.put('/profile/update', formData);
+            // Update auth context user and local storage
+            const updatedUser = { ...user, ...res.data };
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            
+            setUpdateStatus({ loading: false, error: null, success: true });
+            setIsEditing(false);
+            
+            setTimeout(() => setUpdateStatus(prev => ({ ...prev, success: false })), 3000);
+        } catch (err) {
+            setUpdateStatus({ loading: false, error: err.response?.data?.detail || "Profil güncellenirken hata oluştu.", success: false });
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
+    };
+
+    const handlePasswordSubmit = async (e) => {
+        e.preventDefault();
+        setPasswordStatus({ loading: true, error: null, success: false });
+        try {
+            await api.put('/profile/change-password', passwordData);
+            setPasswordStatus({ loading: false, error: null, success: true });
+            setTimeout(() => {
+                setShowPasswordModal(false);
+                setPasswordStatus({ loading: false, error: null, success: false });
+                setPasswordData({ current_password: '', new_password: '', new_password_confirm: '' });
+            }, 2000);
+        } catch (err) {
+            setPasswordStatus({ loading: false, error: err.response?.data?.detail || "Şifre değiştirilirken hata oluştu.", success: false });
+        }
+    };
 
     return (
         <div className="dashboard-container">
-            <nav className="dashboard-nav">
-                <div className="nav-left" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <Link to="/dashboard" className="nav-brand">EastCoders</Link>
-                </div>
-                <div className="nav-links">
-                    <Link to="/dashboard" className={`nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}>Özet</Link>
-                    <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Ürünlerim</Link>
-                    <Link to="/integration" className={`nav-link ${location.pathname === '/integration' ? 'active' : ''}`}>Aktarma</Link>
-                    <Link to="/haber" className={`nav-link ${location.pathname === '/haber' ? 'active' : ''}`}>Haber</Link>
-                    <Link to="/trend" className={`nav-link ${location.pathname === '/trend' ? 'active' : ''}`}>Trend</Link>
-                    <Link to="/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>Profil</Link>
-                </div>
-                <div className="nav-user" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <div className="notification-bell" style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-bell">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        <span className="notification-dot" style={{ position: 'absolute', top: '0', right: '2px', width: '8px', height: '8px', backgroundColor: '#ef4444', borderRadius: '50%', border: '2px solid #fff' }}></span>
-                    </div>
-                    <span>Hoş geldin, {user?.full_name || 'Kullanıcı'}</span>
-                    <button onClick={logout} className="logout-btn">Çıkış Yap</button>
-                </div>
-            </nav>
+            <Navbar />
 
             <main className="dashboard-main profile-main">
                 <div className="profile-header">
@@ -41,21 +80,66 @@ export const ProfilePage = () => {
 
                 <div className="profile-content">
                     <div className="profile-card">
-                        <h2>Kişisel Bilgiler</h2>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                            <h2 style={{ margin: 0 }}>Kişisel Bilgiler</h2>
+                            {!isEditing ? (
+                                <button className="edit-btn" onClick={() => setIsEditing(true)}>Düzenle</button>
+                            ) : (
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <button className="cancel-btn" onClick={() => {
+                                        setIsEditing(false);
+                                        setFormData({
+                                            full_name: user?.full_name || '',
+                                            phone_number: user?.phone_number || '',
+                                            email: user?.email || '',
+                                        });
+                                        setUpdateStatus({ loading: false, error: null, success: false });
+                                    }}>İptal</button>
+                                    <button className="save-btn" onClick={handleProfileSubmit} disabled={updateStatus.loading}>
+                                        {updateStatus.loading ? 'Kaydediliyor...' : 'Kaydet'}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
+                        {updateStatus.error && <p className="error-message">{updateStatus.error}</p>}
+                        {updateStatus.success && <p className="success-message">Profil başarıyla güncellendi!</p>}
+
                         <div className="profile-form">
                             <div className="form-group">
                                 <label>Ad Soyad</label>
-                                <input type="text" value={user?.full_name || ''} readOnly className="read-only-input" />
+                                <input 
+                                    type="text" 
+                                    name="full_name"
+                                    value={isEditing ? formData.full_name : (user?.full_name || '')} 
+                                    onChange={handleProfileChange}
+                                    readOnly={!isEditing} 
+                                    className={isEditing ? 'editable-input' : 'read-only-input'} 
+                                />
                             </div>
                             
                             <div className="form-group">
                                 <label>E-posta Adresi</label>
-                                <input type="email" value={user?.email || ''} readOnly className="read-only-input" />
+                                <input 
+                                    type="email" 
+                                    name="email"
+                                    value={isEditing ? formData.email : (user?.email || '')} 
+                                    onChange={handleProfileChange}
+                                    readOnly={!isEditing} 
+                                    className={isEditing ? 'editable-input' : 'read-only-input'} 
+                                />
                             </div>
 
                             <div className="form-group">
                                 <label>Telefon Numarası</label>
-                                <input type="text" value={user?.phone_number || ''} readOnly className="read-only-input" />
+                                <input 
+                                    type="text" 
+                                    name="phone_number"
+                                    value={isEditing ? formData.phone_number : (user?.phone_number || '')} 
+                                    onChange={handleProfileChange}
+                                    readOnly={!isEditing} 
+                                    className={isEditing ? 'editable-input' : 'read-only-input'} 
+                                />
                             </div>
 
                             <div className="form-group">
@@ -72,7 +156,7 @@ export const ProfilePage = () => {
                                 <label>Şifre</label>
                                 <div className="password-group">
                                     <input type="password" value="********" readOnly className="read-only-input" />
-                                    <button className="change-pwd-btn" disabled title="Şifre değiştirme henüz aktif değil">Değiştir</button>
+                                    <button className="change-pwd-btn" onClick={() => setShowPasswordModal(true)}>Değiştir</button>
                                 </div>
                             </div>
                             
@@ -90,6 +174,63 @@ export const ProfilePage = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Password Modal */}
+                {showPasswordModal && (
+                    <div className="modal-overlay" onClick={() => !passwordStatus.loading && setShowPasswordModal(false)}>
+                        <div className="modal-content" onClick={e => e.stopPropagation()}>
+                            <div className="modal-header">
+                                <h2>Şifre Değiştir</h2>
+                                <button className="modal-close" onClick={() => setShowPasswordModal(false)}>✕</button>
+                            </div>
+                            <form onSubmit={handlePasswordSubmit} className="modal-body">
+                                {passwordStatus.error && <p className="error-message">{passwordStatus.error}</p>}
+                                {passwordStatus.success && <p className="success-message">Şifre başarıyla değiştirildi!</p>}
+                                
+                                <div className="form-group">
+                                    <label>Mevcut Şifre</label>
+                                    <input 
+                                        type="password" 
+                                        name="current_password"
+                                        value={passwordData.current_password} 
+                                        onChange={handlePasswordChange}
+                                        required 
+                                        className="editable-input" 
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Yeni Şifre</label>
+                                    <input 
+                                        type="password" 
+                                        name="new_password"
+                                        value={passwordData.new_password} 
+                                        onChange={handlePasswordChange}
+                                        required 
+                                        className="editable-input" 
+                                        placeholder="En az 6 karakter, 1 büyük, 1 küçük harf, 1 rakam"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Yeni Şifre (Tekrar)</label>
+                                    <input 
+                                        type="password" 
+                                        name="new_password_confirm"
+                                        value={passwordData.new_password_confirm} 
+                                        onChange={handlePasswordChange}
+                                        required 
+                                        className="editable-input" 
+                                    />
+                                </div>
+                                <div className="modal-actions">
+                                    <button type="button" className="cancel-btn" onClick={() => setShowPasswordModal(false)}>İptal</button>
+                                    <button type="submit" className="save-btn" disabled={passwordStatus.loading}>
+                                        {passwordStatus.loading ? 'Değiştiriliyor...' : 'Şifreyi Değiştir'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
             </main>
         </div>
     );
