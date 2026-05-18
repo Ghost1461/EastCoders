@@ -10,12 +10,12 @@ from faker import Faker
 
 class MockDataGenerator:
     PLATFORMS = ["trendyol", "hepsiburada", "amazon"]
-    CATEGORIES = ["Hoodie", "T-Shirt", "Pants", "Hat", "Dress", "Jacket"]
-    COLORS = ["Black", "White", "Beige", "Navy Blue", "Grey", "Yellow", "Pink", "Purple"]
-    BRANDS = ["ModaNova", "TrendStyle", "UrbanWear", "BasicLine", "EastCoders"]
-    SIZES = ["S", "M", "L", "XL", "XXL"]
-    GENDERS = ["Unisex", "Men", "Women"]
-    STATUSES = ["Active", "Out of Stock"]
+    CATEGORIES = ["Kapüşonlu", "T-Shirt", "Pantolon", "Şapka", "Elbise", "Ceket","Çorap"]
+    COLORS = ["Siyah", "Beyaz", "Bej", "Lacivert", "Gri", "Sarı", "Pembe", "Mor"]
+    BRANDS = ["ModaNova", "TrendStyle", "UrbanWear", "BasicLine", "EastCoders"] 
+    SIZES = ["S", "M", "L", "XL", "XXL"] 
+    GENDERS = ["Unisex", "Erkek", "Kadın"]
+    STATUSES = ["Aktif", "Stokta Yok"]
 
     PLATFORM_PREFIXES = {
         "trendyol": "TR",
@@ -95,7 +95,6 @@ class MockDataGenerator:
                     "price": round(random.uniform(150.0, 2500.0), 2),
                     "stock": random.randint(0, 500) if status != "Out of Stock" else 0,
                     "seller_sku": seller_sku,
-                    "sku": seller_sku,
                     "category": category,
                     "color": color,
                     "size": size,

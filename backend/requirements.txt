@@ -12,3 +12,9 @@ rapidfuzz
 python-multipart
 google-generativeai
 faker
+httpx 
+beautifulsoup4
+apscheduler
+feedparser
+python-dateutil
+playwright
