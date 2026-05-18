@@ -37,7 +37,7 @@ def get_current_user(
             User.id == int(user_id)
         ).first()
 
-    except JWTError:
+    except (JWTError, ValueError):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Geçersiz token"

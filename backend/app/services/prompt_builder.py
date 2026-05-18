@@ -19,6 +19,7 @@ Aşağıdaki dashboard verilerine göre kısa, net ve aksiyon odaklı Türkçe r
 
 Kurallar:
 - Cevap maksimum 5 bölüm olsun.
+- Başlıkları birebir bu isimlerle kullan. Başlık adlarını değiştirme.
 - Gereksiz selamlama yapma.
 - Dashboard’da zaten görünen tüm sayıları tekrar etme.
 - En önemli 3 problemi önceliklendir.
@@ -84,6 +85,7 @@ Sadece öneri üret. Genel özet yazma.
 
 Kurallar:
 - Her öneri mutlaka veriye dayansın.
+- Başlıkları birebir bu isimlerle kullan. Başlık adlarını değiştirme.
 - Çok genel tavsiyeler verme.
 - Dashboard’da zaten görünen tüm sayıları tekrar etme.
 - Gereksiz resmi dil kullanma.
@@ -131,6 +133,7 @@ Aşağıdaki ürün verilerine göre kısa, uygulanabilir ve veri odaklı stok a
 
 Kurallar:
 - Gereksiz uzun yazma.
+- Başlıkları birebir bu isimlerle kullan. Başlık adlarını değiştirme.
 - Maksimum 500-600 kelime üret.
 - Dashboard’da görünen tüm sayıları tekrar etme.
 - low_stock listesi boşsa "kritik stok var" deme, uyarıda bulun sadece.
@@ -178,6 +181,7 @@ Aşağıdaki review verilerine göre müşteri memnuniyeti analizi yap.
 
 Kurallar:
 - Sentiment, rating distribution ve topic summary verilerini birlikte kullan.
+- Başlıkları birebir bu isimlerle kullan. Başlık adlarını değiştirme.
 - Dashboard’da görünen tüm sayıları tekrar etme.
 - Çok resmi rapor dili kullanma.
 - Veride olmayan şeyi uydurma.
@@ -225,6 +229,7 @@ Format:
 
 Kurallar:
 - Sadece verilen tek dönem verisini yorumla.
+- Başlıkları birebir bu isimlerle kullan. Başlık adlarını değiştirme.
 - Veride olmayan şeyi uydurma.
 - Sipariş sayısı çok düşükse kesin yargı kurma.
 - 1-2 siparişlik dönemlerde "genel performans kötü/iyi" gibi büyük çıkarımlar yapma.

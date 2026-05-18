@@ -287,11 +287,18 @@
         "customer_id": "C-118",
         "items": [
             {
-                "listing_id": "L-436",
-                "product_id": "TRENDYOL-27595",
-                "quantity": 2,
-                "unit_price": 1126
+                "listing_id": "L-152",
+                "external_product_id": "INT-P-67067",
+                "quantity": 1,
+                "unit_price": 534
+            },
+            {
+                "listing_id": "L-518",
+                "external_product_id": "INT-P-40461",
+                "quantity": 8,
+                "unit_price": 1309
             }
+            
         ],
         "status": "shipped",
         "order_date": "2026-04-24"

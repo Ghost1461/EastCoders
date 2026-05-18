@@ -135,9 +135,9 @@ def import_products_by_platform(db, platform_key, current_user, source_user_id):
 
         listing = db.query(ProductListing).filter(
             ProductListing.user_id == current_user.id,
-            ProductListing.platform == item.get("platform"),
             ProductListing.external_product_id == item.get("external_product_id"),
-            ProductListing.external_product_id == item.get("external_product_id")
+            ProductListing.platform == item.get("platform"),
+            ProductListing.source_user_id == source_user_id,    
         ).first()
 
         if listing:

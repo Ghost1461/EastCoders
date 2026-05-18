@@ -21,8 +21,14 @@ def import_orders_service(
     source_user_id=source_user_id
     )
     
+    def has_changes(obj, values: dict) -> bool:
+        return any(
+            getattr(obj, key) != value
+            for key, value in values.items()
+        )
+
     created_orders = 0
-    skipped_orders = 0
+    updated_orders = 0
     created_items = 0
 
     platform_key = platform_key.lower()
@@ -68,7 +74,74 @@ def import_orders_service(
             ).first()
 
             if existing_order:
-                skipped_orders += 1
+                order_values = {
+                    "customer_id": normalized_order.get("customer_id"),
+                    "status": normalized_order["status"],
+                    "order_date": normalized_order["order_date"]
+                }
+
+                item_values = [
+                    {
+                        "listing_id": item["listing_id"],
+                        "external_product_id": item["external_product_id"],
+                        "quantity": item["quantity"],
+                        "unit_price": item["unit_price"]
+                    }
+                    for item in normalized_order.get("items", [])
+                ]
+
+                existing_items = db.query(OrderItem).filter(
+                    OrderItem.order_id == existing_order.id
+                ).all()
+
+                existing_item_values = [
+                    {
+                        "listing_id": item.listing_id,
+                        "external_product_id": item.external_product_id,
+                        "quantity": item.quantity,
+                        "unit_price": item.unit_price
+                    }
+                    for item in existing_items
+                ]
+
+                #sıralı vermez isek sıra değişince de updated_order artabilir, risk almaya gerek yok
+                item_values = sorted(
+                    item_values,
+                    key=lambda x: x["listing_id"]
+                )
+
+                existing_item_values = sorted(
+                    existing_item_values,
+                    key=lambda x: x["listing_id"]
+)
+
+                order_changed = has_changes(existing_order, order_values)
+
+                items_changed = existing_item_values != item_values
+
+                if order_changed or items_changed:
+
+                    for key, value in order_values.items():
+                        setattr(existing_order, key, value)
+
+                    db.query(OrderItem).filter(
+                        OrderItem.order_id == existing_order.id
+                    ).delete()
+
+                    for order_item in normalized_order.get("items", []):
+                        new_item = OrderItem(
+                            order_id=existing_order.id,
+                            listing_id=order_item["listing_id"],
+                            external_product_id=order_item["external_product_id"],
+                            quantity=order_item["quantity"],
+                            unit_price=order_item["unit_price"]
+                        )
+
+                        db.add(new_item)
+                        created_items += 1
+
+                    updated_orders += 1
+
                 continue
 
             new_order = Order(
@@ -106,10 +179,9 @@ def import_orders_service(
             "platform": platform_key,
             "source_user_id": source_user_id,
             "created_orders": created_orders,
-            "skipped_orders": skipped_orders,
+            "updated_orders": updated_orders,
             "created_items": created_items
         }
-
     except Exception as e:
         db.rollback()
         return {

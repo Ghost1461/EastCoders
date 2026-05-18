@@ -161,10 +161,16 @@
         "customer_id": "C-455",
         "items": [
             {
-                "listing_id": "L-899",
-                "product_id": "AMAZON-81103",
+                "listing_id": "L-864",
+                "external_product_id": "INT-P-45586",
+                "quantity": 5,
+                "unit_price": 1027
+            },
+            {
+                "listing_id": "L-111",
+                "external_product_id": "INT-P-88103",
                 "quantity": 1,
-                "unit_price": 569
+                "unit_price": 1213
             }
         ],
         "status": "shipped",

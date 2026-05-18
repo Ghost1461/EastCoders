@@ -5,3 +5,5 @@ from app.models.user_model import User
 from app.models.order_item import OrderItem
 from app.models.order_model import Order
 from app.models.connected_account_model import ConnectedAccount
+from app.models.sync_log_model import SyncLog
+from app.models.ai_report_cache_model import AiReportCache
