@@ -14,9 +14,6 @@ router = APIRouter(
 
 auth_service = AuthenticationService()
 
-@router.get("/")
-def dashboard_home():
-    return {"message": "authentication çalışıyor"}
 
 @router.post("/signup", response_model=AuthResponse)
 def signup(

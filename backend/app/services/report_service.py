@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from app.services.ai_cache_service import get_cached_or_generate_ai
 
 from app.services.prompt_builder import (
     build_report_summary_prompt,
@@ -7,8 +8,6 @@ from app.services.prompt_builder import (
     build_review_analysis_prompt,
     build_period_summary_prompt,
 )
-
-from app.services.gemini_llm_service import generate_gemini_response
 
 from app.services.order_display_services import (
     get_order_summary_service,
@@ -121,11 +120,27 @@ def get_ai_report_summary_service(db, current_user):
 
     prompt = build_report_summary_prompt(report_data)
 
-    ai_response = generate_gemini_response(prompt)
+    cached_result = get_cached_or_generate_ai(
+        db=db,
+        user_id=current_user.id,
+        report_type="summary",
+        input_data=report_data,
+        prompt=prompt
+    )
 
     return {
-        "type": "summary",
-        "ai": ai_response
+    "type": "summary",
+    "format": "markdown",
+    "sections": [
+        "Genel Durum",
+        "Kritik Bulgular",
+        "Fırsatlar",
+        "Riskler",
+        "Öncelikli Aksiyon Planı"
+    ],
+    "from_cache": cached_result["from_cache"],
+    "input_hash": cached_result["input_hash"],
+    "ai": cached_result["ai"]
     }
 
 
@@ -138,12 +153,27 @@ def get_ai_recommendations_service(db, current_user):
 
     prompt = build_ai_recommendations_prompt(report_data)
 
-    ai_response = generate_gemini_response(prompt)
+    cached_result = get_cached_or_generate_ai(
+        db=db,
+        user_id=current_user.id,
+        report_type="recommendations",
+        input_data=report_data,
+        prompt=prompt
+    )
 
     return {
-        "type": "recommendations",
-        "ai": ai_response
-    }
+    "type": "recommendations",
+    "format": "markdown",
+    "sections": [
+        "Öncelikli Aksiyonlar",
+        "Satış Artırma Önerileri",
+        "Riskli Alanlar",
+        "Hızlı Kazanımlar"
+    ],
+    "from_cache": cached_result["from_cache"],
+    "input_hash": cached_result["input_hash"],
+    "ai": cached_result["ai"]
+}
 
 
 #stok(ürün adedi ağırlıklı)
@@ -189,12 +219,27 @@ def get_ai_stock_analysis_service(db, current_user):
 
     prompt = build_stock_analysis_prompt(product_data)
 
-    ai_response = generate_gemini_response(prompt)
+    cached_result = get_cached_or_generate_ai(
+        db=db,
+        user_id=current_user.id,
+        report_type="stock_analysis",
+        input_data=product_data,
+        prompt=prompt
+    )
 
     return {
-        "type": "stock_analysis",
-        "ai": ai_response
-    }
+    "type": "stock_analysis",
+    "format": "markdown",
+    "sections": [
+        "Stok Öncelikleri",
+        "Güçlü Ürünler",
+        "Dikkat Gereken Ürünler",
+        "Kısa Aksiyon Planı"
+    ],
+    "from_cache": cached_result["from_cache"],
+    "input_hash": cached_result["input_hash"],
+    "ai": cached_result["ai"]
+}
 
 #review ağırlıklı
 def get_ai_review_analysis_service(db, current_user):
@@ -215,12 +260,29 @@ def get_ai_review_analysis_service(db, current_user):
 
     prompt = build_review_analysis_prompt(review_data)
 
-    ai_response = generate_gemini_response(prompt)
+    cached_result = get_cached_or_generate_ai(
+        db=db,
+        user_id=current_user.id,
+        report_type="review_analysis",
+        input_data=review_data,
+        prompt=prompt
+    )
+
 
     return {
-        "type": "review_analysis",
-        "ai": ai_response
-    }
+    "type": "review_analysis",
+    "format": "markdown",
+    "sections": [
+        "En Kritik Problem",
+        "Pozitif İçgörüler",
+        "Riskli Konular",
+        "En Çok Geçen Konular",
+        "İyileştirme Önerileri"
+    ],
+    "from_cache": cached_result["from_cache"],
+    "input_hash": cached_result["input_hash"],
+    "ai": cached_result["ai"]
+}
 
 
 
@@ -271,12 +333,32 @@ def get_ai_period_summary_service(db, current_user, period: str, value: str):
         data=selected_data
     )
 
-    ai_response = generate_gemini_response(prompt)
+    cached_result = get_cached_or_generate_ai(
+        db=db,
+        user_id=current_user.id,
+        report_type=f"period_summary_{period}_{value}",
+        #aynı data farklı periodlarda teorik olarak aynı hash’i üretebilir, onun için period ve value da ekle
+        input_data={
+            "period": period,
+            "value": value,
+            "data": selected_data
+        },
+        prompt=prompt
+    )
 
     return {
-        "type": "period_summary",
-        "period": period,
-        "value": value,
-        "data": selected_data,
-        "ai": ai_response
-    }
+    "type": "period_summary",
+    "format": "markdown",
+    "sections": [
+        "Dönem Özeti",
+        "Öne Çıkan Bulgular",
+        "Dikkat Gerekenler",
+        "Aksiyon Önerileri"
+    ],
+    "period": period,
+    "value": value,
+    "data": selected_data,
+    "from_cache": cached_result["from_cache"],
+    "input_hash": cached_result["input_hash"],
+    "ai": cached_result["ai"]
+}

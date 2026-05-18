@@ -56,7 +56,21 @@
         "platform": "Amazon",
         "rating": 3,
         "comment": "Kumaşı güzel ama bedeni çok dar.",
-        "sentiment": "mixed",
+        "sentiment": "positive",
+        "topic": "size",
+        "created_at": "2026-05-05"
+    },
+    {
+        "user_id": "u_001",
+        "external_order_id": "AM-ORD-6186",
+        "review_id": "REV-39748",
+        "customer_id": "C-610",
+        "external_product_id": "INT-P-88103",
+        "listing_id": "L-864",
+        "platform": "Amazon",
+        "rating": 3,
+        "comment": "Kumaşı güzel ama bedeni çok geniş.",
+        "sentiment": "positive",
         "topic": "size",
         "created_at": "2026-05-05"
     },
