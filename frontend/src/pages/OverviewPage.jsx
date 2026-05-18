@@ -24,7 +24,7 @@ export const OverviewPage = () => {
                 const token = localStorage.getItem('token');
                 if (!token) return;
 
-                const response = await fetch('http://localhost:8000/products_display/options/categories', {
+                const response = await fetch('http://localhost:8000/products_display/analytics/category-counts', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -33,7 +33,15 @@ export const OverviewPage = () => {
                 if (response.ok) {
                     const data = await response.json();
                     if (data && data.categories) {
-                        setCategoryData(data.categories);
+                    const formattedData = data.categories
+                        .filter(item => item.category !== null) // null değerleri temizle
+                        .map(item => ({
+                            name: item.category,
+                            value: Number(item.count) // Sayı olduğundan emin ol
+                        }));  
+                    
+                    console.log("Pie Chart Verisi:", formattedData); // Tarayıcı konsolundan kontrol et
+                    setCategoryData(formattedData);
                     }
                 }
             } catch (error) {
@@ -49,13 +57,25 @@ export const OverviewPage = () => {
     return (
         <div className="dashboard-container">
             <nav className="dashboard-nav">
-                <Link to="/dashboard" className="nav-brand">EastCoders</Link>
+                <div className="nav-left" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    <Link to="/dashboard" className="nav-brand">EastCoders</Link>
+                </div>
                 <div className="nav-links">
                     <Link to="/dashboard" className={`nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}>Özet</Link>
                     <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Ürünlerim</Link>
                     <Link to="/integration" className={`nav-link ${location.pathname === '/integration' ? 'active' : ''}`}>Aktarma</Link>
+                    <Link to="/haber" className={`nav-link ${location.pathname === '/haber' ? 'active' : ''}`}>Haber</Link>
+                    <Link to="/trend" className={`nav-link ${location.pathname === '/trend' ? 'active' : ''}`}>Trend</Link>
+                    <Link to="/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>Profil</Link>
                 </div>
-                <div className="nav-user">
+                <div className="nav-user" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    <div className="notification-bell" style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-bell">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span className="notification-dot" style={{ position: 'absolute', top: '0', right: '2px', width: '8px', height: '8px', backgroundColor: '#ef4444', borderRadius: '50%', border: '2px solid #fff' }}></span>
+                    </div>
                     <span>Hoş geldin, {user?.full_name || 'Kullanıcı'}</span>
                     <button onClick={logout} className="logout-btn">Çıkış Yap</button>
                 </div>
@@ -106,29 +126,37 @@ export const OverviewPage = () => {
                         <div className="chart-card">
                             <h2>Ürün Dağılımı</h2>
                             <div className="chart-container">
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <PieChart>
-                                        <Pie
-                                            data={categoryData}
-                                            cx="50%"
-                                            cy="50%"
-                                            innerRadius={60}
-                                            outerRadius={100}
-                                            fill="#8884d8"
-                                            paddingAngle={5}
-                                            dataKey="value"
-                                        >
-                                            {categoryData.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip 
-                                            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
-                                            formatter={(value, name) => [`${value} Ürün`, name]}
-                                        />
-                                        <Legend verticalAlign="bottom" height={36} iconType="circle" />
-                                    </PieChart>
-                                </ResponsiveContainer>
+                                {categoryData.length > 0 ? (
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <PieChart>
+                                            <Pie
+                                                data={categoryData}
+                                                cx="50%"
+                                                cy="50%"
+                                                innerRadius={60}
+                                                outerRadius={100}
+                                                fill="#8884d8"
+                                                paddingAngle={5}
+                                                dataKey="value"
+                                                nameKey="name"
+                                            >
+                                                {categoryData.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip 
+                                                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
+                                                formatter={(value, name) => [`${value} Ürün`, name]}
+                                            />
+                                            <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                ) : (
+                                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', color: '#94a3b8' }}>
+                                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>📊</div>
+                                        <p>Henüz ürün verisi bulunmuyor.</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

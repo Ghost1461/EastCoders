@@ -2,10 +2,19 @@ from fastapi import FastAPI
 from app.routers import router
 from app.core.database import Base, engine
 from app import models
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="EastCoders API",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # In development, allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(router)

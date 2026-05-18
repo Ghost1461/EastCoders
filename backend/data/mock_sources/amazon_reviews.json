@@ -1,77 +1,98 @@
 [
     {
-        "user_id": "u_001",
-        "external_order_id": "AM-ORD-8870",
-        "review_id": "REV-97374",
-        "customer_id": "C-811",
-        "external_product_id": "INT-P-53927",
-        "listing_id": "L-641",
-        "platform": "Amazon",
-        "rating": 2,
-        "comment": "Kargo çok yavaştı.",
-        "sentiment": "negative",
-        "topic": "shipping",
-        "created_at": "2026-05-09"
-    },
-    {
-        "user_id": "u_001",
-        "external_order_id": "AM-ORD-8870",
-        "review_id": "REV-62580",
-        "customer_id": "C-811",
-        "external_product_id": "INT-P-53927",
-        "listing_id": "L-641",
+        "review_id": "REV-43156",
+        "customer_id": "C-431",
+        "product_id": "AMAZON-24283",
+        "listing_id": "L-751",
         "platform": "Amazon",
         "rating": 5,
         "comment": "Ürün çok kaliteli, tam beklediğim gibi.",
         "sentiment": "positive",
         "topic": "quality",
-        "created_at": "2026-05-11"
+        "created_at": "2026-04-29"
     },
-
-
-
-
-
     {
-        "user_id": "u_001",
-        "external_order_id": "AM-ORD-9651",
-        "review_id": "REV-39745",
-        "customer_id": "C-601",
-        "external_product_id": "INT-P-67973",
-        "listing_id": "L-233",
+        "review_id": "REV-62932",
+        "customer_id": "C-472",
+        "product_id": "AMAZON-44997",
+        "listing_id": "L-291",
+        "platform": "Amazon",
+        "rating": 3,
+        "comment": "Kumaşı güzel ama bedeni çok dar.",
+        "sentiment": "mixed",
+        "topic": "size",
+        "created_at": "2026-05-10"
+    },
+    {
+        "review_id": "REV-21420",
+        "customer_id": "C-836",
+        "product_id": "AMAZON-94543",
+        "listing_id": "L-680",
+        "platform": "Amazon",
+        "rating": 5,
+        "comment": "Ürün çok kaliteli, tam beklediğim gibi.",
+        "sentiment": "positive",
+        "topic": "quality",
+        "created_at": "2026-05-07"
+    },
+    {
+        "review_id": "REV-87060",
+        "customer_id": "C-446",
+        "product_id": "AMAZON-24283",
+        "listing_id": "L-272",
+        "platform": "Amazon",
+        "rating": 2,
+        "comment": "Kargo çok yavaştı.",
+        "sentiment": "negative",
+        "topic": "shipping",
+        "created_at": "2026-05-13"
+    },
+    {
+        "review_id": "REV-61454",
+        "customer_id": "C-524",
+        "product_id": "AMAZON-88215",
+        "listing_id": "L-230",
         "platform": "Amazon",
         "rating": 4,
         "comment": "Rengi fotoğraftakinden biraz farklı.",
         "sentiment": "mixed",
         "topic": "color",
-        "created_at": "2026-05-06"
+        "created_at": "2026-05-04"
     },
     {
-        "user_id": "u_001",
-        "external_order_id": "AM-ORD-9651",
-        "review_id": "REV-39743",
-        "customer_id": "C-601",
-        "external_product_id": "INT-P-88103",
-        "listing_id": "L-257",
+        "review_id": "REV-39995",
+        "customer_id": "C-584",
+        "product_id": "AMAZON-88215",
+        "listing_id": "L-287",
+        "platform": "Amazon",
+        "rating": 3,
+        "comment": "Kumaşı güzel ama bedeni çok dar.",
+        "sentiment": "mixed",
+        "topic": "size",
+        "created_at": "2026-04-29"
+    },
+    {
+        "review_id": "REV-50577",
+        "customer_id": "C-111",
+        "product_id": "AMAZON-44997",
+        "listing_id": "L-856",
+        "platform": "Amazon",
+        "rating": 5,
+        "comment": "Ürün çok kaliteli, tam beklediğim gibi.",
+        "sentiment": "positive",
+        "topic": "quality",
+        "created_at": "2026-05-04"
+    },
+    {
+        "review_id": "REV-93529",
+        "customer_id": "C-943",
+        "product_id": "AMAZON-86251",
+        "listing_id": "L-738",
         "platform": "Amazon",
         "rating": 4,
         "comment": "Rengi fotoğraftakinden biraz farklı.",
         "sentiment": "mixed",
         "topic": "color",
         "created_at": "2026-04-28"
-    },
-    {
-        "user_id": "u_001",
-        "external_order_id": "AM-ORD-7812",
-        "review_id": "REV-39740",
-        "customer_id": "C-262",
-        "external_product_id": "INT-P-88103",
-        "listing_id": "L-424",
-        "platform": "Amazon",
-        "rating": 3,
-        "comment": "Kumaşı güzel ama bedeni çok dar.",
-        "sentiment": "mixed",
-        "topic": "size",
-        "created_at": "2026-05-04"
     }
 ]

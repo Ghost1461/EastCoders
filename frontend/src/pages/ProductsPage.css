@@ -156,3 +156,46 @@
     color: #0f172a;
     border-color: #94a3b8;
 }
+
+.products-controls {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 24px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 10px 16px;
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.search-bar:focus-within {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.search-icon {
+    color: #94a3b8;
+    margin-right: 12px;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 15px;
+    color: #1e293b;
+    background: transparent;
+    font-family: inherit;
+}
+
+.search-bar input::placeholder {
+    color: #94a3b8;
+}
