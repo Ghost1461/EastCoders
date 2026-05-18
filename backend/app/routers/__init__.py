@@ -15,6 +15,8 @@ from app.routers.order_display import router as order_display_router
 from app.routers.connected_account import router as connected_account
 from app.routers.profile import router as profile
 from app.routers.sync import router as sync_router
+from app.routers.admin import router as admin_router
+
 
 
 
@@ -37,3 +39,4 @@ router.include_router(order_import_router)
 router.include_router(connected_account)
 router.include_router(profile)
 router.include_router(sync_router)
+router.include_router(admin_router)

@@ -1,9 +1,17 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy import DateTime
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from app.core.database import Base
 
+
+TR_TIMEZONE = timezone(timedelta(hours=3))
+
+
+def now_tr():
+    return datetime.now(TR_TIMEZONE)
+
+from app.core.database import Base
 
 
 class ConnectedAccount(Base):
@@ -22,7 +30,7 @@ class ConnectedAccount(Base):
 
     last_synced_at = Column(
     DateTime(timezone=True),
-    nullable=True
+    default=now_tr
     )
 
     __table_args__ = (
