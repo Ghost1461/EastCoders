@@ -4,6 +4,9 @@ import { SignupPage } from './pages/SignupPage';
 import { OverviewPage } from './pages/OverviewPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { IntegrationPage } from './pages/IntegrationPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { NewsPage } from './pages/NewsPage';
+import { TrendPage } from './pages/TrendPage';
 import { useAuth } from './context/AuthContext';
 
 function App() {
@@ -19,6 +22,9 @@ function App() {
         <Route path="/dashboard" element={user ? <OverviewPage /> : <Navigate to="/login" />} />
         <Route path="/products" element={user ? <ProductsPage /> : <Navigate to="/login" />} />
         <Route path="/integration" element={user ? <IntegrationPage /> : <Navigate to="/login" />} />
+        <Route path="/haber" element={user ? <NewsPage /> : <Navigate to="/login" />} />
+        <Route path="/trend" element={user ? <TrendPage /> : <Navigate to="/login" />} />
+        <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
         
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>

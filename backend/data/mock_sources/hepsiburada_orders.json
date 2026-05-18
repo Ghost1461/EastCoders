@@ -1,276 +1,218 @@
 [
     {
-        "order_id": "O-96522",
+        "order_id": "O-11118",
         "user_id": "u_001",
         "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-1118",
-        "customer_id": "C-273",
+        "external_order_id": "HE-ORD-1235",
+        "customer_id": "C-798",
         "items": [
             {
-                "listing_id": "L-831",
-                "product_id": "HEPSIBURADA-50288",
+                "listing_id": "L-592",
+                "product_id": "HEPSIBURADA-82967",
                 "quantity": 1,
-                "unit_price": 1010
-            }
-        ],
-        "status": "delivered",
-        "order_date": "2026-05-02"
-    },
-    {
-        "order_id": "O-95921",
-        "user_id": "u_001",
-        "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-7315",
-        "customer_id": "C-378",
-        "items": [
-            {
-                "listing_id": "L-659",
-                "product_id": "HEPSIBURADA-26483",
-                "quantity": 2,
-                "unit_price": 1039
-            }
-        ],
-        "status": "shipped",
-        "order_date": "2026-04-17"
-    },
-    {
-        "order_id": "O-74882",
-        "user_id": "u_001",
-        "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-2366",
-        "customer_id": "C-376",
-        "items": [
-            {
-                "listing_id": "L-507",
-                "product_id": "HEPSIBURADA-61021",
-                "quantity": 2,
-                "unit_price": 822
-            }
-        ],
-        "status": "returned",
-        "order_date": "2026-04-20"
-    },
-    {
-        "order_id": "O-53814",
-        "user_id": "u_001",
-        "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-7017",
-        "customer_id": "C-961",
-        "items": [
-            {
-                "listing_id": "L-526",
-                "product_id": "HEPSIBURADA-59889",
-                "quantity": 2,
-                "unit_price": 410
-            }
-        ],
-        "status": "shipped",
-        "order_date": "2026-04-27"
-    },
-    {
-        "order_id": "O-33606",
-        "user_id": "u_001",
-        "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-8654",
-        "customer_id": "C-832",
-        "items": [
-            {
-                "listing_id": "L-352",
-                "product_id": "HEPSIBURADA-25851",
-                "quantity": 1,
-                "unit_price": 1453
-            }
-        ],
-        "status": "returned",
-        "order_date": "2026-04-21"
-    },
-    {
-        "order_id": "O-77617",
-        "user_id": "u_001",
-        "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-4892",
-        "customer_id": "C-705",
-        "items": [
-            {
-                "listing_id": "L-733",
-                "product_id": "HEPSIBURADA-92574",
-                "quantity": 2,
-                "unit_price": 1086
-            },
-            {
-                "listing_id": "L-602",
-                "product_id": "HEPSIBURADA-49443",
-                "quantity": 1,
-                "unit_price": 1172
+                "unit_price": 1161
             }
         ],
         "status": "cancelled",
-        "order_date": "2026-05-13"
+        "order_date": "2026-04-25"
     },
     {
-        "order_id": "O-66195",
+        "order_id": "O-90098",
         "user_id": "u_001",
         "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-7146",
-        "customer_id": "C-596",
+        "external_order_id": "HE-ORD-4695",
+        "customer_id": "C-292",
         "items": [
             {
-                "listing_id": "L-365",
-                "product_id": "HEPSIBURADA-98493",
+                "listing_id": "L-651",
+                "product_id": "HEPSIBURADA-82967",
                 "quantity": 1,
-                "unit_price": 705
-            },
-            {
-                "listing_id": "L-355",
-                "product_id": "HEPSIBURADA-63971",
-                "quantity": 1,
-                "unit_price": 1006
+                "unit_price": 1161
             }
         ],
-        "status": "shipped",
-        "order_date": "2026-05-03"
+        "status": "returned",
+        "order_date": "2026-04-24"
     },
     {
-        "order_id": "O-37968",
+        "order_id": "O-49633",
         "user_id": "u_001",
         "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-1896",
-        "customer_id": "C-712",
+        "external_order_id": "HE-ORD-2547",
+        "customer_id": "C-485",
         "items": [
             {
-                "listing_id": "L-968",
-                "product_id": "HEPSIBURADA-43545",
-                "quantity": 2,
-                "unit_price": 1312
+                "listing_id": "L-232",
+                "product_id": "HEPSIBURADA-39937",
+                "quantity": 1,
+                "unit_price": 735
             },
             {
-                "listing_id": "L-326",
-                "product_id": "HEPSIBURADA-85929",
+                "listing_id": "L-938",
+                "product_id": "HEPSIBURADA-37650",
                 "quantity": 1,
-                "unit_price": 630
+                "unit_price": 1100
+            }
+        ],
+        "status": "cancelled",
+        "order_date": "2026-04-26"
+    },
+    {
+        "order_id": "O-98077",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-3103",
+        "customer_id": "C-768",
+        "items": [
+            {
+                "listing_id": "L-448",
+                "product_id": "HEPSIBURADA-53051",
+                "quantity": 2,
+                "unit_price": 962
             }
         ],
         "status": "delivered",
-        "order_date": "2026-05-06"
+        "order_date": "2026-04-16"
     },
     {
-        "order_id": "O-62327",
+        "order_id": "O-14474",
         "user_id": "u_001",
         "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-8716",
-        "customer_id": "C-704",
+        "external_order_id": "HE-ORD-8264",
+        "customer_id": "C-220",
         "items": [
             {
-                "listing_id": "L-704",
-                "product_id": "HEPSIBURADA-28652",
+                "listing_id": "L-953",
+                "product_id": "HEPSIBURADA-72944",
                 "quantity": 1,
-                "unit_price": 632
-            },
-            {
-                "listing_id": "L-994",
-                "product_id": "HEPSIBURADA-49443",
-                "quantity": 1,
-                "unit_price": 1172
+                "unit_price": 1143
             }
         ],
-        "status": "shipped",
-        "order_date": "2026-05-03"
+        "status": "delivered",
+        "order_date": "2026-05-14"
     },
     {
-        "order_id": "O-10644",
+        "order_id": "O-85607",
         "user_id": "u_001",
         "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-2060",
-        "customer_id": "C-951",
+        "external_order_id": "HE-ORD-9751",
+        "customer_id": "C-667",
         "items": [
             {
-                "listing_id": "L-274",
-                "product_id": "HEPSIBURADA-94625",
+                "listing_id": "L-762",
+                "product_id": "HEPSIBURADA-82967",
                 "quantity": 2,
-                "unit_price": 1497
+                "unit_price": 1161
             },
             {
-                "listing_id": "L-172",
-                "product_id": "HEPSIBURADA-31023",
+                "listing_id": "L-988",
+                "product_id": "HEPSIBURADA-53051",
                 "quantity": 2,
-                "unit_price": 1394
+                "unit_price": 962
             }
         ],
         "status": "returned",
         "order_date": "2026-04-20"
     },
     {
-        "order_id": "O-78312",
+        "order_id": "O-89277",
         "user_id": "u_001",
         "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-2955",
-        "customer_id": "C-135",
+        "external_order_id": "HE-ORD-8103",
+        "customer_id": "C-773",
         "items": [
             {
-                "listing_id": "L-389",
-                "product_id": "HEPSIBURADA-93411",
-                "quantity": 1,
-                "unit_price": 780
+                "listing_id": "L-926",
+                "product_id": "HEPSIBURADA-31150",
+                "quantity": 2,
+                "unit_price": 1077
             }
         ],
-        "status": "shipped",
-        "order_date": "2026-05-10"
+        "status": "returned",
+        "order_date": "2026-04-23"
     },
     {
-        "order_id": "O-14824",
+        "order_id": "O-38836",
         "user_id": "u_001",
         "platform": "Hepsiburada",
-        "external_order_id": "HE-ORD-3612",
-        "customer_id": "C-462",
+        "external_order_id": "HE-ORD-8734",
+        "customer_id": "C-411",
         "items": [
             {
-                "listing_id": "L-764",
-                "product_id": "HEPSIBURADA-59889",
+                "listing_id": "L-549",
+                "product_id": "HEPSIBURADA-70577",
                 "quantity": 2,
-                "unit_price": 410
-            },
+                "unit_price": 1065
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-04-24"
+    },
+    {
+        "order_id": "O-86530",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-6480",
+        "customer_id": "C-380",
+        "items": [
             {
-                "listing_id": "L-464",
-                "product_id": "HEPSIBURADA-26483",
+                "listing_id": "L-864",
+                "product_id": "HEPSIBURADA-88020",
+                "quantity": 2,
+                "unit_price": 763
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-04-28"
+    },
+    {
+        "order_id": "O-96893",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-8638",
+        "customer_id": "C-477",
+        "items": [
+            {
+                "listing_id": "L-966",
+                "product_id": "HEPSIBURADA-82967",
+                "quantity": 2,
+                "unit_price": 1161
+            }
+        ],
+        "status": "shipped",
+        "order_date": "2026-04-18"
+    },
+    {
+        "order_id": "O-41056",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-8898",
+        "customer_id": "C-414",
+        "items": [
+            {
+                "listing_id": "L-754",
+                "product_id": "HEPSIBURADA-64854",
+                "quantity": 2,
+                "unit_price": 648
+            }
+        ],
+        "status": "returned",
+        "order_date": "2026-04-17"
+    },
+    {
+        "order_id": "O-78986",
+        "user_id": "u_001",
+        "platform": "Hepsiburada",
+        "external_order_id": "HE-ORD-9215",
+        "customer_id": "C-246",
+        "items": [
+            {
+                "listing_id": "L-602",
+                "product_id": "HEPSIBURADA-96608",
                 "quantity": 1,
-                "unit_price": 1039
+                "unit_price": 710
             }
         ],
-        "status": "shipped",
-        "order_date": "2026-05-11"
-    },
-    {
-        "order_id": "O-80412",
-        "user_id": "u_002",
-        "platform": "Hepsiburada",
-        "external_order_id": "AM-ORD-2478",
-        "customer_id": "C-147",
-        "items": [
-            {
-                "listing_id": "L-141",
-                "internal_product_id": "INT-P-60628",
-                "quantity": 2,
-                "unit_price": 1499
-            }
-        ],
-        "status": "shipped",
-        "order_date": "2026-05-06"
-    },
-    {
-        "order_id": "O-29412",
-        "user_id": "u_003",
-        "platform": "Hepsiburada",
-        "external_order_id": "AM-ORD-2478",
-        "customer_id": "C-147",
-        "items": [
-            {
-                "listing_id": "L-141",
-                "internal_product_id": "INT-P-60628",
-                "quantity": 2,
-                "unit_price": 1499
-            }
-        ],
-        "status": "shipped",
-        "order_date": "2026-05-06"
+        "status": "returned",
+        "order_date": "2026-05-15"
     }
 ]
