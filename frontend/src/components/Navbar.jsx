@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
+import stockRadarLogo from '../assets/stockradar.jpeg';
 import './Navbar.css';
 
 export const Navbar = () => {
@@ -61,7 +62,9 @@ export const Navbar = () => {
     return (
         <nav className="dashboard-nav">
             <div className="nav-left">
-                <Link to="/dashboard" className="nav-brand">EastCoders</Link>
+                <Link to="/dashboard" className="nav-brand">
+                    <img src={stockRadarLogo} alt="StockRadar" style={{ height: '40px', objectFit: 'contain' }} />
+                </Link>
             </div>
             <div className="nav-links">
                 <Link to="/dashboard" className={`nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}>Özet</Link>

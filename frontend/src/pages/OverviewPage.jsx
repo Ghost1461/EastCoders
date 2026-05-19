@@ -42,8 +42,11 @@ export const OverviewPage = () => {
                         const formatted = data.data.map(d => {
                             let displayPeriod = d.period;
                             if (timePeriod === 'daily') {
-                                const parts = d.period.split('-');
-                                if (parts.length === 3) displayPeriod = `${parts[2]}/${parts[1]}`;
+                                const dateObj = new Date(d.period);
+                                displayPeriod = dateObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+                            } else if (timePeriod === 'monthly') {
+                                const dateObj = new Date(d.period + '-01');
+                                displayPeriod = dateObj.toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' });
                             }
                             return { ...d, displayPeriod };
                         });
@@ -378,15 +381,19 @@ export const OverviewPage = () => {
                                                 <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3}/>
                                                 <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
                                             </linearGradient>
+                                            <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                                                <stop offset="95%" stopColor="#10b981" stopOpacity={0.2}/>
+                                            </linearGradient>
                                         </defs>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                                         <XAxis dataKey="displayPeriod" tick={{fill: '#64748b', fontSize: 13}} axisLine={false} tickLine={false} />
                                         <YAxis yAxisId="left" tick={{fill: '#64748b', fontSize: 13}} axisLine={false} tickLine={false} />
-                                        <YAxis yAxisId="right" orientation="right" tick={{fill: '#10b981', fontSize: 13}} axisLine={false} tickLine={false} tickFormatter={(value) => `₺${value}`} />
+                                        <YAxis yAxisId="right" orientation="right" tick={{fill: '#10b981', fontSize: 13}} axisLine={false} tickLine={false} tickFormatter={(value) => `₺${value > 1000 ? (value/1000).toFixed(1) + 'k' : value}`} />
                                         <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
-                                        <Legend wrapperStyle={{ paddingTop: '10px' }} />
-                                        <Bar yAxisId="right" dataKey="total_revenue" name="Ciro (₺)" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={30} />
-                                        <Area yAxisId="left" type="monotone" dataKey="total_orders" name="Sipariş Sayısı" stroke="#2563eb" strokeWidth={3} fillOpacity={1} fill="url(#colorOrders)" />
+                                        <Legend wrapperStyle={{ paddingTop: '10px' }} iconType="circle" />
+                                        <Bar yAxisId="right" dataKey="total_revenue" name="Ciro (₺)" fill="url(#colorRevenue)" radius={[6, 6, 0, 0]} maxBarSize={40} />
+                                        <Line yAxisId="left" type="monotone" dataKey="total_orders" name="Sipariş Sayısı" stroke="#2563eb" strokeWidth={3} dot={{r: 4, fill: '#2563eb', strokeWidth: 2, stroke: '#fff'}} activeDot={{r: 6}} />
                                     </ComposedChart>
                                 </ResponsiveContainer>
                             ) : (

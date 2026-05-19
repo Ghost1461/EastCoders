@@ -44,18 +44,23 @@ export const IntegrationPage = () => {
 
     const fetchPlatformTotals = async (platformId) => {
         try {
-            const [productsRes, ordersRes, reviewsRes] = await Promise.all([
+            const [productsRes, ordersRes, reviewsRes, platformAnalysisRes] = await Promise.all([
                 api.get(`/products_display/platform/${platformId}`).catch(() => ({ data: { total: 0 } })),
                 api.get(`/orders/platform/${platformId}`).catch(() => ({ data: { total: 0 } })),
-                api.get(`/review_display/platform/${platformId}`).catch(() => ({ data: { total: 0 } }))
+                api.get(`/review_display/platform/${platformId}`).catch(() => ({ data: { total: 0 } })),
+                api.get(`/orders/analysis/platform`).catch(() => ({ data: { platforms: [] } }))
             ]);
+
+            const platformAnalysis = platformAnalysisRes.data?.platforms?.find(p => p.platform === platformId) || {};
 
             setPlatformTotals(prev => ({
                 ...prev,
                 [platformId]: {
                     products: productsRes.data?.count || 0,
                     orders: ordersRes.data?.total || 0,
-                    reviews: reviewsRes.data?.total || 0
+                    reviews: reviewsRes.data?.total || 0,
+                    revenue: platformAnalysis.total_revenue || 0,
+                    aov: platformAnalysis.average_order_value || 0
                 }
             }));
         } catch (error) {
@@ -208,21 +213,21 @@ export const IntegrationPage = () => {
                                                             <li>Toplam Ürün: <strong>{totals?.products || 0}</strong></li>
                                                             <li>Toplam Sipariş: <strong>{totals?.orders || 0}</strong></li>
                                                             <li>Toplam Yorum: <strong>{totals?.reviews || 0}</strong></li>
+                                                            <li>Toplam Ciro: <strong>₺{(totals?.revenue || 0).toLocaleString('tr-TR')}</strong></li>
+                                                            <li>Ortalama Sipariş Tutarı: <strong>₺{(totals?.aov || 0).toLocaleString('tr-TR')}</strong></li>
                                                         </ul>
                                                     </div>
                                                 )}
                                                 <button
                                                     onClick={() => handleManualSync(platform.id, connectedAcc.source_user_id)}
-                                                    className="connect-btn"
-                                                    style={{ width: '100%', backgroundColor: '#3b82f6' }}
+                                                    className="action-btn-sync"
                                                     disabled={isPlatformSyncing}
                                                 >
                                                     {isPlatformSyncing ? 'Senkronize Ediliyor...' : 'Senkronize Et (Sync)'}
                                                 </button>
                                                 <button
                                                     onClick={() => handleDisconnect(platform.id, connectedAcc.source_user_id)}
-                                                    className="connect-btn"
-                                                    style={{ width: '100%', marginTop: '10px', backgroundColor: '#ef4444' }}
+                                                    className="action-btn-disconnect"
                                                     disabled={isPlatformSyncing}
                                                 >
                                                     Bağlantıyı Kes

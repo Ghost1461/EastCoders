@@ -92,7 +92,7 @@ export const ProductDetailPage = () => {
                         <div style={{ background: '#fff', padding: '32px', borderRadius: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid rgba(226, 232, 240, 0.8)' }}>
                             <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '16px', marginBottom: '24px', width: '100%', display: 'flex', justifyContent: 'center' }}>
                                 <img 
-                                    src={product?.image_url || 'https://via.placeholder.com/400x500'} 
+                                    src={product?.image_url ? (product.image_url.startsWith('/') ? `http://localhost:8000${product.image_url}` : product.image_url) : 'https://via.placeholder.com/400x500'} 
                                     alt={product?.name} 
                                     style={{ width: '100%', maxWidth: '250px', objectFit: 'contain', mixBlendMode: 'multiply' }}
                                 />

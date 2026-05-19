@@ -132,7 +132,9 @@ export const ProductsPage = () => {
                                     category: prod.category || "Diğer",
                                     stock: listing.stock,
                                     status: listing.status === 'Active' || listing.status === 'Aktif' ? 'Aktif' : (listing.stock > 0 ? 'Aktif' : 'Tükendi'),
-                                    image: prod.image_url || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&q=80",
+                                    image: prod.image_url 
+                                        ? (prod.image_url.startsWith('/') ? `http://localhost:8000${prod.image_url}` : prod.image_url)
+                                        : "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&q=80",
                                     platforms: []
                                 };
                             } else {
