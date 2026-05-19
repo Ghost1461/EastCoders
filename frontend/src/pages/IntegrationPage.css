@@ -170,3 +170,121 @@
         height: 100px;
     }
 }
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+}
+
+.custom-modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    animation: modalPop 0.3s ease-out;
+}
+
+.custom-modal-content h2 {
+    margin-top: 0;
+    color: #0f172a;
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.custom-modal-content p {
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.cancel-btn {
+    background: #f1f5f9;
+    color: #475569;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+    background: #e2e8f0;
+}
+
+.confirm-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.confirm-btn:hover {
+    background: #2563eb;
+}
+
+.confirm-btn:disabled, .cancel-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.sync-results-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.result-section h4 {
+    margin: 0 0 8px 0;
+    color: #334155;
+    font-size: 15px;
+}
+
+.result-section ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.result-section ul li {
+    margin-bottom: 4px;
+}
+
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}

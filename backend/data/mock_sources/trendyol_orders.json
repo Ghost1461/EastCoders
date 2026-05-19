@@ -1,83 +1,65 @@
 [
     {
         "order_id": "ORD-TR-000001",
-        "user_id": "u_004",
+        "user_id": "u_003",
         "platform": "Trendyol",
         "external_order_id": "TR-ORD-000001",
         "customer_id": "Trendyol-CTM-000001",
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000001-1",
-                "external_product_id": "TR-004-000049",
-                "quantity": 3,
-                "unit_price": 1699.84
-            },
-            {
-                "listing_id": "Trendyol-LIST-000001-2",
-                "external_product_id": "TR-004-000044",
-                "quantity": 3,
-                "unit_price": 2329.74
-            },
-            {
-                "listing_id": "Trendyol-LIST-000001-3",
-                "external_product_id": "TR-004-000024",
-                "quantity": 3,
-                "unit_price": 475.21
+                "external_product_id": "TR-003-000018",
+                "quantity": 2,
+                "unit_price": 475.35
             }
         ],
-        "status": "cancelled",
-        "order_date": "2026-04-19"
+        "status": "delivered",
+        "order_date": "2026-05-02"
     },
     {
         "order_id": "ORD-TR-000002",
-        "user_id": "u_004",
+        "user_id": "u_005",
         "platform": "Trendyol",
         "external_order_id": "TR-ORD-000002",
         "customer_id": "Trendyol-CTM-000002",
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000002-1",
-                "external_product_id": "TR-004-000009",
-                "quantity": 1,
-                "unit_price": 699.69
-            },
-            {
-                "listing_id": "Trendyol-LIST-000002-2",
-                "external_product_id": "TR-004-000044",
+                "external_product_id": "TR-005-000035",
                 "quantity": 2,
-                "unit_price": 2329.74
-            },
-            {
-                "listing_id": "Trendyol-LIST-000002-3",
-                "external_product_id": "TR-004-000014",
-                "quantity": 2,
-                "unit_price": 986.88
+                "unit_price": 1617.48
             }
         ],
-        "status": "shipped",
-        "order_date": "2026-05-04"
+        "status": "delivered",
+        "order_date": "2026-04-30"
     },
     {
         "order_id": "ORD-TR-000003",
-        "user_id": "u_004",
+        "user_id": "u_005",
         "platform": "Trendyol",
         "external_order_id": "TR-ORD-000003",
         "customer_id": "Trendyol-CTM-000003",
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000003-1",
-                "external_product_id": "TR-004-000014",
-                "quantity": 2,
-                "unit_price": 986.88
+                "external_product_id": "TR-005-000010",
+                "quantity": 3,
+                "unit_price": 1043.74
             },
             {
                 "listing_id": "Trendyol-LIST-000003-2",
-                "external_product_id": "TR-004-000044",
-                "quantity": 1,
-                "unit_price": 2329.74
+                "external_product_id": "TR-005-000040",
+                "quantity": 3,
+                "unit_price": 1485.62
+            },
+            {
+                "listing_id": "Trendyol-LIST-000003-3",
+                "external_product_id": "TR-005-000025",
+                "quantity": 2,
+                "unit_price": 1079.86
             }
         ],
-        "status": "shipped",
+        "status": "cancelled",
         "order_date": "2026-04-30"
     },
     {
@@ -89,19 +71,25 @@
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000004-1",
-                "external_product_id": "TR-004-000039",
-                "quantity": 1,
-                "unit_price": 1487.95
+                "external_product_id": "TR-004-000029",
+                "quantity": 2,
+                "unit_price": 2246.61
             },
             {
                 "listing_id": "Trendyol-LIST-000004-2",
-                "external_product_id": "TR-004-000049",
+                "external_product_id": "TR-004-000014",
+                "quantity": 3,
+                "unit_price": 2490.4
+            },
+            {
+                "listing_id": "Trendyol-LIST-000004-3",
+                "external_product_id": "TR-004-000004",
                 "quantity": 1,
-                "unit_price": 1699.84
+                "unit_price": 1599.0
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-04-29"
+        "status": "returned",
+        "order_date": "2026-04-25"
     },
     {
         "order_id": "ORD-TR-000005",
@@ -112,77 +100,65 @@
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000005-1",
-                "external_product_id": "TR-002-000012",
+                "external_product_id": "TR-002-000042",
                 "quantity": 3,
-                "unit_price": 1811.8
+                "unit_price": 339.23
             },
             {
                 "listing_id": "Trendyol-LIST-000005-2",
-                "external_product_id": "TR-002-000042",
-                "quantity": 2,
-                "unit_price": 2345.6
-            },
-            {
-                "listing_id": "Trendyol-LIST-000005-3",
-                "external_product_id": "TR-002-000047",
-                "quantity": 2,
-                "unit_price": 1594.73
+                "external_product_id": "TR-002-000037",
+                "quantity": 1,
+                "unit_price": 495.06
             }
         ],
-        "status": "shipped",
-        "order_date": "2026-05-11"
+        "status": "cancelled",
+        "order_date": "2026-04-24"
     },
     {
         "order_id": "ORD-TR-000006",
-        "user_id": "u_005",
+        "user_id": "u_004",
         "platform": "Trendyol",
         "external_order_id": "TR-ORD-000006",
         "customer_id": "Trendyol-CTM-000006",
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000006-1",
-                "external_product_id": "TR-005-000040",
-                "quantity": 2,
-                "unit_price": 2252.57
+                "external_product_id": "TR-004-000029",
+                "quantity": 3,
+                "unit_price": 2246.61
             },
             {
                 "listing_id": "Trendyol-LIST-000006-2",
-                "external_product_id": "TR-005-000005",
-                "quantity": 1,
-                "unit_price": 1608.4
+                "external_product_id": "TR-004-000019",
+                "quantity": 2,
+                "unit_price": 1454.26
             },
             {
                 "listing_id": "Trendyol-LIST-000006-3",
-                "external_product_id": "TR-005-000020",
+                "external_product_id": "TR-004-000014",
                 "quantity": 3,
-                "unit_price": 225.9
+                "unit_price": 2490.4
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-04-24"
+        "status": "returned",
+        "order_date": "2026-05-12"
     },
     {
         "order_id": "ORD-TR-000007",
-        "user_id": "u_002",
+        "user_id": "u_001",
         "platform": "Trendyol",
         "external_order_id": "TR-ORD-000007",
         "customer_id": "Trendyol-CTM-000007",
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000007-1",
-                "external_product_id": "TR-002-000022",
+                "external_product_id": "TR-001-000021",
                 "quantity": 3,
-                "unit_price": 1322.83
-            },
-            {
-                "listing_id": "Trendyol-LIST-000007-2",
-                "external_product_id": "TR-002-000007",
-                "quantity": 2,
-                "unit_price": 190.13
+                "unit_price": 1913.97
             }
         ],
         "status": "returned",
-        "order_date": "2026-04-24"
+        "order_date": "2026-05-07"
     },
     {
         "order_id": "ORD-TR-000008",
@@ -193,25 +169,13 @@
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000008-1",
-                "external_product_id": "TR-001-000046",
-                "quantity": 1,
-                "unit_price": 741.45
-            },
-            {
-                "listing_id": "Trendyol-LIST-000008-2",
-                "external_product_id": "TR-001-000041",
+                "external_product_id": "TR-001-000016",
                 "quantity": 3,
-                "unit_price": 1462.39
-            },
-            {
-                "listing_id": "Trendyol-LIST-000008-3",
-                "external_product_id": "TR-001-000011",
-                "quantity": 2,
-                "unit_price": 1876.38
+                "unit_price": 2212.74
             }
         ],
-        "status": "returned",
-        "order_date": "2026-04-19"
+        "status": "shipped",
+        "order_date": "2026-05-13"
     },
     {
         "order_id": "ORD-TR-000009",
@@ -222,42 +186,42 @@
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000009-1",
-                "external_product_id": "TR-003-000033",
+                "external_product_id": "TR-003-000003",
                 "quantity": 3,
-                "unit_price": 570.81
+                "unit_price": 444.6
+            },
+            {
+                "listing_id": "Trendyol-LIST-000009-2",
+                "external_product_id": "TR-003-000048",
+                "quantity": 2,
+                "unit_price": 2193.14
             }
         ],
-        "status": "cancelled",
-        "order_date": "2026-04-21"
+        "status": "shipped",
+        "order_date": "2026-04-30"
     },
     {
         "order_id": "ORD-TR-000010",
-        "user_id": "u_002",
+        "user_id": "u_005",
         "platform": "Trendyol",
         "external_order_id": "TR-ORD-000010",
         "customer_id": "Trendyol-CTM-000010",
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000010-1",
-                "external_product_id": "TR-002-000042",
-                "quantity": 2,
-                "unit_price": 2345.6
+                "external_product_id": "TR-005-000025",
+                "quantity": 3,
+                "unit_price": 1079.86
             },
             {
                 "listing_id": "Trendyol-LIST-000010-2",
-                "external_product_id": "TR-002-000012",
-                "quantity": 3,
-                "unit_price": 1811.8
-            },
-            {
-                "listing_id": "Trendyol-LIST-000010-3",
-                "external_product_id": "TR-002-000032",
-                "quantity": 1,
-                "unit_price": 2310.9
+                "external_product_id": "TR-005-000045",
+                "quantity": 2,
+                "unit_price": 1580.94
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-05-01"
+        "status": "shipped",
+        "order_date": "2026-05-13"
     },
     {
         "order_id": "ORD-TR-000011",
@@ -268,36 +232,42 @@
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000011-1",
-                "external_product_id": "TR-002-000002",
-                "quantity": 1,
-                "unit_price": 2149.91
+                "external_product_id": "TR-001-000036",
+                "quantity": 3,
+                "unit_price": 184.44
             },
             {
                 "listing_id": "Trendyol-LIST-000011-2",
-                "external_product_id": "TR-002-000042",
-                "quantity": 3,
-                "unit_price": 2345.6
+                "external_product_id": "TR-001-000011",
+                "quantity": 1,
+                "unit_price": 1550.33
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-05-17"
+        "status": "returned",
+        "order_date": "2026-04-23"
     },
     {
         "order_id": "ORD-TR-000012",
-        "user_id": "u_002",
+        "user_id": "u_003",
         "platform": "Trendyol",
         "external_order_id": "TR-ORD-000012",
         "customer_id": "Trendyol-CTM-000012",
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000012-1",
-                "external_product_id": "TR-004-000009",
+                "external_product_id": "TR-003-000018",
+                "quantity": 2,
+                "unit_price": 475.35
+            },
+            {
+                "listing_id": "Trendyol-LIST-000012-2",
+                "external_product_id": "TR-003-000048",
                 "quantity": 1,
-                "unit_price": 699.69
+                "unit_price": 2193.14
             }
         ],
-        "status": "shipped",
-        "order_date": "2026-04-24"
+        "status": "cancelled",
+        "order_date": "2026-05-13"
     },
     {
         "order_id": "ORD-TR-000013",
@@ -308,58 +278,70 @@
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000013-1",
-                "external_product_id": "TR-003-000018",
+                "external_product_id": "TR-003-000043",
+                "quantity": 3,
+                "unit_price": 154.89
+            },
+            {
+                "listing_id": "Trendyol-LIST-000013-2",
+                "external_product_id": "TR-003-000003",
+                "quantity": 3,
+                "unit_price": 444.6
+            },
+            {
+                "listing_id": "Trendyol-LIST-000013-3",
+                "external_product_id": "TR-003-000023",
                 "quantity": 2,
-                "unit_price": 1763.4
+                "unit_price": 1784.45
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-05-10"
+        "status": "shipped",
+        "order_date": "2026-05-11"
     },
     {
         "order_id": "ORD-TR-000014",
-        "user_id": "u_004",
+        "user_id": "u_005",
         "platform": "Trendyol",
         "external_order_id": "TR-ORD-000014",
         "customer_id": "Trendyol-CTM-000014",
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000014-1",
-                "external_product_id": "TR-001-000031",
-                "quantity": 1,
-                "unit_price": 517.95
-            },
-            {
-                "listing_id": "Trendyol-LIST-000014-2",
-                "external_product_id": "TR-001-000026",
+                "external_product_id": "TR-005-000050",
                 "quantity": 2,
-                "unit_price": 1348.28
-            },
-            {
-                "listing_id": "Trendyol-LIST-000014-3",
-                "external_product_id": "TR-001-000016",
-                "quantity": 1,
-                "unit_price": 1792.84
+                "unit_price": 679.37
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-05-16"
+        "status": "cancelled",
+        "order_date": "2026-04-27"
     },
     {
         "order_id": "ORD-TR-000015",
-        "user_id": "u_003",
+        "user_id": "u_001",
         "platform": "Trendyol",
         "external_order_id": "TR-ORD-000015",
         "customer_id": "Trendyol-CTM-000015",
         "items": [
             {
                 "listing_id": "Trendyol-LIST-000015-1",
-                "external_product_id": "TR-003-000033",
+                "external_product_id": "TR-001-000036",
                 "quantity": 3,
-                "unit_price": 570.81
+                "unit_price": 184.44
+            },
+            {
+                "listing_id": "Trendyol-LIST-000015-2",
+                "external_product_id": "TR-001-000031",
+                "quantity": 1,
+                "unit_price": 1330.56
+            },
+            {
+                "listing_id": "Trendyol-LIST-000015-3",
+                "external_product_id": "TR-001-000026",
+                "quantity": 1,
+                "unit_price": 2242.47
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-04-28"
+        "status": "returned",
+        "order_date": "2026-05-02"
     }
 ]

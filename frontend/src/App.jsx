@@ -11,7 +11,11 @@ import { ReportsPage } from './pages/ReportsPage';
 import { useAuth } from './context/AuthContext';
 
 function App() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f8fafc', color: '#64748b' }}>Yükleniyor...</div>;
+  }
 
   return (
     <BrowserRouter>

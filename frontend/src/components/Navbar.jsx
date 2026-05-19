@@ -7,7 +7,7 @@ import './Navbar.css';
 export const Navbar = () => {
     const { user, logout } = useAuth();
     const location = useLocation();
-    
+
     const [unreadCount, setUnreadCount] = useState(0);
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState([]);
@@ -23,7 +23,7 @@ export const Navbar = () => {
             }
         };
         fetchUnreadCount();
-        
+
         // Polling every 60s
         const interval = setInterval(fetchUnreadCount, 60000);
         return () => clearInterval(interval);
@@ -49,7 +49,7 @@ export const Navbar = () => {
             await api.post(`/notifications/${id}/read`);
             setUnreadCount(prev => Math.max(0, prev - 1));
             setNotifications(prev => prev.map(n => n.notification_id === id ? { ...n, is_read: true } : n));
-            
+
             if (url) {
                 window.open(url, '_blank', 'noopener,noreferrer');
             }
@@ -67,16 +67,17 @@ export const Navbar = () => {
                 <Link to="/dashboard" className={`nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}>Özet</Link>
                 <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Ürünlerim</Link>
                 <Link to="/integration" className={`nav-link ${location.pathname === '/integration' ? 'active' : ''}`}>Aktarma</Link>
-                <Link to="/haber" className={`nav-link ${location.pathname === '/haber' ? 'active' : ''}`}>Haber</Link>
-                <Link to="/trend" className={`nav-link ${location.pathname === '/trend' ? 'active' : ''}`}>Trend</Link>
+                <Link to="/reports" className={`nav-link ${location.pathname === '/reports' ? 'active' : ''}`}>Raporlar</Link>
+                <Link to="/haber" className={`nav-link ${location.pathname === '/haber' ? 'active' : ''}`}>Haberler</Link>
+                <Link to="/trend" className={`nav-link ${location.pathname === '/trend' ? 'active' : ''}`}>Trendler</Link>
                 <Link to="/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>Profil</Link>
             </div>
             <div className="nav-user" style={{ display: 'flex', alignItems: 'center', gap: '20px', position: 'relative' }}>
-                <div 
-                    className="notification-bell" 
+                <div
+                    className="notification-bell"
                     onClick={handleBellClick}
-                    style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', transition: 'transform 0.2s' }} 
-                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} 
+                    style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', transition: 'transform 0.2s' }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-bell">
@@ -87,7 +88,7 @@ export const Navbar = () => {
                         <span className="notification-dot" style={{ position: 'absolute', top: '0', right: '2px', width: '8px', height: '8px', backgroundColor: '#ef4444', borderRadius: '50%', border: '2px solid #fff' }}></span>
                     )}
                 </div>
-                
+
                 {showNotifications && (
                     <div className="notifications-dropdown">
                         <div className="notifications-header">
@@ -101,8 +102,8 @@ export const Navbar = () => {
                                 <div className="notifications-empty">Bildiriminiz yok.</div>
                             ) : (
                                 notifications.map(notif => (
-                                    <div 
-                                        key={notif.notification_id} 
+                                    <div
+                                        key={notif.notification_id}
                                         className={`notification-item ${!notif.is_read ? 'unread' : ''}`}
                                         onClick={() => markAsRead(notif.notification_id, notif.url)}
                                     >

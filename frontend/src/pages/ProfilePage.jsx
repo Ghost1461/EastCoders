@@ -147,14 +147,6 @@ export const ProfilePage = () => {
                                 <input type="text" value={user?.role === 'seller' ? 'Satıcı' : (user?.role || '')} readOnly className="read-only-input role-input" />
                             </div>
 
-                            <button 
-                                onClick={handleUpdateProfile} 
-                                disabled={isSaving} 
-                                className="change-pwd-btn" 
-                                style={{ marginTop: '10px', width: '100%', padding: '10px' }}
-                            >
-                                {isSaving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
-                            </button>
                         </div>
                     </div>
 

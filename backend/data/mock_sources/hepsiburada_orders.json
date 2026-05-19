@@ -1,170 +1,158 @@
 [
     {
         "order_id": "ORD-HB-000001",
-        "user_id": "u_002",
+        "user_id": "u_004",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000001",
         "customer_id": "Hepsiburada-CTM-000001",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000001-1",
-                "external_product_id": "HB-002-000032",
+                "external_product_id": "HB-004-000049",
                 "quantity": 2,
-                "unit_price": 756.84
-            },
-            {
-                "listing_id": "Hepsiburada-LIST-000001-2",
-                "external_product_id": "HB-002-000047",
-                "quantity": 1,
-                "unit_price": 1932.97
+                "unit_price": 486.78
             }
         ],
-        "status": "cancelled",
-        "order_date": "2026-04-27"
+        "status": "delivered",
+        "order_date": "2026-05-05"
     },
     {
         "order_id": "ORD-HB-000002",
-        "user_id": "u_002",
+        "user_id": "u_005",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000002",
         "customer_id": "Hepsiburada-CTM-000002",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000002-1",
-                "external_product_id": "HB-002-000017",
-                "quantity": 3,
-                "unit_price": 158.31
-            },
-            {
-                "listing_id": "Hepsiburada-LIST-000002-2",
-                "external_product_id": "HB-002-000047",
+                "external_product_id": "HB-005-000050",
                 "quantity": 2,
-                "unit_price": 1932.97
-            },
-            {
-                "listing_id": "Hepsiburada-LIST-000002-3",
-                "external_product_id": "HB-002-000007",
-                "quantity": 3,
-                "unit_price": 1795.66
+                "unit_price": 1363.63
             }
         ],
-        "status": "returned",
-        "order_date": "2026-05-16"
+        "status": "shipped",
+        "order_date": "2026-04-24"
     },
     {
         "order_id": "ORD-HB-000003",
-        "user_id": "u_002",
+        "user_id": "u_005",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000003",
         "customer_id": "Hepsiburada-CTM-000003",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000003-1",
-                "external_product_id": "HB-002-000047",
+                "external_product_id": "HB-005-000050",
                 "quantity": 2,
-                "unit_price": 1932.97
+                "unit_price": 1363.63
+            },
+            {
+                "listing_id": "Hepsiburada-LIST-000003-2",
+                "external_product_id": "HB-005-000015",
+                "quantity": 3,
+                "unit_price": 673.43
             }
         ],
         "status": "shipped",
-        "order_date": "2026-05-11"
+        "order_date": "2026-05-07"
     },
     {
         "order_id": "ORD-HB-000004",
-        "user_id": "u_002",
+        "user_id": "u_003",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000004",
         "customer_id": "Hepsiburada-CTM-000004",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000004-1",
-                "external_product_id": "HB-002-000007",
-                "quantity": 1,
-                "unit_price": 1795.66
+                "external_product_id": "HB-003-000048",
+                "quantity": 3,
+                "unit_price": 2051.07
+            },
+            {
+                "listing_id": "Hepsiburada-LIST-000004-2",
+                "external_product_id": "HB-003-000023",
+                "quantity": 3,
+                "unit_price": 1416.04
             }
         ],
         "status": "delivered",
-        "order_date": "2026-05-02"
+        "order_date": "2026-05-15"
     },
     {
         "order_id": "ORD-HB-000005",
-        "user_id": "u_003",
+        "user_id": "u_001",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000005",
         "customer_id": "Hepsiburada-CTM-000005",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000005-1",
-                "external_product_id": "HB-003-000048",
-                "quantity": 1,
-                "unit_price": 1065.19
+                "external_product_id": "HB-001-000041",
+                "quantity": 2,
+                "unit_price": 1762.93
             },
             {
                 "listing_id": "Hepsiburada-LIST-000005-2",
-                "external_product_id": "HB-003-000028",
-                "quantity": 3,
-                "unit_price": 235.32
+                "external_product_id": "HB-001-000046",
+                "quantity": 2,
+                "unit_price": 947.64
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-05-10"
+        "status": "returned",
+        "order_date": "2026-04-21"
     },
     {
         "order_id": "ORD-HB-000006",
-        "user_id": "u_001",
+        "user_id": "u_002",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000006",
         "customer_id": "Hepsiburada-CTM-000006",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000006-1",
-                "external_product_id": "HB-001-000021",
+                "external_product_id": "HB-002-000037",
                 "quantity": 2,
-                "unit_price": 1914.43
+                "unit_price": 2427.05
             },
             {
                 "listing_id": "Hepsiburada-LIST-000006-2",
-                "external_product_id": "HB-001-000031",
-                "quantity": 3,
-                "unit_price": 730.52
-            },
-            {
-                "listing_id": "Hepsiburada-LIST-000006-3",
-                "external_product_id": "HB-001-000011",
-                "quantity": 3,
-                "unit_price": 2218.38
+                "external_product_id": "HB-002-000002",
+                "quantity": 2,
+                "unit_price": 261.19
             }
         ],
-        "status": "returned",
-        "order_date": "2026-05-03"
+        "status": "shipped",
+        "order_date": "2026-05-17"
     },
     {
         "order_id": "ORD-HB-000007",
-        "user_id": "u_004",
+        "user_id": "u_003",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000007",
         "customer_id": "Hepsiburada-CTM-000007",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000007-1",
-                "external_product_id": "HB-004-000039",
-                "quantity": 3,
-                "unit_price": 2311.2
+                "external_product_id": "HB-003-000003",
+                "quantity": 2,
+                "unit_price": 411.07
             },
             {
                 "listing_id": "Hepsiburada-LIST-000007-2",
-                "external_product_id": "HB-004-000029",
-                "quantity": 1,
-                "unit_price": 880.02
+                "external_product_id": "HB-003-000013",
+                "quantity": 3,
+                "unit_price": 2399.13
             },
             {
                 "listing_id": "Hepsiburada-LIST-000007-3",
-                "external_product_id": "HB-004-000019",
+                "external_product_id": "HB-003-000023",
                 "quantity": 3,
-                "unit_price": 1125.15
+                "unit_price": 1416.04
             }
         ],
-        "status": "returned",
-        "order_date": "2026-05-10"
+        "status": "shipped",
+        "order_date": "2026-05-18"
     },
     {
         "order_id": "ORD-HB-000008",
@@ -175,29 +163,29 @@
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000008-1",
-                "external_product_id": "HB-002-000002",
-                "quantity": 1,
-                "unit_price": 499.79
+                "external_product_id": "HB-002-000032",
+                "quantity": 2,
+                "unit_price": 264.07
             }
         ],
-        "status": "cancelled",
-        "order_date": "2026-05-10"
+        "status": "returned",
+        "order_date": "2026-05-11"
     },
     {
         "order_id": "ORD-HB-000009",
-        "user_id": "u_001",
+        "user_id": "u_002",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000009",
         "customer_id": "Hepsiburada-CTM-000009",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000009-1",
-                "external_product_id": "HB-001-000016",
-                "quantity": 2,
-                "unit_price": 1107.83
+                "external_product_id": "HB-002-000017",
+                "quantity": 3,
+                "unit_price": 440.02
             }
         ],
-        "status": "delivered",
+        "status": "returned",
         "order_date": "2026-05-11"
     },
     {
@@ -209,30 +197,48 @@
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000010-1",
-                "external_product_id": "HB-001-000036",
+                "external_product_id": "HB-001-000021",
+                "quantity": 1,
+                "unit_price": 814.87
+            },
+            {
+                "listing_id": "Hepsiburada-LIST-000010-2",
+                "external_product_id": "HB-001-000006",
+                "quantity": 1,
+                "unit_price": 2486.46
+            },
+            {
+                "listing_id": "Hepsiburada-LIST-000010-3",
+                "external_product_id": "HB-001-000041",
                 "quantity": 2,
-                "unit_price": 718.47
+                "unit_price": 1762.93
             }
         ],
-        "status": "returned",
-        "order_date": "2026-05-13"
+        "status": "delivered",
+        "order_date": "2026-05-14"
     },
     {
         "order_id": "ORD-HB-000011",
-        "user_id": "u_002",
+        "user_id": "u_004",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000011",
         "customer_id": "Hepsiburada-CTM-000011",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000011-1",
-                "external_product_id": "HB-002-000017",
+                "external_product_id": "HB-004-000034",
                 "quantity": 1,
-                "unit_price": 158.31
+                "unit_price": 2024.6
+            },
+            {
+                "listing_id": "Hepsiburada-LIST-000011-2",
+                "external_product_id": "HB-004-000019",
+                "quantity": 1,
+                "unit_price": 2244.38
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-05-03"
+        "status": "cancelled",
+        "order_date": "2026-04-23"
     },
     {
         "order_id": "ORD-HB-000012",
@@ -243,19 +249,25 @@
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000012-1",
-                "external_product_id": "HB-002-000007",
-                "quantity": 1,
-                "unit_price": 1795.66
+                "external_product_id": "HB-002-000002",
+                "quantity": 3,
+                "unit_price": 261.19
             },
             {
                 "listing_id": "Hepsiburada-LIST-000012-2",
-                "external_product_id": "HB-002-000022",
+                "external_product_id": "HB-002-000042",
                 "quantity": 3,
-                "unit_price": 2494.56
+                "unit_price": 1029.45
+            },
+            {
+                "listing_id": "Hepsiburada-LIST-000012-3",
+                "external_product_id": "HB-002-000007",
+                "quantity": 1,
+                "unit_price": 1529.77
             }
         ],
-        "status": "shipped",
-        "order_date": "2026-04-20"
+        "status": "delivered",
+        "order_date": "2026-05-17"
     },
     {
         "order_id": "ORD-HB-000013",
@@ -266,65 +278,59 @@
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000013-1",
-                "external_product_id": "HB-001-000001",
+                "external_product_id": "HB-001-000016",
                 "quantity": 2,
-                "unit_price": 1743.67
+                "unit_price": 801.58
             },
             {
                 "listing_id": "Hepsiburada-LIST-000013-2",
-                "external_product_id": "HB-001-000041",
+                "external_product_id": "HB-001-000031",
                 "quantity": 3,
-                "unit_price": 1465.8
+                "unit_price": 175.54
             }
         ],
-        "status": "cancelled",
-        "order_date": "2026-05-02"
+        "status": "returned",
+        "order_date": "2026-04-20"
     },
     {
         "order_id": "ORD-HB-000014",
-        "user_id": "u_003",
+        "user_id": "u_002",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000014",
         "customer_id": "Hepsiburada-CTM-000014",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000014-1",
-                "external_product_id": "HB-003-000038",
-                "quantity": 2,
-                "unit_price": 1813.66
-            },
-            {
-                "listing_id": "Hepsiburada-LIST-000014-2",
-                "external_product_id": "HB-003-000048",
-                "quantity": 2,
-                "unit_price": 1065.19
+                "external_product_id": "HB-002-000037",
+                "quantity": 1,
+                "unit_price": 2427.05
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-04-27"
+        "status": "shipped",
+        "order_date": "2026-04-21"
     },
     {
         "order_id": "ORD-HB-000015",
-        "user_id": "u_001",
+        "user_id": "u_002",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000015",
         "customer_id": "Hepsiburada-CTM-000015",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000015-1",
-                "external_product_id": "HB-004-000024",
-                "quantity": 2,
-                "unit_price": 395.26
+                "external_product_id": "HB-002-000022",
+                "quantity": 3,
+                "unit_price": 1826.29
             },
             {
                 "listing_id": "Hepsiburada-LIST-000015-2",
-                "external_product_id": "HB-004-000044",
+                "external_product_id": "HB-002-000047",
                 "quantity": 3,
-                "unit_price": 925.4
+                "unit_price": 1824.52
             }
         ],
         "status": "delivered",
-        "order_date": "2026-05-07"
+        "order_date": "2026-05-06"
     },
     {
         "order_id": "ORD-HB-000016",
@@ -335,36 +341,42 @@
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000016-1",
-                "external_product_id": "HB-002-000022",
+                "external_product_id": "HB-002-000042",
                 "quantity": 1,
-                "unit_price": 2494.56
+                "unit_price": 1029.45
+            },
+            {
+                "listing_id": "Hepsiburada-LIST-000016-2",
+                "external_product_id": "HB-002-000007",
+                "quantity": 3,
+                "unit_price": 1529.77
+            },
+            {
+                "listing_id": "Hepsiburada-LIST-000016-3",
+                "external_product_id": "HB-002-000027",
+                "quantity": 2,
+                "unit_price": 1681.36
             }
         ],
-        "status": "returned",
-        "order_date": "2026-04-23"
+        "status": "cancelled",
+        "order_date": "2026-05-18"
     },
     {
         "order_id": "ORD-HB-000017",
-        "user_id": "u_002",
+        "user_id": "u_003",
         "platform": "Hepsiburada",
         "external_order_id": "HB-ORD-000017",
         "customer_id": "Hepsiburada-CTM-000017",
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000017-1",
-                "external_product_id": "HB-002-000027",
+                "external_product_id": "HB-003-000043",
                 "quantity": 3,
-                "unit_price": 643.79
-            },
-            {
-                "listing_id": "Hepsiburada-LIST-000017-2",
-                "external_product_id": "HB-002-000012",
-                "quantity": 3,
-                "unit_price": 1929.51
+                "unit_price": 805.25
             }
         ],
-        "status": "delivered",
-        "order_date": "2026-04-22"
+        "status": "shipped",
+        "order_date": "2026-05-03"
     },
     {
         "order_id": "ORD-HB-000018",
@@ -375,18 +387,18 @@
         "items": [
             {
                 "listing_id": "Hepsiburada-LIST-000018-1",
-                "external_product_id": "HB-002-000022",
+                "external_product_id": "HB-002-000012",
                 "quantity": 1,
-                "unit_price": 2494.56
+                "unit_price": 1810.11
             },
             {
                 "listing_id": "Hepsiburada-LIST-000018-2",
-                "external_product_id": "HB-002-000007",
-                "quantity": 2,
-                "unit_price": 1795.66
+                "external_product_id": "HB-002-000017",
+                "quantity": 3,
+                "unit_price": 440.02
             }
         ],
-        "status": "cancelled",
-        "order_date": "2026-05-07"
+        "status": "shipped",
+        "order_date": "2026-05-15"
     }
 ]
