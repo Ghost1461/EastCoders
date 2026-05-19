@@ -19,6 +19,11 @@ export const TrendPage = () => {
     const [showAiModal, setShowAiModal] = useState(false);
 
     const fetchAiSummary = async () => {
+        if (aiSummary && !aiSummary.error) {
+            setShowAiModal(true);
+            return;
+        }
+        
         setAiLoading(true);
         setShowAiModal(true);
         try {
@@ -173,7 +178,7 @@ export const TrendPage = () => {
                             {isPersonalized && (
                                 <div className="ai-advice-section" style={{ marginBottom: 0 }}>
                                     <div className="ai-advice-wrapper">
-                                        <button className="ai-advice-btn">
+                                        <button className="ai-advice-btn" onClick={fetchAiSummary}>
                                             ✨ Size Özel Tavsiyeler
                                         </button>
                                     </div>

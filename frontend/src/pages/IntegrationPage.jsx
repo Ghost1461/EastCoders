@@ -1,33 +1,87 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import api from '../api/client';
 import { Link, useLocation } from 'react-router-dom';
+import { Navbar } from '../components/Navbar';
 import './IntegrationPage.css';
+
+import trendyolLogo from '../assets/trendyol.jpeg';
+import hepsiburadaLogo from '../assets/hepsiburada.jpeg';
+import amazonLogo from '../assets/amazon.jpeg';
 
 export const IntegrationPage = () => {
     const { user, logout } = useAuth();
     const location = useLocation();
-    
+
     const [selectedPlatform, setSelectedPlatform] = useState(null);
     const [apiKey, setApiKey] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [connectedAccounts, setConnectedAccounts] = useState([]);
+    const [platformTotals, setPlatformTotals] = useState({});
+    const [isSyncingMap, setIsSyncingMap] = useState({});
+    const [syncModalData, setSyncModalData] = useState(null);
+
+    useEffect(() => {
+        fetchConnectedAccounts();
+    }, []);
+
+    const fetchConnectedAccounts = async () => {
+        try {
+            const response = await api.get('/connected-accounts/');
+            if (response.data && response.data.accounts) {
+                const activeAccounts = response.data.accounts.filter(acc => acc.is_active);
+                setConnectedAccounts(activeAccounts);
+
+                activeAccounts.forEach(acc => {
+                    fetchPlatformTotals(acc.platform);
+                });
+            }
+        } catch (error) {
+            console.error("Bağlı hesaplar getirilemedi:", error);
+        }
+    };
+
+    const fetchPlatformTotals = async (platformId) => {
+        try {
+            const [productsRes, ordersRes, reviewsRes] = await Promise.all([
+                api.get(`/products_display/platform/${platformId}`).catch(() => ({ data: { total: 0 } })),
+                api.get(`/orders/platform/${platformId}`).catch(() => ({ data: { total: 0 } })),
+                api.get(`/review_display/platform/${platformId}`).catch(() => ({ data: { total: 0 } }))
+            ]);
+
+            setPlatformTotals(prev => ({
+                ...prev,
+                [platformId]: {
+                    products: productsRes.data?.count || 0,
+                    orders: ordersRes.data?.total || 0,
+                    reviews: reviewsRes.data?.total || 0
+                }
+            }));
+        } catch (error) {
+            console.error(`${platformId} verileri getirilemedi:`, error);
+        }
+    };
+
 
     const platforms = [
-        { 
-            id: 'trendyol', 
-            name: 'Trendyol', 
-            color: '#f27a1a', 
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Trendyol_logo.svg/1024px-Trendyol_logo.svg.png' 
+        {
+            id: 'trendyol',
+            name: 'Trendyol',
+            color: '#f27a1a',
+            logo: trendyolLogo
         },
-        { 
-            id: 'hepsiburada', 
-            name: 'Hepsiburada', 
-            color: '#ff6000', 
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Hepsiburada_logo.svg/1024px-Hepsiburada_logo.svg.png' 
+        {
+            id: 'hepsiburada',
+            name: 'Hepsiburada',
+            color: '#ff6000',
+            logo: hepsiburadaLogo
         },
-        { 
-            id: 'amazon', 
-            name: 'Amazon', 
-            color: '#232f3e', 
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png' 
+        {
+            id: 'amazon',
+            name: 'Amazon',
+            color: '#232f3e',
+            logo: amazonLogo
         }
     ];
 
@@ -40,77 +94,187 @@ export const IntegrationPage = () => {
         }
     };
 
-    const handleConnect = (e) => {
+    const handleConnect = async (e) => {
         e.preventDefault();
-        alert(`${platforms.find(p => p.id === selectedPlatform).name} için API Key başarıyla aktarıldı!`);
-        setApiKey('');
-        setSelectedPlatform(null);
+
+        if (!apiKey) {
+            alert("Lütfen API Key giriniz.");
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            const connectResponse = await api.post(`/connected-accounts/api_key/${selectedPlatform}/connect/by-api-key?api_key=${apiKey}`);
+            const { platform, source_user_id } = connectResponse.data;
+
+            const newAccounts = [...connectedAccounts];
+            const existingIndex = newAccounts.findIndex(acc => acc.platform === platform);
+            if (existingIndex >= 0) {
+                newAccounts[existingIndex].source_user_id = source_user_id;
+            } else {
+                newAccounts.push({ platform, source_user_id });
+            }
+            setConnectedAccounts(newAccounts);
+
+            setApiKey('');
+
+            await handleManualSync(platform, source_user_id);
+            await fetchPlatformTotals(platform);
+
+        } catch (error) {
+            console.error("Entegrasyon hatası:", error);
+            alert(`Hata: ${error.response?.data?.detail || error.message}`);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleManualSync = async (platformId, sourceUserId) => {
+        setIsSyncingMap(prev => ({ ...prev, [platformId]: true }));
+        try {
+            const syncResponse = await api.post(`/sync/source_user/${platformId}/${sourceUserId}`);
+            const results = syncResponse.data?.results || {};
+
+            setSyncModalData({
+                products: results.products?.new_products || 0,
+                orders: results.orders?.created_orders || 0,
+                reviews: results.reviews?.created_reviews || 0
+            });
+
+            await fetchPlatformTotals(platformId);
+        } catch (error) {
+            console.error("Senkronizasyon hatası:", error);
+            const errorMsg = error.response?.data?.detail || error.message;
+            alert(`Hata: ${errorMsg}`);
+
+            if (typeof errorMsg === 'string' && (errorMsg.includes('bağlantılı değil') || errorMsg.includes('not linked'))) {
+                handleDisconnect(platformId, sourceUserId);
+            }
+        } finally {
+            setIsSyncingMap(prev => ({ ...prev, [platformId]: false }));
+        }
+    };
+
+    const handleDisconnect = async (platformId, sourceUserId) => {
+        try {
+            await api.put(`/connected-accounts/source_user_id/${platformId}/deactivate/${sourceUserId}`);
+        } catch (error) {
+            console.error("Bağlantı kesme hatası:", error);
+        }
+
+        const updatedAccounts = connectedAccounts.filter(acc => acc.platform !== platformId);
+        setConnectedAccounts(updatedAccounts);
+
+        setPlatformTotals(prev => {
+            const newTotals = { ...prev };
+            delete newTotals[platformId];
+            return newTotals;
+        });
     };
 
     return (
         <div className="dashboard-container">
-            <nav className="dashboard-nav">
-                <div className="nav-left" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <Link to="/dashboard" className="nav-brand">EastCoders</Link>
-                </div>
-                <div className="nav-links">
-                    <Link to="/dashboard" className={`nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}>Özet</Link>
-                    <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Ürünlerim</Link>
-                    <Link to="/integration" className={`nav-link ${location.pathname === '/integration' ? 'active' : ''}`}>Aktarma</Link>
-                    <Link to="/haber" className={`nav-link ${location.pathname === '/haber' ? 'active' : ''}`}>Haber</Link>
-                    <Link to="/trend" className={`nav-link ${location.pathname === '/trend' ? 'active' : ''}`}>Trend</Link>
-                    <Link to="/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>Profil</Link>
-                </div>
-                <div className="nav-user" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <div className="notification-bell" style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-bell">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        <span className="notification-dot" style={{ position: 'absolute', top: '0', right: '2px', width: '8px', height: '8px', backgroundColor: '#ef4444', borderRadius: '50%', border: '2px solid #fff' }}></span>
-                    </div>
-                    <span>Hoş geldin, {user?.full_name || 'Kullanıcı'}</span>
-                    <button onClick={logout} className="logout-btn">Çıkış Yap</button>
-                </div>
-            </nav>
+            <Navbar />
 
             <main className="dashboard-main integration-main">
                 <div className="integration-header">
                     <h1>Mağaza Entegrasyonları</h1>
-                    <p>Satış yaptığınız platformların API anahtarlarını girerek mağazalarınızı birbirine bağlayın.</p>
+                    <p>Satış yaptığınız platformların Api Key'lerini girerek mağazalarınızı birbirine bağlayın.</p>
                 </div>
 
                 <div className="platforms-container">
                     <div className="platforms-grid">
                         {platforms.map(platform => (
                             <div key={platform.id} className="platform-card-wrapper">
-                                <button 
+                                <button
                                     className={`platform-btn ${selectedPlatform === platform.id ? 'active' : ''}`}
                                     style={{ '--brand-color': platform.color }}
                                     onClick={() => handlePlatformClick(platform.id)}
                                 >
                                     <img src={platform.logo} alt={platform.name} className="platform-logo" />
                                 </button>
-                                
-                                {selectedPlatform === platform.id && (
-                                    <form className="api-key-form slide-down" onSubmit={handleConnect}>
-                                        <div className="input-group">
-                                            <input 
-                                                type="text" 
-                                                placeholder={`${platform.name} API Key...`}
-                                                value={apiKey}
-                                                onChange={(e) => setApiKey(e.target.value)}
-                                                required 
-                                            />
-                                            <button type="submit" className="connect-btn">Aktar</button>
-                                        </div>
-                                    </form>
-                                )}
+
+                                {selectedPlatform === platform.id && (() => {
+                                    const connectedAcc = connectedAccounts.find(acc => acc.platform === platform.id);
+
+                                    if (connectedAcc) {
+                                        const totals = platformTotals[platform.id];
+                                        const isPlatformSyncing = isSyncingMap[platform.id];
+                                        return (
+                                            <div className="connected-platform-details slide-down" style={{ marginTop: '15px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', textAlign: 'center' }}>
+                                                {totals && (
+                                                    <div style={{ marginBottom: '15px', textAlign: 'left', backgroundColor: '#fff', padding: '15px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                                                        <ul style={{ margin: 0, padding: 0, listStyle: 'none', color: '#475569', fontSize: '14px', lineHeight: '1.6' }}>
+                                                            <li>Toplam Ürün: <strong>{totals?.products || 0}</strong></li>
+                                                            <li>Toplam Sipariş: <strong>{totals?.orders || 0}</strong></li>
+                                                            <li>Toplam Yorum: <strong>{totals?.reviews || 0}</strong></li>
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                                <button
+                                                    onClick={() => handleManualSync(platform.id, connectedAcc.source_user_id)}
+                                                    className="connect-btn"
+                                                    style={{ width: '100%', backgroundColor: '#3b82f6' }}
+                                                    disabled={isPlatformSyncing}
+                                                >
+                                                    {isPlatformSyncing ? 'Senkronize Ediliyor...' : 'Senkronize Et (Sync)'}
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDisconnect(platform.id, connectedAcc.source_user_id)}
+                                                    className="connect-btn"
+                                                    style={{ width: '100%', marginTop: '10px', backgroundColor: '#ef4444' }}
+                                                    disabled={isPlatformSyncing}
+                                                >
+                                                    Bağlantıyı Kes
+                                                </button>
+                                            </div>
+                                        );
+                                    }
+
+                                    return (
+                                        <form className="api-key-form slide-down" onSubmit={handleConnect}>
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    placeholder={`${platform.name} API Key...`}
+                                                    value={apiKey}
+                                                    onChange={(e) => setApiKey(e.target.value)}
+                                                    required
+                                                    disabled={isLoading}
+                                                />
+                                                <button type="submit" className="connect-btn" disabled={isLoading}>
+                                                    {isLoading ? 'Bağlanıyor...' : 'Bağla'}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    );
+                                })()}
                             </div>
                         ))}
                     </div>
                 </div>
             </main>
+
+            {syncModalData && (
+                <div className="custom-modal-overlay">
+                    <div className="custom-modal-content">
+                        <h2>Senkronizasyon Tamamlandı!</h2>
+                        <div className="sync-results-box">
+                            <ul style={{ margin: 0, padding: 0, listStyle: 'none', color: '#475569', fontSize: '15px', lineHeight: '1.8' }}>
+                                <li>Eklenen Ürün: <strong>{syncModalData.products}</strong></li>
+                                <li>Eklenen Sipariş: <strong>{syncModalData.orders}</strong></li>
+                                <li>Eklenen Yorum: <strong>{syncModalData.reviews}</strong></li>
+                            </ul>
+                        </div>
+                        <div className="modal-actions">
+                            <button onClick={() => setSyncModalData(null)} className="confirm-btn">
+                                Tamam
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

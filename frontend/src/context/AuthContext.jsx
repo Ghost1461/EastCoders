@@ -5,11 +5,29 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    // Uygulama ilk açıldığında localStorage'da kullanıcı var mı bak
+    // Uygulama ilk açıldığında token'ı doğrula
     useEffect(() => {
-        const savedUser = localStorage.getItem('user');
-        if (savedUser) setUser(JSON.parse(savedUser));
+        const verifyAuth = async () => {
+            const token = localStorage.getItem('token');
+            const savedUser = localStorage.getItem('user');
+            
+            if (token && savedUser) {
+                try {
+                    const response = await api.get('/authentication/me');
+                    setUser(response.data);
+                } catch (error) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    setUser(null);
+                }
+            } else {
+                setUser(null);
+            }
+            setLoading(false);
+        };
+        verifyAuth();
     }, []);
 
     const triggerBackgroundFetches = () => {
@@ -52,7 +70,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, signup }}>
+        <AuthContext.Provider value={{ user, login, logout, signup, loading }}>
             {children}
         </AuthContext.Provider>
     );
