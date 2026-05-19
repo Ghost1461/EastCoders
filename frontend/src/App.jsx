@@ -8,6 +8,8 @@ import { ProfilePage } from './pages/ProfilePage';
 import { NewsPage } from './pages/NewsPage';
 import { TrendPage } from './pages/TrendPage';
 import { ReportsPage } from './pages/ReportsPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
+import { OrdersPage } from './pages/OrdersPage';
 import { useAuth } from './context/AuthContext';
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
         {/* Korumalı Route: Giriş yapmayan dashboard'u göremez */}
         <Route path="/dashboard" element={user ? <OverviewPage /> : <Navigate to="/login" />} />
         <Route path="/products" element={user ? <ProductsPage /> : <Navigate to="/login" />} />
+        <Route path="/product/:listingId" element={user ? <ProductDetailPage /> : <Navigate to="/login" />} />
+        <Route path="/orders" element={user ? <OrdersPage /> : <Navigate to="/login" />} />
         <Route path="/integration" element={user ? <IntegrationPage /> : <Navigate to="/login" />} />
         <Route path="/haber" element={user ? <NewsPage /> : <Navigate to="/login" />} />
         <Route path="/reports" element={user ? <ReportsPage /> : <Navigate to="/login" />} />

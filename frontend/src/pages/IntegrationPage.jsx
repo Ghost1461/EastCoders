@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
 import { Link, useLocation } from 'react-router-dom';
@@ -18,8 +18,51 @@ export const IntegrationPage = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [connectedAccounts, setConnectedAccounts] = useState([]);
-    const [syncResults, setSyncResults] = useState({});
+    const [platformTotals, setPlatformTotals] = useState({});
     const [isSyncingMap, setIsSyncingMap] = useState({});
+    const [syncModalData, setSyncModalData] = useState(null);
+
+    useEffect(() => {
+        fetchConnectedAccounts();
+    }, []);
+
+    const fetchConnectedAccounts = async () => {
+        try {
+            const response = await api.get('/connected-accounts/');
+            if (response.data && response.data.accounts) {
+                const activeAccounts = response.data.accounts.filter(acc => acc.is_active);
+                setConnectedAccounts(activeAccounts);
+
+                activeAccounts.forEach(acc => {
+                    fetchPlatformTotals(acc.platform);
+                });
+            }
+        } catch (error) {
+            console.error("Bağlı hesaplar getirilemedi:", error);
+        }
+    };
+
+    const fetchPlatformTotals = async (platformId) => {
+        try {
+            const [productsRes, ordersRes, reviewsRes] = await Promise.all([
+                api.get(`/products_display/platform/${platformId}`).catch(() => ({ data: { total: 0 } })),
+                api.get(`/orders/platform/${platformId}`).catch(() => ({ data: { total: 0 } })),
+                api.get(`/review_display/platform/${platformId}`).catch(() => ({ data: { total: 0 } }))
+            ]);
+
+            setPlatformTotals(prev => ({
+                ...prev,
+                [platformId]: {
+                    products: productsRes.data?.count || 0,
+                    orders: ordersRes.data?.total || 0,
+                    reviews: reviewsRes.data?.total || 0
+                }
+            }));
+        } catch (error) {
+            console.error(`${platformId} verileri getirilemedi:`, error);
+        }
+    };
+
 
     const platforms = [
         {
@@ -74,10 +117,10 @@ export const IntegrationPage = () => {
             setConnectedAccounts(newAccounts);
 
             setApiKey('');
-            
-            // Otomatik olarak ilk senkronizasyonu başlat
+
             await handleManualSync(platform, source_user_id);
-            
+            await fetchPlatformTotals(platform);
+
         } catch (error) {
             console.error("Entegrasyon hatası:", error);
             alert(`Hata: ${error.response?.data?.detail || error.message}`);
@@ -90,33 +133,42 @@ export const IntegrationPage = () => {
         setIsSyncingMap(prev => ({ ...prev, [platformId]: true }));
         try {
             const syncResponse = await api.post(`/sync/source_user/${platformId}/${sourceUserId}`);
-            setSyncResults(prev => ({
-                ...prev,
-                [platformId]: syncResponse.data.results
-            }));
+            const results = syncResponse.data?.results || {};
+
+            setSyncModalData({
+                products: results.products?.new_products || 0,
+                orders: results.orders?.created_orders || 0,
+                reviews: results.reviews?.created_reviews || 0
+            });
+
+            await fetchPlatformTotals(platformId);
         } catch (error) {
             console.error("Senkronizasyon hatası:", error);
             const errorMsg = error.response?.data?.detail || error.message;
             alert(`Hata: ${errorMsg}`);
-            
-            // Eğer backend veritabanı sıfırlanmışsa ve bağlantı yok diyorsa, frontend'den de sil
+
             if (typeof errorMsg === 'string' && (errorMsg.includes('bağlantılı değil') || errorMsg.includes('not linked'))) {
-                handleDisconnect(platformId);
+                handleDisconnect(platformId, sourceUserId);
             }
         } finally {
             setIsSyncingMap(prev => ({ ...prev, [platformId]: false }));
         }
     };
 
-    const handleDisconnect = (platformId) => {
+    const handleDisconnect = async (platformId, sourceUserId) => {
+        try {
+            await api.put(`/connected-accounts/source_user_id/${platformId}/deactivate/${sourceUserId}`);
+        } catch (error) {
+            console.error("Bağlantı kesme hatası:", error);
+        }
+
         const updatedAccounts = connectedAccounts.filter(acc => acc.platform !== platformId);
         setConnectedAccounts(updatedAccounts);
-        
-        // Remove from syncResults if exists
-        setSyncResults(prev => {
-            const newResults = { ...prev };
-            delete newResults[platformId];
-            return newResults;
+
+        setPlatformTotals(prev => {
+            const newTotals = { ...prev };
+            delete newTotals[platformId];
+            return newTotals;
         });
     };
 
@@ -127,7 +179,7 @@ export const IntegrationPage = () => {
             <main className="dashboard-main integration-main">
                 <div className="integration-header">
                     <h1>Mağaza Entegrasyonları</h1>
-                    <p>Satış yaptığınız platformların User ID'lerini girerek mağazalarınızı birbirine bağlayın.</p>
+                    <p>Satış yaptığınız platformların Api Key'lerini girerek mağazalarınızı birbirine bağlayın.</p>
                 </div>
 
                 <div className="platforms-container">
@@ -144,34 +196,32 @@ export const IntegrationPage = () => {
 
                                 {selectedPlatform === platform.id && (() => {
                                     const connectedAcc = connectedAccounts.find(acc => acc.platform === platform.id);
-                                    
+
                                     if (connectedAcc) {
-                                        const result = syncResults[platform.id];
+                                        const totals = platformTotals[platform.id];
                                         const isPlatformSyncing = isSyncingMap[platform.id];
                                         return (
                                             <div className="connected-platform-details slide-down" style={{ marginTop: '15px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', textAlign: 'center' }}>
-                                                {result && (
+                                                {totals && (
                                                     <div style={{ marginBottom: '15px', textAlign: 'left', backgroundColor: '#fff', padding: '15px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-                                                        <h4 style={{ margin: '0 0 10px 0', color: '#0f172a', fontSize: '16px' }}>Aktarım Tamamlandı</h4>
-                                                        <p style={{ margin: '0 0 10px 0', fontSize: '13px', color: '#64748b' }}><strong>{platform.name}</strong> verileri başarıyla sisteme aktarıldı.</p>
                                                         <ul style={{ margin: 0, padding: 0, listStyle: 'none', color: '#475569', fontSize: '14px', lineHeight: '1.6' }}>
-                                                            <li>Eklenen Ürün: <strong>{result.products?.new_products || 0}</strong></li>
-                                                            <li>Eklenen Sipariş: <strong>{result.orders?.created_orders || 0}</strong></li>
-                                                            <li>Eklenen Yorum: <strong>{result.reviews?.created_reviews || 0}</strong></li>
+                                                            <li>Toplam Ürün: <strong>{totals?.products || 0}</strong></li>
+                                                            <li>Toplam Sipariş: <strong>{totals?.orders || 0}</strong></li>
+                                                            <li>Toplam Yorum: <strong>{totals?.reviews || 0}</strong></li>
                                                         </ul>
                                                     </div>
                                                 )}
-                                                <button 
+                                                <button
                                                     onClick={() => handleManualSync(platform.id, connectedAcc.source_user_id)}
-                                                    className="connect-btn" 
+                                                    className="connect-btn"
                                                     style={{ width: '100%', backgroundColor: '#3b82f6' }}
                                                     disabled={isPlatformSyncing}
                                                 >
                                                     {isPlatformSyncing ? 'Senkronize Ediliyor...' : 'Senkronize Et (Sync)'}
                                                 </button>
-                                                <button 
-                                                    onClick={() => handleDisconnect(platform.id)}
-                                                    className="connect-btn" 
+                                                <button
+                                                    onClick={() => handleDisconnect(platform.id, connectedAcc.source_user_id)}
+                                                    className="connect-btn"
                                                     style={{ width: '100%', marginTop: '10px', backgroundColor: '#ef4444' }}
                                                     disabled={isPlatformSyncing}
                                                 >
@@ -205,6 +255,25 @@ export const IntegrationPage = () => {
                 </div>
             </main>
 
+            {syncModalData && (
+                <div className="custom-modal-overlay">
+                    <div className="custom-modal-content">
+                        <h2>Senkronizasyon Tamamlandı!</h2>
+                        <div className="sync-results-box">
+                            <ul style={{ margin: 0, padding: 0, listStyle: 'none', color: '#475569', fontSize: '15px', lineHeight: '1.8' }}>
+                                <li>Eklenen Ürün: <strong>{syncModalData.products}</strong></li>
+                                <li>Eklenen Sipariş: <strong>{syncModalData.orders}</strong></li>
+                                <li>Eklenen Yorum: <strong>{syncModalData.reviews}</strong></li>
+                            </ul>
+                        </div>
+                        <div className="modal-actions">
+                            <button onClick={() => setSyncModalData(null)} className="confirm-btn">
+                                Tamam
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
         </div>
     );

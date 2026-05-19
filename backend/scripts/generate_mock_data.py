@@ -86,6 +86,12 @@ class MockDataGenerator:
                 gender = random.choice(self.GENDERS)
                 status = random.choice(self.STATUSES)
 
+                if status == "Stokta Yok":
+                    stock = 0
+                else:
+                    stock = random.randint(1, 500)
+
+
                 external_product_id = f"{prefix}-{user_number:03d}-{index:06d}"
                 seller_sku = f"{prefix}-{user_number:03d}-{index:06d}-SKU"
 
@@ -98,7 +104,7 @@ class MockDataGenerator:
                     "gender": gender,
                     "status": status,
                     "price": round(random.uniform(150.0, 2500.0), 2),
-                    "stock": random.randint(0, 500) if status != "Out of Stock" else 0,
+                    "stock": stock,
                     "seller_sku": seller_sku,
                     "category": category,
                     "color": color,
