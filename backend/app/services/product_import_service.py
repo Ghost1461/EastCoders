@@ -7,7 +7,6 @@ from rapidfuzz import fuzz
 from app.models import Product, ProductListing
 from app.services.product_normalizer_service import normalize_product
 from app.services.connected_account_service import validate_connected_account
-from app.services.api_service_key import get_source_user_id_from_api_key
 
 
 
