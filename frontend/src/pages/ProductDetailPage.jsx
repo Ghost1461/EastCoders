@@ -170,19 +170,25 @@ export const ProductDetailPage = () => {
                         <div style={{ background: '#fff', padding: '32px', borderRadius: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.04)', border: '1px solid rgba(226, 232, 240, 0.8)', flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                                 <h3 style={{ margin: 0, color: '#0f172a', fontSize: '20px' }}>Ürün Yorumları ({reviews.length})</h3>
-                                {reviewSummary && (
-                                    <div style={{ display: 'flex', gap: '12px' }}>
-                                        <span style={{ padding: '6px 12px', background: '#dcfce7', color: '#166534', borderRadius: '20px', fontSize: '13px', fontWeight: '600' }}>
-                                            👍 {reviewSummary.positive_count} Olumlu (Mağazanız)
-                                        </span>
-                                        <span style={{ padding: '6px 12px', background: '#fee2e2', color: '#991b1b', borderRadius: '20px', fontSize: '13px', fontWeight: '600' }}>
-                                            👎 {reviewSummary.negative_count} Olumsuz (Mağazanız)
-                                        </span>
-                                        <span style={{ padding: '6px 12px', background: '#fef3c7', color: '#b45309', borderRadius: '20px', fontSize: '13px', fontWeight: '600' }}>
-                                            😐 {reviewSummary.mixed_count} Nötr/Karma (Mağazanız)
-                                        </span>
-                                    </div>
-                                )}
+                                {reviews.length > 0 && (() => {
+                                    const positiveCount = reviews.filter(r => r.sentiment === 'positive').length;
+                                    const negativeCount = reviews.filter(r => r.sentiment === 'negative').length;
+                                    const mixedCount = reviews.filter(r => r.sentiment === 'neutral' || r.sentiment === 'mixed').length;
+                                    
+                                    return (
+                                        <div style={{ display: 'flex', gap: '12px' }}>
+                                            <span style={{ padding: '6px 12px', background: '#dcfce7', color: '#166534', borderRadius: '20px', fontSize: '13px', fontWeight: '600' }}>
+                                                👍 {positiveCount} Olumlu (Bu Ürün)
+                                            </span>
+                                            <span style={{ padding: '6px 12px', background: '#fee2e2', color: '#991b1b', borderRadius: '20px', fontSize: '13px', fontWeight: '600' }}>
+                                                👎 {negativeCount} Olumsuz (Bu Ürün)
+                                            </span>
+                                            <span style={{ padding: '6px 12px', background: '#fef3c7', color: '#b45309', borderRadius: '20px', fontSize: '13px', fontWeight: '600' }}>
+                                                😐 {mixedCount} Nötr/Karma (Bu Ürün)
+                                            </span>
+                                        </div>
+                                    );
+                                })()}
                             </div>
                             
                             {reviews.length === 0 ? (

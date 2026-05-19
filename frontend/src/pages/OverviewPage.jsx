@@ -1,5 +1,5 @@
 import { useAuth } from '../context/AuthContext';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, AreaChart, Area, ComposedChart, Line } from 'recharts';
 import { useState, useEffect } from 'react';
 import { Navbar } from '../components/Navbar';
@@ -8,7 +8,8 @@ import './OverviewPage.css';
 export const OverviewPage = () => {
     const { user, logout } = useAuth();
     const location = useLocation();
-    
+    const navigate = useNavigate();
+
     const [isAiModalOpen, setIsAiModalOpen] = useState(false);
     const [aiSummaryData, setAiSummaryData] = useState(null);
     const [isAiLoading, setIsAiLoading] = useState(false);
@@ -33,7 +34,7 @@ export const OverviewPage = () => {
     const fetchAiSummary = async () => {
         setIsAiModalOpen(true);
         if (aiSummaryData) return; // Already fetched
-        
+
         setIsAiLoading(true);
         try {
             const token = localStorage.getItem('token');
@@ -56,7 +57,7 @@ export const OverviewPage = () => {
             try {
                 const token = localStorage.getItem('token');
                 if (!token) return;
-                
+
                 const response = await fetch(`http://localhost:8000/orders/analysis/${timePeriod}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -101,42 +102,42 @@ export const OverviewPage = () => {
                 if (response.ok) {
                     const data = await response.json();
                     if (data && data.categories) {
-                    const formattedData = data.categories
-                        .filter(item => item.category !== null) // null değerleri temizle
-                        .map(item => ({
-                            name: item.category,
-                            value: Number(item.count) // Sayı olduğundan emin ol
-                        }));  
-                    
-                    console.log("Pie Chart Verisi:", formattedData); // Tarayıcı konsolundan kontrol et
-                    setCategoryData(formattedData);
+                        const formattedData = data.categories
+                            .filter(item => item.category !== null) // null değerleri temizle
+                            .map(item => ({
+                                name: item.category,
+                                value: Number(item.count) // Sayı olduğundan emin ol
+                            }));
 
-                    // Toplam ürün sayısını hesaplamak için tüm ürünleri çek ve grupla (Ürünlerim sayfasıyla aynı mantık)
-                    try {
-                        const allProductsRes = await fetch('http://localhost:8000/products_display/all', {
-                            headers: { 'Authorization': `Bearer ${token}` }
-                        });
-                        
-                        if (allProductsRes.ok) {
-                            const allData = await allProductsRes.json();
-                            const uniqueProducts = new Set();
-                            
-                            if (allData && allData.products) {
-                                allData.products.forEach(listing => {
-                                    if (listing.product && listing.product.id) {
-                                        uniqueProducts.add(listing.product.id);
-                                    }
-                                });
+                        console.log("Pie Chart Verisi:", formattedData); // Tarayıcı konsolundan kontrol et
+                        setCategoryData(formattedData);
+
+                        // Toplam ürün sayısını hesaplamak için tüm ürünleri çek ve grupla (Ürünlerim sayfasıyla aynı mantık)
+                        try {
+                            const allProductsRes = await fetch('http://localhost:8000/products_display/all', {
+                                headers: { 'Authorization': `Bearer ${token}` }
+                            });
+
+                            if (allProductsRes.ok) {
+                                const allData = await allProductsRes.json();
+                                const uniqueProducts = new Set();
+
+                                if (allData && allData.products) {
+                                    allData.products.forEach(listing => {
+                                        if (listing.product && listing.product.id) {
+                                            uniqueProducts.add(listing.product.id);
+                                        }
+                                    });
+                                }
+
+                                setMetrics(prev => ({ ...prev, totalProducts: uniqueProducts.size }));
                             }
-                            
-                            setMetrics(prev => ({ ...prev, totalProducts: uniqueProducts.size }));
+                        } catch (err) {
+                            console.error("Toplam ürün sayısı çekilirken hata:", err);
                         }
-                    } catch (err) {
-                        console.error("Toplam ürün sayısı çekilirken hata:", err);
-                    }
                     }
                 }
-                
+
                 // Sipariş Özetini Çek (Toplam Satış ve Bekleyen Siparişler)
                 try {
                     const ordersRes = await fetch('http://localhost:8000/orders/get/summary', {
@@ -144,8 +145,8 @@ export const OverviewPage = () => {
                     });
                     if (ordersRes.ok) {
                         const orderData = await ordersRes.json();
-                        setMetrics(prev => ({ 
-                            ...prev, 
+                        setMetrics(prev => ({
+                            ...prev,
                             totalSales: orderData.total_orders || 0,
                             pendingOrders: orderData.shipped_orders || 0,
                             totalRevenue: orderData.total_revenue || 0,
@@ -163,8 +164,8 @@ export const OverviewPage = () => {
                     });
                     if (reviewsRes.ok) {
                         const reviewData = await reviewsRes.json();
-                        setMetrics(prev => ({ 
-                            ...prev, 
+                        setMetrics(prev => ({
+                            ...prev,
                             averageRating: reviewData.average_rating || 0
                         }));
                     }
@@ -228,7 +229,7 @@ export const OverviewPage = () => {
 
         fetchData();
     }, []);
-    
+
     const COLORS = ['#2563eb', '#7c3aed', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
 
     return (
@@ -241,28 +242,52 @@ export const OverviewPage = () => {
                         <h1>Mağaza Özeti</h1>
                         <p>Satış ve mağaza performansınızın genel görünümü.</p>
                     </div>
-                    <button 
-                        onClick={fetchAiSummary}
-                        style={{
-                            background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-                            color: 'white',
-                            border: 'none',
-                            padding: '12px 24px',
-                            borderRadius: '12px',
-                            fontWeight: '600',
-                            fontSize: '15px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
-                            transition: 'all 0.2s'
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(99, 102, 241, 0.4)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.3)'; }}
-                    >
-                        <span>✨</span> Durum Özetin
-                    </button>
+                    <div style={{ display: 'flex', gap: '16px' }}>
+                        <button
+                            onClick={() => navigate('/integration')}
+                            style={{
+                                background: 'white',
+                                color: '#0f172a',
+                                border: '2px solid #e2e8f0',
+                                padding: '12px 24px',
+                                borderRadius: '12px',
+                                fontWeight: '700',
+                                fontSize: '15px',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
+                                transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1)'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.05)'; e.currentTarget.style.borderColor = '#e2e8f0'; }}
+                        >
+                            <span style={{ fontSize: '18px', color: '#10b981' }}>➕</span> Ürünlerinizi Aktarın
+                        </button>
+                        <button
+                            onClick={fetchAiSummary}
+                            style={{
+                                background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                                color: 'white',
+                                border: 'none',
+                                padding: '12px 24px',
+                                borderRadius: '12px',
+                                fontWeight: '600',
+                                fontSize: '15px',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                                transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(99, 102, 241, 0.4)'; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.3)'; }}
+                        >
+                            <span>✨</span> Durum Özetiniz İçin Tiklayınız
+                        </button>
+                    </div>
                 </div>
 
                 <div className="overview-content">
@@ -311,7 +336,7 @@ export const OverviewPage = () => {
                             <div className="metric-icon">⭐</div>
                             <div className="metric-info">
                                 <h3>Ortalama Mağaza Puanı</h3>
-                                <p className="metric-value">{metrics.averageRating} <span style={{fontSize: "16px", color: "#94a3b8"}}>/ 5.0</span></p>
+                                <p className="metric-value">{metrics.averageRating} <span style={{ fontSize: "16px", color: "#94a3b8" }}>/ 5.0</span></p>
                             </div>
                         </div>
                     </div>
@@ -338,7 +363,7 @@ export const OverviewPage = () => {
                                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                                 ))}
                                             </Pie>
-                                            <Tooltip 
+                                            <Tooltip
                                                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
                                                 formatter={(value, name) => [`${value} Ürün`, name]}
                                             />
@@ -364,9 +389,9 @@ export const OverviewPage = () => {
                                 <ResponsiveContainer width="100%" height={300}>
                                     <BarChart data={ratingData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                                        <XAxis dataKey="rating" tick={{fill: '#64748b', fontSize: 13}} axisLine={false} tickLine={false} />
-                                        <YAxis tick={{fill: '#64748b', fontSize: 13}} axisLine={false} tickLine={false} />
-                                        <Tooltip cursor={{fill: '#f1f5f9'}} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
+                                        <XAxis dataKey="rating" tick={{ fill: '#64748b', fontSize: 13 }} axisLine={false} tickLine={false} />
+                                        <YAxis tick={{ fill: '#64748b', fontSize: 13 }} axisLine={false} tickLine={false} />
+                                        <Tooltip cursor={{ fill: '#f1f5f9' }} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
                                         <Bar dataKey="count" name="Yorum Sayısı" fill="#fbbf24" radius={[6, 6, 0, 0]} />
                                     </BarChart>
                                 </ResponsiveContainer>
@@ -386,9 +411,9 @@ export const OverviewPage = () => {
                                 <ResponsiveContainer width="100%" height={300}>
                                     <BarChart data={topicData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }} layout="vertical">
                                         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
-                                        <XAxis type="number" tick={{fill: '#64748b', fontSize: 13}} axisLine={false} tickLine={false} />
-                                        <YAxis type="category" dataKey="topic" tick={{fill: '#64748b', fontSize: 13, textTransform: 'capitalize'}} axisLine={false} tickLine={false} width={80} />
-                                        <Tooltip cursor={{fill: '#f1f5f9'}} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
+                                        <XAxis type="number" tick={{ fill: '#64748b', fontSize: 13 }} axisLine={false} tickLine={false} />
+                                        <YAxis type="category" dataKey="topic" tick={{ fill: '#64748b', fontSize: 13, textTransform: 'capitalize' }} axisLine={false} tickLine={false} width={80} />
+                                        <Tooltip cursor={{ fill: '#f1f5f9' }} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
                                         <Bar dataKey="review_count" name="Yorum Sayısı" fill="#3b82f6" radius={[0, 6, 6, 0]} />
                                     </BarChart>
                                 </ResponsiveContainer>
@@ -407,15 +432,15 @@ export const OverviewPage = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                             <h2 style={{ margin: 0 }}>Sipariş Trendi (Zaman Bazlı)</h2>
                             <div style={{ display: 'flex', gap: '8px', background: '#f1f5f9', padding: '4px', borderRadius: '8px' }}>
-                                <button 
-                                    onClick={() => setTimePeriod('daily')} 
+                                <button
+                                    onClick={() => setTimePeriod('daily')}
                                     style={{ padding: '6px 12px', border: 'none', background: timePeriod === 'daily' ? '#fff' : 'transparent', borderRadius: '6px', fontWeight: '600', color: timePeriod === 'daily' ? '#2563eb' : '#64748b', cursor: 'pointer', boxShadow: timePeriod === 'daily' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none', transition: 'all 0.2s' }}
                                 >Günlük</button>
-                                <button 
+                                <button
                                     onClick={() => setTimePeriod('weekly')}
                                     style={{ padding: '6px 12px', border: 'none', background: timePeriod === 'weekly' ? '#fff' : 'transparent', borderRadius: '6px', fontWeight: '600', color: timePeriod === 'weekly' ? '#2563eb' : '#64748b', cursor: 'pointer', boxShadow: timePeriod === 'weekly' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none', transition: 'all 0.2s' }}
                                 >Haftalık</button>
-                                <button 
+                                <button
                                     onClick={() => setTimePeriod('monthly')}
                                     style={{ padding: '6px 12px', border: 'none', background: timePeriod === 'monthly' ? '#fff' : 'transparent', borderRadius: '6px', fontWeight: '600', color: timePeriod === 'monthly' ? '#2563eb' : '#64748b', cursor: 'pointer', boxShadow: timePeriod === 'monthly' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none', transition: 'all 0.2s' }}
                                 >Aylık</button>
@@ -427,22 +452,22 @@ export const OverviewPage = () => {
                                     <ComposedChart data={timeData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                                         <defs>
                                             <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3}/>
-                                                <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
+                                                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3} />
+                                                <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
                                             </linearGradient>
                                             <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                                                <stop offset="95%" stopColor="#10b981" stopOpacity={0.2}/>
+                                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                                                <stop offset="95%" stopColor="#10b981" stopOpacity={0.2} />
                                             </linearGradient>
                                         </defs>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                                        <XAxis dataKey="displayPeriod" tick={{fill: '#64748b', fontSize: 13}} axisLine={false} tickLine={false} />
-                                        <YAxis yAxisId="left" tick={{fill: '#64748b', fontSize: 13}} axisLine={false} tickLine={false} />
-                                        <YAxis yAxisId="right" orientation="right" tick={{fill: '#10b981', fontSize: 13}} axisLine={false} tickLine={false} tickFormatter={(value) => `₺${value > 1000 ? (value/1000).toFixed(1) + 'k' : value}`} />
+                                        <XAxis dataKey="displayPeriod" tick={{ fill: '#64748b', fontSize: 13 }} axisLine={false} tickLine={false} />
+                                        <YAxis yAxisId="left" tick={{ fill: '#64748b', fontSize: 13 }} axisLine={false} tickLine={false} />
+                                        <YAxis yAxisId="right" orientation="right" tick={{ fill: '#10b981', fontSize: 13 }} axisLine={false} tickLine={false} tickFormatter={(value) => `₺${value > 1000 ? (value / 1000).toFixed(1) + 'k' : value}`} />
                                         <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
                                         <Legend wrapperStyle={{ paddingTop: '10px' }} iconType="circle" />
                                         <Bar yAxisId="right" dataKey="total_revenue" name="Ciro (₺)" fill="url(#colorRevenue)" radius={[6, 6, 0, 0]} maxBarSize={40} />
-                                        <Line yAxisId="left" type="monotone" dataKey="total_orders" name="Sipariş Sayısı" stroke="#2563eb" strokeWidth={3} dot={{r: 4, fill: '#2563eb', strokeWidth: 2, stroke: '#fff'}} activeDot={{r: 6}} />
+                                        <Line yAxisId="left" type="monotone" dataKey="total_orders" name="Sipariş Sayısı" stroke="#2563eb" strokeWidth={3} dot={{ r: 4, fill: '#2563eb', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
                                     </ComposedChart>
                                 </ResponsiveContainer>
                             ) : (
@@ -461,9 +486,9 @@ export const OverviewPage = () => {
                                 <ResponsiveContainer width="100%" height={300}>
                                     <BarChart data={platformData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                                        <XAxis dataKey="platform" tick={{fill: '#64748b', fontSize: 13, textTransform: 'capitalize'}} axisLine={false} tickLine={false} />
-                                        <YAxis tick={{fill: '#64748b', fontSize: 13}} axisLine={false} tickLine={false} />
-                                        <Tooltip cursor={{fill: '#f1f5f9'}} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
+                                        <XAxis dataKey="platform" tick={{ fill: '#64748b', fontSize: 13, textTransform: 'capitalize' }} axisLine={false} tickLine={false} />
+                                        <YAxis tick={{ fill: '#64748b', fontSize: 13 }} axisLine={false} tickLine={false} />
+                                        <Tooltip cursor={{ fill: '#f1f5f9' }} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
                                         <Bar dataKey="total_revenue" name="Toplam Ciro (₺)" fill="#10b981" radius={[6, 6, 0, 0]} />
                                     </BarChart>
                                 </ResponsiveContainer>
@@ -477,20 +502,20 @@ export const OverviewPage = () => {
                     </div>
                 </div>
             </main>
-            
+
             {isAiModalOpen && (
                 <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(15, 23, 42, 0.6)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', backdropFilter: 'blur(4px)', padding: '20px' }}>
                     <div style={{ background: 'white', borderRadius: '24px', padding: '32px', width: '100%', maxWidth: '600px', maxHeight: '85vh', overflowY: 'auto', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #e2e8f0' }}>
                             <h2 style={{ margin: 0, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '22px' }}>
-                                <span style={{ background: '#f5f3ff', color: '#8b5cf6', padding: '8px', borderRadius: '12px', display: 'flex' }}>✨</span> 
+                                <span style={{ background: '#f5f3ff', color: '#8b5cf6', padding: '8px', borderRadius: '12px', display: 'flex' }}>✨</span>
                                 AI Durum Özeti
                             </h2>
                             <button onClick={() => setIsAiModalOpen(false)} style={{ background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b', transition: 'all 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.color = '#0f172a'; }} onMouseLeave={e => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = '#64748b'; }}>
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </button>
                         </div>
-                        
+
                         {isAiLoading ? (
                             <div style={{ padding: '60px 0', textAlign: 'center', color: '#64748b', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
                                 <div style={{ width: '40px', height: '40px', border: '3px solid #e2e8f0', borderTopColor: '#8b5cf6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>

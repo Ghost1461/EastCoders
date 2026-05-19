@@ -23,7 +23,7 @@ export const TrendPage = () => {
             setShowAiModal(true);
             return;
         }
-        
+
         setAiLoading(true);
         setShowAiModal(true);
         try {
