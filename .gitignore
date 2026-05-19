@@ -33,3 +33,5 @@ Thumbs.db
 
 # Build
 build/
+
+backend/data/mock_sources/api_keys.json

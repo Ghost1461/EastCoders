@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { OverviewPage } from './pages/OverviewPage';
@@ -26,7 +27,7 @@ function App() {
         <Route path="/trend" element={user ? <TrendPage /> : <Navigate to="/login" />} />
         <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
         
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={!user ? <LandingPage /> : <Navigate to="/dashboard" />} />
       </Routes>
     </BrowserRouter>
   );
