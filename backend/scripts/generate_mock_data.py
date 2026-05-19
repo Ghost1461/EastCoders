@@ -15,10 +15,24 @@ from faker import Faker
 
 class MockDataGenerator:
     PLATFORMS = ["trendyol", "hepsiburada", "amazon"]
-    CATEGORIES = ["Kapüşonlu", "T-Shirt", "Pantolon", "Şapka", "Elbise", "Ceket","Çorap"]
-    COLORS = ["Siyah", "Beyaz", "Bej", "Lacivert", "Gri", "Sarı", "Pembe", "Mor"]
-    BRANDS = ["ModaNova", "TrendStyle", "UrbanWear", "BasicLine", "EastCoders"] 
-    SIZES = ["S", "M", "L", "XL", "XXL"] 
+    CATEGORIES = [
+        "Kapüşonlu", "T-Shirt", "Pantolon", "Şapka", "Elbise", "Ceket", "Çorap", 
+        "Kazak", "Gömlek", "Şort", "Etek", "Mont", "Kaban", "Tayt", 
+        "Eşofman Altı", "Hırka", "Yelek", "Trençkot", "Büstiyer", "Atkı"
+    ]
+    
+    COLORS = [
+        "Siyah", "Beyaz", "Bej", "Lacivert", "Gri", "Sarı", "Pembe", "Mor", 
+        "Kırmızı", "Mavi", "Yeşil", "Turuncu", "Kahverengi", "Bordo", 
+        "Haki", "Lila", "Pudra", "Turkuaz", "Zümrüt Yeşili", "Antrasit"
+    ]
+    
+    BRANDS = [
+        "ModaNova", "TrendStyle", "UrbanWear", "BasicLine", "EastCoders", 
+        "VogueFit", "StreetVibes", "CoreApparel", "LuxeKnit", "NovaKnit", 
+        "ZenithWear", "AeroFit", "PrimeLook", "EcoThread", "DenimCo"
+    ] 
+    SIZES = ["XS""S", "M", "L", "XL", "XXL","3XL"] 
     GENDERS = ["Unisex", "Erkek", "Kadın"]
     STATUSES = ["Aktif", "Stokta Yok"]
 
@@ -336,17 +350,17 @@ if __name__ == "__main__":
 
     generator.generate_mock_api_keys(number_of_users=5)
 
-    generator.generate_platform_pools(number_of_products_per_platform=50)
+    generator.generate_platform_pools(number_of_products_per_platform=100)
 
     print("\n--- SİPARİŞ VE YORUM ÜRETİM SÜRECİ ---")
 
-    generator.generate_mock_orders(platform="trendyol", num_orders=15)
-    generator.generate_mock_orders(platform="amazon", num_orders=12)
-    generator.generate_mock_orders(platform="hepsiburada", num_orders=18)
+    generator.generate_mock_orders(platform="trendyol", num_orders=40)
+    generator.generate_mock_orders(platform="amazon", num_orders=40)
+    generator.generate_mock_orders(platform="hepsiburada", num_orders=40)
 
-    generator.generate_mock_reviews(platform="trendyol", num_reviews=10)
-    generator.generate_mock_reviews(platform="amazon", num_reviews=11)
-    generator.generate_mock_reviews(platform="hepsiburada", num_reviews=11)
+    generator.generate_mock_reviews(platform="trendyol", num_reviews=30)
+    generator.generate_mock_reviews(platform="amazon", num_reviews=30)
+    generator.generate_mock_reviews(platform="hepsiburada", num_reviews=30)
 
     print("\n--- FRONTEND ENTEGRASYON TESTİ ---")
 
