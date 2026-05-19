@@ -13,7 +13,12 @@ export const LoginPage = () => {
         setError('');
         try {
             await login(email, password);
-            window.location.href = '/dashboard'; 
+            const loggedInUser = JSON.parse(localStorage.getItem('user'));
+            if (loggedInUser && loggedInUser.role === 'admin') {
+                window.location.href = '/admin';
+            } else {
+                window.location.href = '/dashboard'; 
+            }
         } catch (err) {
             setError(err.response?.data?.detail || "Giriş işlemi başarısız.");
         }

@@ -1,17 +1,63 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
 
 const LandingPage = () => {
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const container = document.querySelector('.landing-container');
+        if (!container) return;
+
+        let throttle = false;
+
+        const handleMouseMove = (e) => {
+            if (throttle) return;
+            throttle = true;
+            setTimeout(() => throttle = false, 30); // limit to ~30 bubbles per second
+
+            // Exclude specific elements
+            const excludedTags = ['BUTTON', 'A', 'H1', 'H2', 'H3', 'P', 'SPAN', 'HEADER', 'INPUT', 'STRONG', 'B'];
+            if (
+                excludedTags.includes(e.target.tagName) || 
+                e.target.closest('header') || 
+                e.target.closest('button') || 
+                e.target.closest('.feature-card') || 
+                e.target.closest('.cta-card') ||
+                e.target.closest('.glass-card')
+            ) {
+                return;
+            }
+
+            const bubble = document.createElement('div');
+            bubble.className = 'interactive-bubble';
+            bubble.style.left = `${e.pageX}px`;
+            bubble.style.top = `${e.pageY}px`;
+            
+            const size = Math.random() * 25 + 10;
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+
+            container.appendChild(bubble);
+
+            setTimeout(() => {
+                bubble.remove();
+            }, 800);
+        };
+
+        container.addEventListener('mousemove', handleMouseMove);
+        
+        return () => {
+            container.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, []);
+
     return (
         <div className="landing-container">
             {/* Header / Navbar */}
             <header className="landing-header">
                 <div className="logo-container">
-                    <div className="logo-icon">E</div>
-                    <span className="logo-text">EastCoders</span>
+                    <img src="/logo.png" alt="Stock Radar Logo" className="brand-logo" style={{ height: '48px', objectFit: 'contain' }} />
                 </div>
                 <div className="header-actions">
                     <button className="auth-btn" onClick={() => navigate('/login')}>
@@ -107,11 +153,39 @@ const LandingPage = () => {
                         </button>
                     </div>
                 </section>
+                
+                {/* Truck Animation Section */}
+                <div className="truck-animation-container">
+                    <div className="road"></div>
+                    <div className="truck-wrapper">
+                        <div className="truck">
+                            <div className="truck-body">
+                                <span className="truck-logo">S-R</span>
+                            </div>
+                            <div className="truck-cabin">
+                                <div className="truck-window"></div>
+                            </div>
+                            <div className="wheels">
+                                <div className="wheel front-wheel">
+                                    <div className="wheel-inner"></div>
+                                </div>
+                                <div className="wheel back-wheel">
+                                    <div className="wheel-inner"></div>
+                                </div>
+                            </div>
+                            <div className="exhaust">
+                                <div className="puff puff-1"></div>
+                                <div className="puff puff-2"></div>
+                                <div className="puff puff-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
 
             {/* Footer */}
             <footer className="landing-footer">
-                <p>&copy; {new Date().getFullYear()} EastCoders. Tüm hakları saklıdır.</p>
+                <p>&copy; {new Date().getFullYear()} Stock Radar. Tüm hakları saklıdır.</p>
             </footer>
         </div>
     );
