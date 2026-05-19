@@ -8,7 +8,7 @@ from app.core.security import get_current_user
 router = APIRouter(prefix="/products_import", tags=["Product_Import"])
 
 
-#belki lazım olabilir, product temelli nested response dönüyor
+#belki lazım olabilir, product temelli nested response dönüyor; bunun işini şu an integrations yapıyor(elleme)
 @router.get("/display_all_products")
 def get_products(
     db: Session = Depends(get_db),

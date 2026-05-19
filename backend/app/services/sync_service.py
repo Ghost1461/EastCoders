@@ -4,6 +4,8 @@ from app.services.review_import_service import import_reviews_service
 from datetime import datetime, timedelta, timezone
 from app.models.sync_log_model import SyncLog
 from app.models.connected_account_model import ConnectedAccount
+from app.services.api_service_key import get_source_user_id_from_api_key
+
 
 #Frontend sayaç kullanıcı site açıkken çalışır, sekme kapanırsa durur. Bunun için zaman bazlı import sync frontendde(kullanıcı görsün değişiklikleri aktifken.)
 
@@ -93,3 +95,6 @@ def sync_platform_service(
             "reviews": review_result
         }
     }
+
+
+

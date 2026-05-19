@@ -19,7 +19,6 @@ from app.routers.sync import router as sync_router
 from app.routers.admin import router as admin_router
 
 
-
 from app.routers.trends import router as trends_router
 
 

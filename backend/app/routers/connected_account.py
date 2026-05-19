@@ -12,6 +12,8 @@ from app.services.connected_account_service import (
     deactivate_connected_account_service
 )
 
+from app.services.api_service_key import get_source_user_id_from_api_key
+
 SUPPORTED_PLATFORMS = [
     "amazon",
     "trendyol",
@@ -36,7 +38,7 @@ def validate_platform(platform: str) -> str:
     return platform
 
 
-@router.post("/{platform}/connect/{source_user_id}")
+@router.post("/source_user_id/{platform}/connect/{source_user_id}")
 def connect_platform_account(
     platform: str,
     source_user_id: str,
@@ -64,7 +66,7 @@ def get_connected_accounts(
     )
 
 
-@router.put("/{platform}/deactivate/{source_user_id}")
+@router.put("/source_user_id/{platform}/deactivate/{source_user_id}")
 def deactivate_connected_account(
     platform: str,
     source_user_id: str,
@@ -72,6 +74,51 @@ def deactivate_connected_account(
     current_user: User = Depends(get_current_user)
 ):
     platform = validate_platform(platform)
+
+    return deactivate_connected_account_service(
+        db=db,
+        current_user=current_user,
+        platform=platform,
+        source_user_id=source_user_id
+    )
+
+
+
+@router.post("/api_key/{platform}/connect/by-api-key")
+def connect_platform_account_by_api_key(
+    platform: str,
+    api_key: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    platform = validate_platform(platform)
+
+    source_user_id = get_source_user_id_from_api_key(
+        platform_key=platform,
+        api_key=api_key
+    )
+
+    return connect_platform_account_service(
+        db=db,
+        current_user=current_user,
+        platform=platform,
+        source_user_id=source_user_id
+    )
+
+
+@router.put("/api/{platform}/deactivate/by-api-key")
+def deactivate_connected_account_by_api_key(
+    platform: str,
+    api_key: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    platform = validate_platform(platform)
+
+    source_user_id = get_source_user_id_from_api_key(
+        platform_key=platform,
+        api_key=api_key
+    )
 
     return deactivate_connected_account_service(
         db=db,
