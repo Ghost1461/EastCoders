@@ -1,4 +1,5 @@
 #auth dependency / token çözme / current user alma
+#sadece token geçerli mi + o id’li user DB’de var mı bakar
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError

@@ -1,3 +1,8 @@
+#mock dataları buradan miktarını seçerek oluşturabilirsiniz bu komutla:
+#"docker compose exec backend python scripts/generate_mock_data.py"
+#uygulama açıldıktan sonra, ekstra terminal açıp yukardaki komutu girin.
+
+
 import json
 import hashlib
 import base64

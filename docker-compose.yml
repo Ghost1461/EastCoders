@@ -28,6 +28,18 @@ services:
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       GEMINI_MODEL: ${GEMINI_MODEL}
 
+  frontend:
+    build: ./frontend
+    container_name: seller_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0
+    
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: seller_pgadmin

@@ -12,6 +12,14 @@ export const AuthProvider = ({ children }) => {
         if (savedUser) setUser(JSON.parse(savedUser));
     }, []);
 
+    const triggerBackgroundFetches = () => {
+        Promise.all([
+            api.post('/news/fashion/fetch'),
+            api.post('/news/commerce-finance/fetch'),
+            api.post('/trends/generate/market')
+        ]).catch(err => console.error("Arkaplan veri getirme hatası:", err));
+    };
+
     const login = async (email, password) => {
         const response = await api.post('/authentication/login-json', { email, password });
         const { access_token, user: userData } = response.data;
@@ -19,6 +27,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', access_token);
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
+        triggerBackgroundFetches();
     };
 
     const logout = () => {
@@ -28,18 +37,19 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signup = async (formData) => {
-    try {
-        const response = await api.post('/authentication/signup', formData);
-        const { access_token, user: userData } = response.data;
-        
-        localStorage.setItem('token', access_token);
-        localStorage.setItem('user', JSON.stringify(userData));
-        setUser(userData);
-        return true;
-    } catch (error) {
-        throw error;
-    }
-};
+        try {
+            const response = await api.post('/authentication/signup', formData);
+            const { access_token, user: userData } = response.data;
+            
+            localStorage.setItem('token', access_token);
+            localStorage.setItem('user', JSON.stringify(userData));
+            setUser(userData);
+            triggerBackgroundFetches();
+            return true;
+        } catch (error) {
+            throw error;
+        }
+    };
 
     return (
         <AuthContext.Provider value={{ user, login, logout, signup }}>
