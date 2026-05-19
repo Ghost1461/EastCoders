@@ -8,11 +8,18 @@ import { IntegrationPage } from './pages/IntegrationPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { NewsPage } from './pages/NewsPage';
 import { TrendPage } from './pages/TrendPage';
+import { ReportsPage } from './pages/ReportsPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
+import { OrdersPage } from './pages/OrdersPage';
 import { AdminPage } from './pages/AdminPage';
 import { useAuth } from './context/AuthContext';
 
 function App() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f8fafc', color: '#64748b' }}>Yükleniyor...</div>;
+  }
 
   return (
     <BrowserRouter>
@@ -23,8 +30,11 @@ function App() {
         {/* Korumalı Route: Admin normal sayfalara, normal kullanıcı admin sayfasına giremez */}
         <Route path="/dashboard" element={user ? (user.role === 'admin' ? <Navigate to="/admin" /> : <OverviewPage />) : <Navigate to="/login" />} />
         <Route path="/products" element={user ? (user.role === 'admin' ? <Navigate to="/admin" /> : <ProductsPage />) : <Navigate to="/login" />} />
+        <Route path="/product/:listingId" element={user ? <ProductDetailPage /> : <Navigate to="/login" />} />
+        <Route path="/orders" element={user ? <OrdersPage /> : <Navigate to="/login" />} />
         <Route path="/integration" element={user ? (user.role === 'admin' ? <Navigate to="/admin" /> : <IntegrationPage />) : <Navigate to="/login" />} />
         <Route path="/haber" element={user ? (user.role === 'admin' ? <Navigate to="/admin" /> : <NewsPage />) : <Navigate to="/login" />} />
+        <Route path="/reports" element={user ? <ReportsPage /> : <Navigate to="/login" />} />
         <Route path="/trend" element={user ? (user.role === 'admin' ? <Navigate to="/admin" /> : <TrendPage />) : <Navigate to="/login" />} />
         <Route path="/profile" element={user ? (user.role === 'admin' ? <Navigate to="/admin" /> : <ProfilePage />) : <Navigate to="/login" />} />
         

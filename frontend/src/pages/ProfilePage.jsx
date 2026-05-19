@@ -146,6 +146,7 @@ export const ProfilePage = () => {
                                 <label>Kullanıcı Rolü</label>
                                 <input type="text" value={user?.role === 'seller' ? 'Satıcı' : (user?.role || '')} readOnly className="read-only-input role-input" />
                             </div>
+
                         </div>
                     </div>
 

@@ -36,6 +36,23 @@ class MockDataGenerator:
     GENDERS = ["Unisex", "Erkek", "Kadın"]
     STATUSES = ["Aktif", "Stokta Yok"]
 
+
+    IMAGE_MAP = {
+        "Pantolon": "/static/product-images/pants.webp",
+        "T-Shirt": "/static/product-images/tshirt.png",
+        "Kapüşonlu": "/static/product-images/hoodie.jpg",
+        "Elbise": "/static/product-images/dress.avif",
+        "Ceket": "/static/product-images/jacket.webp",
+        "Şapka": "/static/product-images/hat.jpg",
+        "Çorap": "/static/product-images/socks.webp",
+    }
+
+    def get_product_image_url(self, category: str) -> str:
+        return self.IMAGE_MAP.get(
+            category,
+            "/static/product-images/default.jpg"
+        )
+
     PLATFORM_PREFIXES = {
         "trendyol": "TR",
         "hepsiburada": "HB",
@@ -100,6 +117,12 @@ class MockDataGenerator:
                 gender = random.choice(self.GENDERS)
                 status = random.choice(self.STATUSES)
 
+                if status == "Stokta Yok":
+                    stock = 0
+                else:
+                    stock = random.randint(1, 500)
+
+
                 external_product_id = f"{prefix}-{user_number:03d}-{index:06d}"
                 seller_sku = f"{prefix}-{user_number:03d}-{index:06d}-SKU"
 
@@ -112,7 +135,7 @@ class MockDataGenerator:
                     "gender": gender,
                     "status": status,
                     "price": round(random.uniform(150.0, 2500.0), 2),
-                    "stock": random.randint(0, 500) if status != "Out of Stock" else 0,
+                    "stock": stock,
                     "seller_sku": seller_sku,
                     "category": category,
                     "color": color,
@@ -126,7 +149,7 @@ class MockDataGenerator:
                         brand.lower(),
                         "fashion"
                     ],
-                    "image_url": f"https://images.eastcoders.com/products/{platform}/{external_product_id}.jpg",
+                    "image_url": self.get_product_image_url(category),
                     "last_updated": self.fake.date_time_between(
                         start_date="-1d",
                         end_date="now"

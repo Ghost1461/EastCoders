@@ -10,11 +10,17 @@ from app import models
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.services.trend_service import generate_market_trends_for_system
-
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(
     title="EastCoders API",
     version="1.0.0"
+)
+
+app.mount(
+    "/static",
+    StaticFiles(directory="static"),
+    name="static"
 )
 
 app.add_middleware(
