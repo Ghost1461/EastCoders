@@ -26,21 +26,16 @@ export const ProductsPage = () => {
 
     const [activeRanking, setActiveRanking] = useState(null);
     const RANKING_FILTERS = [
-        { label: 'Tümü', endpoint: null },
-        { label: 'En Çok Yorum Alanlar', endpoint: '/products_display/ranking/most-reviewed' },
-        { label: 'En Yüksek Puanlılar', endpoint: '/products_display/ranking/top-rated' },
-        { label: 'En Düşük Puanlılar', endpoint: '/products_display/ranking/lowest-rated' },
-        { label: 'En Az Yorum Alanlar', endpoint: '/products_display/ranking/least-reviewed' },
-        { label: 'Stoku Azalanlar', endpoint: '/products_display/stock/low' }
+        { label: 'Tümü', sort_by: null },
+        { label: 'En Çok Yorum Alanlar', sort_by: 'most-reviewed' },
+        { label: 'En Yüksek Puanlılar', sort_by: 'top-rated' },
+        { label: 'En Düşük Puanlılar', sort_by: 'lowest-rated' },
+        { label: 'En Az Yorum Alanlar', sort_by: 'least-reviewed' },
+        { label: 'Stoku Azalanlar', sort_by: 'stock-low' }
     ];
 
-    const handleRankingClick = (endpoint) => {
-        setActiveRanking(endpoint);
-        if (endpoint) {
-            setSearchTerm('');
-            setSelectedCategory(null);
-            setFilters({ platform: '', brand: '', color: '', gender: '', size: '', status: '' });
-        }
+    const handleRankingClick = (sort_by) => {
+        setActiveRanking(sort_by);
     };
 
     const [products, setProducts] = useState([]);
@@ -88,23 +83,19 @@ export const ProductsPage = () => {
                 if (!token) return;
 
                 let url = 'http://localhost:8000/products_display/all';
-                
-                const hasFilters = selectedCategory || Object.values(filters).some(v => v !== '');
+                const params = new URLSearchParams();
 
-                if (activeRanking) {
-                    url = `http://localhost:8000${activeRanking}`;
-                } else if (searchTerm.trim() !== '') {
-                    url = `http://localhost:8000/products_display/search/name?q=${encodeURIComponent(searchTerm)}`;
-                } else if (hasFilters) {
-                    const params = new URLSearchParams();
-                    if (selectedCategory) params.append('category', selectedCategory);
-                    if (filters.platform) params.append('platform', filters.platform);
-                    if (filters.brand) params.append('brand', filters.brand);
-                    if (filters.color) params.append('color', filters.color);
-                    if (filters.gender) params.append('gender', filters.gender);
-                    if (filters.size) params.append('size', filters.size);
-                    if (filters.status) params.append('status', filters.status);
-                    
+                if (searchTerm.trim() !== '') params.append('q', searchTerm.trim());
+                if (selectedCategory) params.append('category', selectedCategory);
+                if (filters.platform) params.append('platform', filters.platform);
+                if (filters.brand) params.append('brand', filters.brand);
+                if (filters.color) params.append('color', filters.color);
+                if (filters.gender) params.append('gender', filters.gender);
+                if (filters.size) params.append('size', filters.size);
+                if (filters.status) params.append('status', filters.status);
+                if (activeRanking) params.append('sort_by', activeRanking);
+
+                if (Array.from(params).length > 0) {
                     url = `http://localhost:8000/products_display/filter?${params.toString()}`;
                 }
 
@@ -196,8 +187,8 @@ export const ProductsPage = () => {
                 <div className="advanced-filters" style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', marginBottom: '10px' }}>
                     <select value={activeRanking || ''} onChange={e => handleRankingClick(e.target.value || null)} style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#fff', color: '#475569', outline: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
                         <option value="">Sıralama Seçin</option>
-                        {RANKING_FILTERS.filter(rf => rf.endpoint !== null).map(rf => (
-                            <option key={rf.label} value={rf.endpoint}>{rf.label}</option>
+                        {RANKING_FILTERS.filter(rf => rf.sort_by !== null).map(rf => (
+                            <option key={rf.label} value={rf.sort_by}>{rf.label}</option>
                         ))}
                     </select>
 

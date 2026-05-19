@@ -77,6 +77,7 @@ def search_products_by_name(
 #Filtreleme yapmak için
 @router.get("/filter")
 def filter_products(
+    q: str | None = None,
     platform: str | None = None,
     brand: str | None = None,
     category: str | None = None,
@@ -90,12 +91,14 @@ def filter_products(
     max_stock: int | None = None,
     min_commission_rate: float | None = None,
     max_commission_rate: float | None = None,
+    sort_by: str | None = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     return filter_user_products(
         db=db,
         user_id=current_user.id,
+        q=q,
         platform=platform,
         brand=brand,
         category=category,
@@ -109,6 +112,7 @@ def filter_products(
         max_stock=max_stock,
         min_commission_rate=min_commission_rate,
         max_commission_rate=max_commission_rate,
+        sort_by=sort_by,
     )
 
 

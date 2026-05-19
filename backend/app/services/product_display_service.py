@@ -112,6 +112,7 @@ def search_user_products(db: Session, user_id: int, q: str):
 def filter_user_products(
     db: Session,
     user_id: int,
+    q: str | None = None,
     platform: str | None = None,
     brand: str | None = None,
     category: str | None = None,
@@ -125,8 +126,13 @@ def filter_user_products(
     max_stock: int | None = None,
     min_commission_rate: float | None = None,
     max_commission_rate: float | None = None,
+    sort_by: str | None = None,
 ):
     query = base_user_products_query(db, user_id)
+
+    if q:
+        search_text = f"%{q}%"
+        query = query.filter(Product.name.ilike(search_text))
 
     if platform:
         query = query.filter(func.lower(ProductListing.platform) == platform.lower())
@@ -147,7 +153,24 @@ def filter_user_products(
         query = query.filter(func.lower(Product.size) == size.lower())
 
     if status:
-        query = query.filter(func.lower(ProductListing.status) == status.lower())
+        from sqlalchemy import or_, and_
+        if status.lower() == "aktif":
+            query = query.filter(
+                or_(
+                    func.lower(ProductListing.status).in_(["active", "aktif"]),
+                    and_(ProductListing.status == None, ProductListing.stock > 0),
+                    ProductListing.stock > 0
+                )
+            )
+        elif status.lower() == "stokta yok":
+            query = query.filter(
+                or_(
+                    func.lower(ProductListing.status).in_(["inactive", "stokta yok", "tükendi"]),
+                    ProductListing.stock <= 0
+                )
+            )
+        else:
+            query = query.filter(func.lower(ProductListing.status) == status.lower())
 
     if min_price is not None:
         query = query.filter(ProductListing.price >= min_price)
@@ -167,11 +190,24 @@ def filter_user_products(
     if max_commission_rate is not None:
         query = query.filter(ProductListing.commission_rate <= max_commission_rate)
 
+    if sort_by:
+        if sort_by == 'most-reviewed':
+            query = query.order_by(desc(ProductListing.review_count))
+        elif sort_by == 'top-rated':
+            query = query.order_by(desc(ProductListing.rating))
+        elif sort_by == 'lowest-rated':
+            query = query.order_by(ProductListing.rating.asc())
+        elif sort_by == 'least-reviewed':
+            query = query.order_by(ProductListing.review_count.asc())
+        elif sort_by == 'stock-low':
+            query = query.order_by(ProductListing.stock.asc())
+
     listings = query.all()
 
     return {
         "count": len(listings),
         "filters": {
+            "q": q,
             "platform": platform,
             "brand": brand,
             "category": category,
@@ -185,6 +221,7 @@ def filter_user_products(
             "max_stock": max_stock,
             "min_commission_rate": min_commission_rate,
             "max_commission_rate": max_commission_rate,
+            "sort_by": sort_by,
         },
         "products": [serialize_product_listing(listing) for listing in listings]
     }
