@@ -241,14 +241,19 @@ docker compose exec backend python scripts/generate_mock_data.py
 ## Screenshots
 
 ### Dashboard
+![Dashboard](./screenshots/dashboard.jpeg)
 
 ### Product Analytics
+![Product Analytics](./screenshots/product_analytics.jpeg)
 
 ### AI Reports
+![AI Reports](./screenshots/ai_reports.jpeg)
 
 ### Trends
+![Trends](./screenshots/trends.jpeg)
 
 ### Order Analytics
+![Order Analytics](./screenshots/order_analytics.jpeg)
 
 ---
 
