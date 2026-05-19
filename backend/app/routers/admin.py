@@ -13,6 +13,10 @@ from app.services.admin_services import (
     get_admin_summary_service,
     delete_user_ai_cache_service,
     get_all_connected_accounts_service,
+    get_all_product_listings_service,
+    get_user_dashboard_report_admin_service,
+    search_user_dashboard_report_admin_service,
+    get_user_nested_products_admin_service,
 )
 
 
@@ -90,3 +94,44 @@ def get_all_connected_accounts(
     _: User = Depends(get_current_admin)
 ):
     return get_all_connected_accounts_service(db, platform)
+
+
+
+# Sistemdeki tüm product listing kayıtlarını listeler
+@router.get("/listings")
+def get_all_product_listings(
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_admin)
+):
+    return get_all_product_listings_service(db)
+
+
+# Belirli kullanıcının dashboard report verisini getirir
+@router.get("/reports/dashboard/users/{user_id}")
+def get_user_dashboard_report_admin(
+    user_id: int,
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_admin)
+):
+    return get_user_dashboard_report_admin_service(db, user_id)
+
+
+# Email ile kullanıcı dashboard report verisini getirir
+@router.get("/reports/dashboard")
+def search_user_dashboard_report_admin(
+    email: str,
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_admin)
+):
+    return search_user_dashboard_report_admin_service(db, email)
+
+
+
+# Belirli kullanıcının ürünlerini product temelli nested şekilde döner
+@router.get("/users/{user_id}/products/nested")
+def get_user_nested_products_admin(
+    user_id: int,
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_admin)
+):
+    return get_user_nested_products_admin_service(db, user_id)
