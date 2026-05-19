@@ -33,3 +33,6 @@ Thumbs.db
 
 # Build
 build/
+
+# Oluşturduğumuz mock platform API keylerini github'a atabilmek için
+backend/data/mock_sources/api_keys.json
