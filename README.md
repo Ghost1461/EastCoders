@@ -1,6 +1,6 @@
 # StockRadar (AI-powered Seller Intelligence Platform/Dashboard)
 
-AI-powered seller intelligence dashboard designed for fashion e-commerce businesses.
+AI-powered inventory intelligence and seller analytics dashboard designed for fashion e-commerce businesses.
 
 The platform helps online sellers monitor products, analyze sales performance, detect market trends, and receive AI-driven business recommendations across multiple marketplaces.
 
@@ -38,6 +38,21 @@ The system architecture supports future real API integrations.
 
 ---
 
+### Connected Accounts
+
+Users can connect marketplace accounts using API-key based mock integrations.
+
+Each connected account supports:
+
+- Platform-based account linking
+- Source user identification
+- Manual synchronization
+- Last sync tracking
+- Account activation/deactivation
+- Multi-account management
+
+---
+
 ### Product Monitoring & Analytics
 
 Track product performance across multiple platforms:
@@ -61,6 +76,21 @@ AI-generated reports include:
 - Inventory analysis
 - Review insights
 - Business recommendations
+
+---
+
+### AI Cache System
+
+StockRadar includes a hash-based AI caching mechanism to avoid unnecessary LLM requests.
+
+If the report data has not changed, the system reuses the previously generated AI response instead of sending a new request to the LLM.
+
+This improves:
+
+- Response speed
+- Token efficiency
+- System performance
+- Cost optimization
 
 ---
 
@@ -183,7 +213,7 @@ Includes admin monitoring tools for:
 
 ### AI Layer
 
-- Gemini-powered report summarization
+- Gemini-powered report summarization(Gemini 2.5 Flash)
 - AI-generated recommendations
 - Trend analysis engine
 - Review sentiment analysis
@@ -191,14 +221,31 @@ Includes admin monitoring tools for:
 
 ---
 
-## Project Structure
+## System Architecture
 
 ```text
-frontend/
-backend/
-data/
-mock_sources/
-services/
+Frontend (React + Vite)
+        ↓
+FastAPI Backend
+        ↓
+Router Layer
+        ↓
+Service Layer
+        ↓
+PostgreSQL Database
+
+AI Layer:
+- Gemini API
+- AI Report Summaries
+- AI Recommendations
+- AI Review Analysis
+- AI Stock Analysis
+- AI Cache System
+
+Marketplace Simulation:
+- JSON mock sources
+- API-key based account matching
+- Product, order and review imports
 
 
 ## Installation
@@ -209,6 +256,8 @@ services/
 git clone <repository_url>
 cd project
 ```
+
+---
 
 ### Create environment variables
 
@@ -238,6 +287,69 @@ docker compose exec backend python scripts/generate_mock_data.py
 
 ---
 
+## Security
+
+- JWT-based authentication
+- Protected API routes
+- Role-based admin authorization
+- User-based marketplace isolation
+- Connected account validation
+- API-key based mock marketplace connection
+
+---
+
+## Admin User Setup
+
+Admin users are created using a seed script.
+
+After the containers are running, open a new terminal and run:
+
+```bash
+docker compose exec backend python scripts/create_admin.py
+```
+
+The script creates an admin user in the database.
+
+Admin users can access protected admin routes such as:
+
+```text
+/admin/users
+/admin/summary
+/admin/ai-cache
+/admin/connected-accounts
+/admin/listings
+/admin/users/{user_id}
+/admin/users/{user_id}/products/nested
+```
+
+Admin access is controlled by role-based authorization.
+
+Normal sellers cannot access admin endpoints.
+
+---
+
+## API Documentation
+
+FastAPI Swagger documentation is available at:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+## Demo Flow
+
+1. Create or login as a seller.
+2. Connect a marketplace account using an API key.
+3. Import product, order and review data.
+4. View inventory and sales analytics.
+5. Generate AI-powered reports.
+6. Review market news and trend insights.
+7. Use admin panel for system monitoring.
+
+---
+
 ## Screenshots
 
 ### Dashboard
@@ -263,6 +375,7 @@ docker compose exec backend python scripts/generate_mock_data.py
 - Mobile application
 - AI pricing optimization
 - Seller performance scoring system
+- Multi-language support
 
 ---
 
