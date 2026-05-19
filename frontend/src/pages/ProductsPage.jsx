@@ -1,5 +1,5 @@
 // Vite HMR trigger comment
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
 import './ProductsPage.css';
@@ -9,58 +9,74 @@ export const ProductsPage = () => {
     const location = useLocation();
     const [searchTerm, setSearchTerm] = useState('');
 
-    const mockProducts = [
-        { 
-            id: 1, 
-            name: "Kablosuz Kulaklık Pro", 
-            category: "Elektronik", 
-            stock: 45, 
-            status: "Aktif",
-            image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&q=80",
-            platforms: [{ name: "Trendyol", price: "₺1,299" }, { name: "Hepsiburada", price: "₺1,350" }]
-        },
-        { 
-            id: 2, 
-            name: "Akıllı Saat Series 5", 
-            category: "Giyilebilir", 
-            stock: 12, 
-            status: "Aktif",
-            image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=150&q=80",
-            platforms: [{ name: "Amazon", price: "₺2,499" }, { name: "Kendi Sitemiz", price: "₺2,300" }]
-        },
-        { 
-            id: 3, 
-            name: "Ergonomik Ofis Koltuğu", 
-            category: "Mobilya", 
-            stock: 0, 
-            status: "Tükendi",
-            image: "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?w=150&q=80",
-            platforms: [{ name: "Trendyol", price: "₺3,850" }]
-        },
-        { 
-            id: 4, 
-            name: "Mekanik Oyuncu Klavyesi", 
-            category: "Elektronik", 
-            stock: 28, 
-            status: "Aktif",
-            image: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=150&q=80",
-            platforms: [{ name: "Hepsiburada", price: "₺899" }]
-        },
-        { 
-            id: 5, 
-            name: "4K Ultra HD Monitör", 
-            category: "Elektronik", 
-            stock: 5, 
-            status: "Düşük Stok",
-            image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=150&q=80",
-            platforms: [{ name: "Amazon", price: "₺6,499" }, { name: "Trendyol", price: "₺6,700" }, { name: "Kendi Sitemiz", price: "₺6,200" }]
-        },
-    ];
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const filteredProducts = mockProducts.filter(product => 
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        product.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                setLoading(true);
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const url = searchTerm.trim() === '' 
+                    ? 'http://localhost:8000/products_display/all' 
+                    : `http://localhost:8000/products_display/search/name?q=${encodeURIComponent(searchTerm)}`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    const groupedProducts = {};
+                    
+                    if (data && data.products) {
+                        data.products.forEach(listing => {
+                            const prod = listing.product;
+                            if (!prod) return;
+                            
+                            if (!groupedProducts[prod.id]) {
+                                groupedProducts[prod.id] = {
+                                    id: prod.id,
+                                    name: prod.name || "İsimsiz Ürün",
+                                    category: prod.category || "Diğer",
+                                    stock: listing.stock,
+                                    status: listing.status === 'Active' || listing.status === 'Aktif' ? 'Aktif' : (listing.stock > 0 ? 'Aktif' : 'Tükendi'),
+                                    image: prod.image_url || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&q=80",
+                                    platforms: []
+                                };
+                            } else {
+                                groupedProducts[prod.id].stock += listing.stock;
+                            }
+                            
+                            groupedProducts[prod.id].platforms.push({
+                                name: listing.platform,
+                                price: `₺${listing.price}`
+                            });
+                        });
+                        
+                        setProducts(Object.values(groupedProducts));
+                    } else {
+                        setProducts([]);
+                    }
+                }
+            } catch (error) {
+                console.error("Ürünler çekilirken hata oluştu:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        const delayDebounceFn = setTimeout(() => {
+            fetchProducts();
+        }, 500);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchTerm]);
 
     return (
         <div className="dashboard-container">
@@ -73,6 +89,7 @@ export const ProductsPage = () => {
                     <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Ürünlerim</Link>
                     <Link to="/integration" className={`nav-link ${location.pathname === '/integration' ? 'active' : ''}`}>Aktarma</Link>
                     <Link to="/haber" className={`nav-link ${location.pathname === '/haber' ? 'active' : ''}`}>Haber</Link>
+                    <Link to="/reports" className={`nav-link ${location.pathname === '/reports' ? 'active' : ''}`}>Raporlar</Link>
                     <Link to="/trend" className={`nav-link ${location.pathname === '/trend' ? 'active' : ''}`}>Trend</Link>
                     <Link to="/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>Profil</Link>
                 </div>
@@ -123,8 +140,14 @@ export const ProductsPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredProducts.length > 0 ? (
-                                filteredProducts.map(product => (
+                            {loading ? (
+                                <tr>
+                                    <td colSpan="6" style={{ textAlign: 'center', padding: '40px', color: '#64748b' }}>
+                                        Ürünler yükleniyor...
+                                    </td>
+                                </tr>
+                            ) : products.length > 0 ? (
+                                products.map(product => (
                                     <tr key={product.id}>
                                         <td>
                                             <img src={product.image} alt={product.name} className="product-thumbnail" />
@@ -169,7 +192,7 @@ export const ProductsPage = () => {
                             ) : (
                                 <tr>
                                     <td colSpan="6" style={{ textAlign: 'center', padding: '40px', color: '#64748b' }}>
-                                        Aramanızla eşleşen ürün bulunamadı.
+                                        Kayıtlı ürününüz bulunmamaktadır. Aktarma sayfasından ürün ekleyebilirsiniz.
                                     </td>
                                 </tr>
                             )}

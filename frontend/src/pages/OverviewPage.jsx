@@ -9,17 +9,17 @@ export const OverviewPage = () => {
     const location = useLocation();
 
     // Mock veriler, ileride endpoint'ler bağlandığında bunlar stateden gelecek
-    const metrics = {
-        totalProducts: 142,
+    const [metrics, setMetrics] = useState({
+        totalProducts: 0, // Bu değer backend'den (Pie Chart verisinden) beslenecek
         totalSales: 1284,
         pendingOrders: 23,
         averageRating: 4.8
-    };
+    });
 
     const [categoryData, setCategoryData] = useState([]);
 
     useEffect(() => {
-        const fetchCategories = async () => {
+        const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
                 if (!token) return;
@@ -42,14 +42,72 @@ export const OverviewPage = () => {
                     
                     console.log("Pie Chart Verisi:", formattedData); // Tarayıcı konsolundan kontrol et
                     setCategoryData(formattedData);
+
+                    // Toplam ürün sayısını hesaplamak için tüm ürünleri çek ve grupla (Ürünlerim sayfasıyla aynı mantık)
+                    try {
+                        const allProductsRes = await fetch('http://localhost:8000/products_display/all', {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        
+                        if (allProductsRes.ok) {
+                            const allData = await allProductsRes.json();
+                            const uniqueProducts = new Set();
+                            
+                            if (allData && allData.products) {
+                                allData.products.forEach(listing => {
+                                    if (listing.product && listing.product.id) {
+                                        uniqueProducts.add(listing.product.id);
+                                    }
+                                });
+                            }
+                            
+                            setMetrics(prev => ({ ...prev, totalProducts: uniqueProducts.size }));
+                        }
+                    } catch (err) {
+                        console.error("Toplam ürün sayısı çekilirken hata:", err);
+                    }
                     }
                 }
+                
+                // Sipariş Özetini Çek (Toplam Satış ve Bekleyen Siparişler)
+                try {
+                    const ordersRes = await fetch('http://localhost:8000/orders/get/summary', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (ordersRes.ok) {
+                        const orderData = await ordersRes.json();
+                        setMetrics(prev => ({ 
+                            ...prev, 
+                            totalSales: orderData.total_orders || 0,
+                            pendingOrders: orderData.shipped_orders || 0
+                        }));
+                    }
+                } catch (err) {
+                    console.error("Sipariş özeti çekilirken hata:", err);
+                }
+
+                // Yorum Özetini Çek (Ortalama Mağaza Puanı)
+                try {
+                    const reviewsRes = await fetch('http://localhost:8000/review_display/summary', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (reviewsRes.ok) {
+                        const reviewData = await reviewsRes.json();
+                        setMetrics(prev => ({ 
+                            ...prev, 
+                            averageRating: reviewData.average_rating || 0
+                        }));
+                    }
+                } catch (err) {
+                    console.error("Yorum özeti çekilirken hata:", err);
+                }
+
             } catch (error) {
-                console.error("Kategoriler çekilirken hata oluştu:", error);
+                console.error("Veriler çekilirken hata oluştu:", error);
             }
         };
 
-        fetchCategories();
+        fetchData();
     }, []);
     
     const COLORS = ['#2563eb', '#7c3aed', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
@@ -65,6 +123,7 @@ export const OverviewPage = () => {
                     <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Ürünlerim</Link>
                     <Link to="/integration" className={`nav-link ${location.pathname === '/integration' ? 'active' : ''}`}>Aktarma</Link>
                     <Link to="/haber" className={`nav-link ${location.pathname === '/haber' ? 'active' : ''}`}>Haber</Link>
+                    <Link to="/reports" className={`nav-link ${location.pathname === '/reports' ? 'active' : ''}`}>Raporlar</Link>
                     <Link to="/trend" className={`nav-link ${location.pathname === '/trend' ? 'active' : ''}`}>Trend</Link>
                     <Link to="/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>Profil</Link>
                 </div>
@@ -92,7 +151,7 @@ export const OverviewPage = () => {
                         <div className="metric-card">
                             <div className="metric-icon">📦</div>
                             <div className="metric-info">
-                                <h3>Toplam Ürün Sayısı</h3>
+                                <h3>Toplam Ürün Çeşidi</h3>
                                 <p className="metric-value">{metrics.totalProducts}</p>
                             </div>
                         </div>

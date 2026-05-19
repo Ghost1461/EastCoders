@@ -7,6 +7,7 @@ import { IntegrationPage } from './pages/IntegrationPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { NewsPage } from './pages/NewsPage';
 import { TrendPage } from './pages/TrendPage';
+import { ReportsPage } from './pages/ReportsPage';
 import { useAuth } from './context/AuthContext';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/products" element={user ? <ProductsPage /> : <Navigate to="/login" />} />
         <Route path="/integration" element={user ? <IntegrationPage /> : <Navigate to="/login" />} />
         <Route path="/haber" element={user ? <NewsPage /> : <Navigate to="/login" />} />
+        <Route path="/reports" element={user ? <ReportsPage /> : <Navigate to="/login" />} />
         <Route path="/trend" element={user ? <TrendPage /> : <Navigate to="/login" />} />
         <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
         

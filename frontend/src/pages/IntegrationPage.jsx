@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import api from '../api/client';
 import { Link, useLocation } from 'react-router-dom';
 import './IntegrationPage.css';
 
@@ -8,7 +9,8 @@ export const IntegrationPage = () => {
     const location = useLocation();
     
     const [selectedPlatform, setSelectedPlatform] = useState(null);
-    const [apiKey, setApiKey] = useState('');
+    const [userId, setUserId] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const platforms = [
         { 
@@ -36,15 +38,37 @@ export const IntegrationPage = () => {
             setSelectedPlatform(null);
         } else {
             setSelectedPlatform(platformId);
-            setApiKey('');
+            setUserId('');
         }
     };
 
-    const handleConnect = (e) => {
+    const handleConnect = async (e) => {
         e.preventDefault();
-        alert(`${platforms.find(p => p.id === selectedPlatform).name} için API Key başarıyla aktarıldı!`);
-        setApiKey('');
-        setSelectedPlatform(null);
+        
+        if (!userId) {
+            alert("Lütfen User ID giriniz.");
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            // 1. Connect Platform Account
+            await api.post(`/connected-accounts/${selectedPlatform}/connect/${userId}`);
+            
+            // 2. Sync Platform Data
+            const syncResponse = await api.post(`/sync/${selectedPlatform}/${userId}`);
+            
+            console.log("Senkronizasyon Başarılı:", syncResponse.data);
+            alert(`${platforms.find(p => p.id === selectedPlatform).name} için hesap başarıyla bağlandı ve senkronizasyon tamamlandı!`);
+            
+            setUserId('');
+            setSelectedPlatform(null);
+        } catch (error) {
+            console.error("Entegrasyon hatası:", error);
+            alert(`Hata: ${error.response?.data?.detail || error.message}`);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -58,6 +82,7 @@ export const IntegrationPage = () => {
                     <Link to="/products" className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}>Ürünlerim</Link>
                     <Link to="/integration" className={`nav-link ${location.pathname === '/integration' ? 'active' : ''}`}>Aktarma</Link>
                     <Link to="/haber" className={`nav-link ${location.pathname === '/haber' ? 'active' : ''}`}>Haber</Link>
+                    <Link to="/reports" className={`nav-link ${location.pathname === '/reports' ? 'active' : ''}`}>Raporlar</Link>
                     <Link to="/trend" className={`nav-link ${location.pathname === '/trend' ? 'active' : ''}`}>Trend</Link>
                     <Link to="/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>Profil</Link>
                 </div>
@@ -77,7 +102,7 @@ export const IntegrationPage = () => {
             <main className="dashboard-main integration-main">
                 <div className="integration-header">
                     <h1>Mağaza Entegrasyonları</h1>
-                    <p>Satış yaptığınız platformların API anahtarlarını girerek mağazalarınızı birbirine bağlayın.</p>
+                    <p>Satış yaptığınız platformların User ID'lerini girerek mağazalarınızı birbirine bağlayın.</p>
                 </div>
 
                 <div className="platforms-container">
@@ -97,12 +122,15 @@ export const IntegrationPage = () => {
                                         <div className="input-group">
                                             <input 
                                                 type="text" 
-                                                placeholder={`${platform.name} API Key...`}
-                                                value={apiKey}
-                                                onChange={(e) => setApiKey(e.target.value)}
+                                                placeholder={`${platform.name} User ID...`}
+                                                value={userId}
+                                                onChange={(e) => setUserId(e.target.value)}
                                                 required 
+                                                disabled={isLoading}
                                             />
-                                            <button type="submit" className="connect-btn">Aktar</button>
+                                            <button type="submit" className="connect-btn" disabled={isLoading}>
+                                                {isLoading ? 'Aktarılıyor...' : 'Aktar'}
+                                            </button>
                                         </div>
                                     </form>
                                 )}
