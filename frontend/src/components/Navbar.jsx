@@ -63,7 +63,7 @@ export const Navbar = () => {
         <nav className="dashboard-nav">
             <div className="nav-left">
                 <Link to="/dashboard" className="nav-brand">
-                    <img src={stockRadarLogo} alt="StockRadar" style={{ height: '40px', objectFit: 'contain' }} />
+                    <img src={stockRadarLogo} alt="StockRadar" style={{ height: '56px', objectFit: 'contain' }} />
                 </Link>
             </div>
             <div className="nav-links">

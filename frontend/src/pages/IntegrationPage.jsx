@@ -7,7 +7,7 @@ import './IntegrationPage.css';
 
 import trendyolLogo from '../assets/trendyol.jpeg';
 import hepsiburadaLogo from '../assets/hepsiburada.jpeg';
-import amazonLogo from '../assets/amazon.jpeg';
+import amazonLogo from '../assets/amazon1.jpeg';
 
 export const IntegrationPage = () => {
     const { user, logout } = useAuth();

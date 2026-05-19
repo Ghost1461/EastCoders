@@ -8,6 +8,10 @@ import './OverviewPage.css';
 export const OverviewPage = () => {
     const { user, logout } = useAuth();
     const location = useLocation();
+    
+    const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+    const [aiSummaryData, setAiSummaryData] = useState(null);
+    const [isAiLoading, setIsAiLoading] = useState(false);
 
     // Mock veriler, ileride endpoint'ler bağlandığında bunlar stateden gelecek
     const [metrics, setMetrics] = useState({
@@ -25,6 +29,27 @@ export const OverviewPage = () => {
     const [timePeriod, setTimePeriod] = useState('daily');
     const [timeData, setTimeData] = useState([]);
     const [platformData, setPlatformData] = useState([]);
+
+    const fetchAiSummary = async () => {
+        setIsAiModalOpen(true);
+        if (aiSummaryData) return; // Already fetched
+        
+        setIsAiLoading(true);
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch('http://localhost:8000/reports/ai-summary', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setAiSummaryData(data);
+            }
+        } catch (err) {
+            console.error("AI Summary fetch error:", err);
+        } finally {
+            setIsAiLoading(false);
+        }
+    };
 
     useEffect(() => {
         const fetchTimeData = async () => {
@@ -211,9 +236,33 @@ export const OverviewPage = () => {
             <Navbar />
 
             <main className="dashboard-main">
-                <div className="dashboard-header">
-                    <h1>Mağaza Özeti</h1>
-                    <p>Satış ve mağaza performansınızın genel görünümü.</p>
+                <div className="dashboard-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                        <h1>Mağaza Özeti</h1>
+                        <p>Satış ve mağaza performansınızın genel görünümü.</p>
+                    </div>
+                    <button 
+                        onClick={fetchAiSummary}
+                        style={{
+                            background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                            color: 'white',
+                            border: 'none',
+                            padding: '12px 24px',
+                            borderRadius: '12px',
+                            fontWeight: '600',
+                            fontSize: '15px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                            transition: 'all 0.2s'
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(99, 102, 241, 0.4)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.3)'; }}
+                    >
+                        <span>✨</span> Durum Özetin
+                    </button>
                 </div>
 
                 <div className="overview-content">
@@ -428,6 +477,39 @@ export const OverviewPage = () => {
                     </div>
                 </div>
             </main>
+            
+            {isAiModalOpen && (
+                <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(15, 23, 42, 0.6)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', backdropFilter: 'blur(4px)', padding: '20px' }}>
+                    <div style={{ background: 'white', borderRadius: '24px', padding: '32px', width: '100%', maxWidth: '600px', maxHeight: '85vh', overflowY: 'auto', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #e2e8f0' }}>
+                            <h2 style={{ margin: 0, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '22px' }}>
+                                <span style={{ background: '#f5f3ff', color: '#8b5cf6', padding: '8px', borderRadius: '12px', display: 'flex' }}>✨</span> 
+                                AI Durum Özeti
+                            </h2>
+                            <button onClick={() => setIsAiModalOpen(false)} style={{ background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b', transition: 'all 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.color = '#0f172a'; }} onMouseLeave={e => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = '#64748b'; }}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                        
+                        {isAiLoading ? (
+                            <div style={{ padding: '60px 0', textAlign: 'center', color: '#64748b', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+                                <div style={{ width: '40px', height: '40px', border: '3px solid #e2e8f0', borderTopColor: '#8b5cf6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                                <p style={{ fontSize: '16px', fontWeight: '500' }}>Yapay zeka mağaza verilerinizi analiz ediyor...</p>
+                                <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+                            </div>
+                        ) : aiSummaryData ? (
+                            <div style={{ color: '#334155', lineHeight: '1.7', fontSize: '15px' }}>
+                                <div dangerouslySetInnerHTML={{ __html: aiSummaryData.ai.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+                            </div>
+                        ) : (
+                            <div style={{ padding: '40px 0', textAlign: 'center', color: '#ef4444' }}>
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '16px' }}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                <p style={{ fontSize: '16px', fontWeight: '500' }}>Özet yüklenirken bir hata oluştu.</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
